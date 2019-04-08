@@ -1964,8 +1964,9 @@ class admin extends db
      */
     function check_employee($permission_check = '', $ajax = '1', $simple = '0')
     {
-        if (! empty($_COOKIE['zen_admin_ses'])) {
+        if (isset($_COOKIE['zen_admin_ses'])) {
             $session_comps = explode('-', $_COOKIE['zen_admin_ses']);
+            print_r($_COOKIE["zen_admin_ses"]);
             $ses_id        = $session_comps['0'];
             if (!empty($session_comps['1'])) {
                 $ses_user = $session_comps['1'];
@@ -2007,7 +2008,7 @@ class admin extends db
                     'error_details' => 'Session has expired (' . date('Y-m-d H:i:s') . ' >= ' . $session['expires'] . ')'
                 );
             } // Check Expiration
-            else if (! empty($session['complete']) && $session['complete'] != '1920-01-01 00:01:01') {
+            /*else if (! empty($session['complete']) && $session['complete'] != '1920-01-01 00:01:01') {
 
                 $end  = $this->end_session($_COOKIE['zen_admin_ses']);
 
@@ -2016,7 +2017,7 @@ class admin extends db
                     'ecode'         => 'eas4',
                     'error_details' => 'Session is no longer active.'
                 );
-            } // Everything is good in the world...
+            }*/ // Everything is good in the world...
             else {
                 $final = array('error' => '0', 'error_details' => 'Success');
                 $dets  = $this->get_employee($session['username']);
@@ -2165,11 +2166,17 @@ class admin extends db
         $session_salt = $this->generate_salt();
         $masterlog    = time();
 
+
+        $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888') ? $_SERVER['HTTP_HOST'] : false; 
+
         if ($remember == '1') {
             $expires = $masterlog + 604800;
-            $this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires);
+            //$this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires);
+            setcookie("zen_admin_ses", $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires, "/", $domain);
         } else {
-            $this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)));
+            //$this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)));
+
+            setcookie("zen_admin_ses", $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)),0,"/", $domain);
             $sestime = $this->get_option('session_admin_inactivity');
             if (empty($sestime) || $sestime <= 0) { $sestime = '3600'; }
             $expires = $masterlog + $sestime;

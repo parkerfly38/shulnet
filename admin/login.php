@@ -44,7 +44,6 @@ $version = $db->get_option('current_version');
 <body>
 
 <form action="login.php" method="post" id="login" onsubmit="return verifyLogin('login');">
-
     <div id="login_logo"><img src="imgs/login/logo.png" border="0" /></div>
     <div id="background"></div>
     <div id="foreground"></div>
