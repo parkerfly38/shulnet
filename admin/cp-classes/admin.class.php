@@ -1966,7 +1966,6 @@ class admin extends db
     {
         if (isset($_COOKIE['zen_admin_ses'])) {
             $session_comps = explode('-', $_COOKIE['zen_admin_ses']);
-            print_r($_COOKIE["zen_admin_ses"]);
             $ses_id        = $session_comps['0'];
             if (!empty($session_comps['1'])) {
                 $ses_user = $session_comps['1'];
