@@ -140,17 +140,6 @@ require "assets/header.php";
                     ?>
                 </li>
                 <li class="indent">
-                    <?php
-                    if (! function_exists('mcrypt_encrypt')) {
-                        $class = 'bad';
-                        $error = '1';
-                    } else {
-                        $class = 'good';
-                    }
-                    echo "<span class=$class>Extension: mcrypt [<a href=\"http://php.net/manual/en/book.mcrypt.php\" target=\"_blank\">Info</a>]</span>";
-                    ?>
-                </li>
-                <li class="indent">
                 <?php
                 if (get_magic_quotes_gpc()) {
                     $class = 'bad';
