@@ -31,3 +31,5 @@ Credits
 
 Zenbership is created and maintained by Castlamp ([@castlamp](http://twitter.com/castlamp)).  
 Jon Belelieu ([@jbelelieu](http://twitter.com/jbelelieu)) is the lead developer on the project.
+
+This fork is being actively maintained and developed by Brian Kresge ([@parkerfly](http://twitter.com/parkerfly)).
