@@ -56,7 +56,7 @@ if ($type == 'edit') {
 
     if (!empty($_POST['password'])) {
         $salt       = $db->generate_salt();
-        $pass       = $_POST['password']; //$db->encode_password($_POST['password'], $salt);
+        $pass       = $db->encode_password($_POST['password'], $salt);
         $pass_query = "`password`='" . $db->mysql_cleans($pass) . "',`salt`='" . $db->mysql_cleans($salt) . "',";
     } else {
         $pass_query = '';
@@ -72,12 +72,12 @@ if ($type == 'edit') {
 
 } else {
     $salt = $db->generate_salt();
-    $pass = $_POST['password']; //$db->encode_password($_POST['password'], $salt);
+    $pass = $db->encode_password($_POST['password'], $salt);
     $id   = $db->insert("
 
 		INSERT INTO `ppSD_staff` (`password`,`salt`" . $query_form['if2'] . ")
 
-		VALUES (UNHEX('" . $db->mysql_cleans($pass) . "'),'" . $db->mysql_cleans($salt) . "'" . $query_form['iv2'] . ")
+		VALUES ('" . $db->mysql_cleans($pass) . "','" . $db->mysql_cleans($salt) . "'" . $query_form['iv2'] . ")
 
 	");
 
