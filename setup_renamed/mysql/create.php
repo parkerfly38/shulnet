@@ -1745,8 +1745,8 @@ $create[] = "CREATE TABLE `ppSD_source_tracking` (
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_staff` (
   `id` mediumint(6) auto_increment,
   `username` varchar(50),
-  `password` varchar(150),
-  `salt` varchar(4),
+  `password` varchar(255),
+  `salt` varchar(255),
   `permission_group` smallint(3),
   `signature` mediumtext,
   `email` varchar(150),

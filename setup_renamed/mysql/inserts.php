@@ -1010,7 +1010,7 @@ $inserts[] = "
 $inserts[] = "
 	INSERT INTO `ppSD_staff` (`id`, `username`, `password`, `salt`, `permission_group`, `signature`, `email`, `first_name`, `last_name`, `address_line_1`, `address_line_2`, `city`, `state`, `zip`, `country`, `phone`, `fax`, `alt_phone`, `office_phone`, `facebook`, `twitter`, `linkedin`, `department`, `occupation`, `locked`, `locked_ip`, `login_attempts`, `status`, `options`, `created`, `last_updated`, `owner`, `static`) VALUES
 	(1, 'system', 'xxx', 'nnn', 1, '', '', 'System Console', '', '', '', '', '', '', '', '', '', '', '', '0', '0', '0', '', '', '1920-01-01 00:01:01', '', 0, 1, '', '$date', '1920-01-01 00:01:01', 0, 1),
-	(2, '" . $_POST['admin']['user'] . "', '$admin_pass_encoded', '$admin_pass_salt', 1, '\n\n--\n$emp_name', '', '$emp_first_name', '$emp_last_name', '', '', '', '', '', '', '', '', '', '', '0', '0', '0', 'Administration', '', '1920-01-01 00:01:01', '', 0, 1, '', '$date', '1920-01-01 00:01:01', 0, 1);
+	(2, '" . $_POST['admin']['user'] . "','$admin_pass_encoded', '$admin_pass_salt', 1, '\n\n--\n$emp_name', '', '$emp_first_name', '$emp_last_name', '', '', '', '', '', '', '', '', '', '', '0', '0', '0', 'Administration', '', '1920-01-01 00:01:01', '', 0, 1, '', '$date', '1920-01-01 00:01:01', 0, 1);
 ";
 
 
