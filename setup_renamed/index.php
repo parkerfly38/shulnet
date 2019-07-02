@@ -151,6 +151,18 @@ require "assets/header.php";
                 }
                 echo "<span class=$class>$msg [<a href=\"http://php.net/manual/en/security.magicquotes.php\" target=\"_blank\">Info</a>]</span>";
                 ?>
+                <li class="indent">
+                    <?php
+                    if (! function_exists('openssl_encrypt')) {
+                        $class = 'bad';
+                        $error = '1';
+                    } else {
+                        $class = 'good';
+                    }
+                    echo "<span class=$class>Extension: openssl [<a href=\"http://php.net/manual/en/book.mcrypt.php\" target=\"_blank\">Info</a>]</span>";
+                    ?>
+                </li>
+
                                 </li>
                 <li class="indent">
                     <?php
