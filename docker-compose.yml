@@ -1,14 +1,17 @@
 version: "3"
 services:
   zenbership:
-    image: castlamp/zenbership:latest
+    build: .
+    image: php:7.0-apache
     ports:
-      - "80:80"
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
     environment:
       MYSQL_DATABASE: zenbership
-      MYSQL_PASSWORD: "change_password"
+      MYSQL_PASSWORD: "NUgget38!@"
       MYSQL_USER: zenbership_user
-      MYSQL_ROOT_PASSWORD: "change_password"
+      MYSQL_ROOT_PASSWORD: "NUgget38!@"
     networks:
       - zenbership-net
     depends_on:
@@ -19,17 +22,17 @@ services:
         limits:
           cpus: "0.2"
           memory: 300M
-        restart_policy:
-          condition: on-failure
+      restart_policy:
+        condition: on-failure
   mysql:
     image: mysql:5.6.30
     ports:
-      - "3306:3306"
+      - "8082:3306"
     environment:
       MYSQL_DATABASE: zenbership
-      MYSQL_PASSWORD: "change_password"
+      MYSQL_PASSWORD: "NUgget38!@"
       MYSQL_USER: zenbership_user
-      MYSQL_ROOT_PASSWORD: "change_password"
+      MYSQL_ROOT_PASSWORD: "NUgget38!@"
     networks:
       - zenbership-net
     command: mysqld --sql_mode=NO_ENGINE_SUBSTITUTION
