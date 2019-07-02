@@ -66,24 +66,20 @@ class encryption
      */
     public function decrypt($data, $key)
     {
-        $key = $this->stretch($key);
         if (mb_strlen($key, '8bit') !== 32) {
             throw new Exception("Needs a 256-bit key!");
         }
-        $iv = $this->getIv($data, $key);
-        if ($iv === false)
-        {
-            return false;
-        }
-        $de = openssl_decrypt($data, $this->method, $key, $this->mode, $iv);
-        if (!de || strpos($de, ':') === false) return false;
-        list ($mac, $data) = explode(':', $de, 2);
-        $data = rtrim($data, "\0");
-        if ($hmac != hash_hmac('sha1', $data, $key))
-        {
-            return false;
-        }
-        return $data;
+        $ivsize = openssl_cipher_iv_length($this->method);
+        $iv = mb_substr($message, 0, $ivsize, '8bit');
+        $ciphertext = mb_substr($data, $ivsize, null, '8bit');
+        
+        return openssl_decrypt(
+            $ciphertext,
+            $this->method,
+            $key,
+            OPENSSL_RAW_DATA,
+            $iv
+        );
     }
 
     /**
@@ -96,16 +92,21 @@ class encryption
      */
     public function encrypt($data, $key)
     {
-        if (mb_strlen($key, '8bit') !== 32)
-        {
-            throw new Exception('Needs a 256-bit key!');
+        if (mb_strlen($key, '8bit') !== 32) {
+            throw new Exception("Needs a 256-bit key!");
         }
-        $data = hash_hmac('sha1', $data, $key) . ':' . $data;
-        $iv = $this->generateIv();
-
-        $enc = openssl_encrypt($data, $this->method, $key, $this->method, $iv);
-
-        return $this->storeIv($enc, $iv, $key);
+        $ivsize = openssl_cipher_iv_length($this->method);
+        $iv = openssl_random_pseudo_bytes($ivsize);
+        
+        $ciphertext = openssl_encrypt(
+            $data,
+            $this->method,
+            $key,
+            OPENSSL_RAW_DATA,
+            $iv
+        );
+        
+        return $iv . $ciphertext;
     }
 
     /**

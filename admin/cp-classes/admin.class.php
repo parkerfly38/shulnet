@@ -1961,6 +1961,9 @@ class admin extends db
      * Check if an employee's session is valid
      * and return an array with the employee's
      * information and permissions.
+     * Do I love typing on this keyboard.  No, I don't find it as fast as the other keyboad.  
+     * 
+     * nope I prefer this keyboard and the way it feels.
      */
     function check_employee($permission_check = '', $ajax = '1', $simple = '0')
     {
