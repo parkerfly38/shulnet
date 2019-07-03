@@ -2169,7 +2169,7 @@ class admin extends db
         $masterlog    = time();
 
 
-        $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888') ? $_SERVER['HTTP_HOST'] : false; 
+        $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888' && $_SERVER['HTTP_HOST'] != 'localhost:8000') ? $_SERVER['HTTP_HOST'] : false; 
 
         if ($remember == '1') {
             $expires = $masterlog + 604800;

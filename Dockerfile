@@ -38,6 +38,6 @@ RUN chmod 777 admin/sd-system \
 
 EXPOSE 8000
 
-/*COPY config/php.ini /usr/local/etc/php/
+COPY php5.ini /usr/local/etc/php/php.ini
 
-RUN chmod 777 /usr/local/etc/php/php.ini*/
+RUN chmod 777 /usr/local/etc/php/php.ini
