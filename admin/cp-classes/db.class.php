@@ -1661,6 +1661,23 @@ class db
         $reg = array();
         $reg['name'] = $theme;
         $reg['url'] = $url_put . "/pp-templates/html/" . $theme;
+        $reg['classes'] = $this->get_theme_classes($theme);
+        return $reg;
+    }
+
+    /**
+     * Get theme classes for templating
+     */
+    function get_theme_classes($theme)
+    {
+        $reg = array();
+        $q1 = $this->run_query("
+                SELECT `id`, `value`
+                FROM `ppSD_themes_classes`
+                WHERE `theme` = '".$this->mysql_clean($theme)."'");
+        while ($row = $q1->fetch()) {
+            $reg[$row['id']] = $row['value'];
+        }
         return $reg;
     }
 
