@@ -102,7 +102,7 @@ class calendar
         $first_day     = mktime(0, 0, 0, $this->month, 1, $this->year);
         $day_of_week   = date('D', $first_day);
 
-        $days_in_month = cal_days_in_month(0, $this->month, $this->year);
+        $days_in_month = date("t", mktime(0,0,0, $this->month, 1,$this->year));
         switch ($day_of_week) {
             case "Sun":
                 $blank = 0;

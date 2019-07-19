@@ -133,7 +133,7 @@ $task_id = $db->start_task('login', 'user', '', $member['data']['id']);
 $encode_password = $user->encode_password($_POST['password'], $member['data']['salt']);
 // Check the credentials
 // Correct!
-if ($use_username == $check_username && $encode_password == $member['data']['password']) {
+if ($use_username == $check_username && password_verify($_POST["password"], $member['data']['password']) == true) {//$encode_password == $member['data']['password']) {
     // Purge safety checks
     $login_temp = $db->delete_login_temp();
     $db->remove_lock($member['data']['id'], 'user');
