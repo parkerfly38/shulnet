@@ -26,6 +26,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite
 
+RUN wget http://xdebug.org/files/xdebug-2.7.2.tgz
+
+RUN tar -xvzf xdebug-2.7.2.tgz
+
+RUN cd xdebug-2.7.2 && phpize && ./configure && make && cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20151012
+
 COPY . /var/www/html
 WORKDIR /var/www/html
 
