@@ -45,10 +45,7 @@ if ($check != '1') {
 
     ?>
 
-
-
-
-    <script src="js/jquery.accent-keyboard.js" />
+    <script src="js/jquery.accent-keyboard.js"></script>
     <script type="text/javascript">
 
         $.ctrl('S', function () {
@@ -57,7 +54,7 @@ if ($check != '1') {
 
     </script>
     <script>
-        $("input[name^='hebrew_']").accentKeyboard({
+        $("input[name*='hebrew']:not([name*='date'])").accentKeyboard({
             layout: 'il_HE',
             active_shift: true,
             active_caps: false,
