@@ -1043,11 +1043,6 @@ class field extends db
             $plain_field .= " maxlength=\"2\"";
         }
 
-        if (strpos($put_id,"hebrew_"))
-        {
-            $plain_field .= " class=\"hebrew\"";
-        }
-
         $plain_field .= " />";
         // Card expiration?
         if ($field_data['id'] == 'billing[card_exp]') {
@@ -1064,6 +1059,7 @@ class field extends db
             $plain_field .= '<span id="cc_block">' . $methods['cc_imgs'] . '</span>';
 
         }
+
         $field .= $plain_field;
         // Date Picker
         if ($field_data['type'] == 'date' || $field_data['special_type'] == 'date' || $field_data['special_type'] == 'datetime') {
@@ -1770,6 +1766,16 @@ class field extends db
         } else if ($field_data['data_type'] == '4') {
             $classes .= ' zen_letnum';
 
+        }
+
+        if (strpos($field_data['id'],"hebrew") && strpos($field_data['id'],"date") == false)
+        {
+            $classes .= " hebrew";
+        }
+
+        if (strpos($field_data['id'], "hebrew") !== false && strpos($field_data['id'], "date") > 0)
+        {
+            $classes .= "is-calendarsPicker";
         }
 
         return $classes;
