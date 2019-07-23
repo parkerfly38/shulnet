@@ -1600,6 +1600,8 @@ class admin extends db
                 $scope = 'calendar';
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
+            } else if ($table == 'ppSD_yahrzeits') {
+                $scope = 'yahrzeits';
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';
             }
