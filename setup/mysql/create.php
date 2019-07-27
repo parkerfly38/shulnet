@@ -2031,3 +2031,12 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_widgets_menus` (
   KEY `widget_id` (`widget_id`),
   KEY `link` (`link`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+$create[] = "CREATE TABLE `zenbership`.`ppSD_yahrzeits` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NULL,
+  `English_Name` VARCHAR(255) NULL,
+  `Hebrew_Name` VARCHAR(255) NULL,
+  `English_Date_of_Death` DATETIME NULL,
+  `Hebrew_Date_of_Death` VARCHAR(255) NULL,
+  `Relationship` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`));";
