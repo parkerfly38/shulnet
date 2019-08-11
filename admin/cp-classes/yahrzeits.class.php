@@ -63,13 +63,61 @@ class yahrzeits extends db
         }
         // All or individual?
         if (!empty($item_id)) {
-            $this->get_item($item_id);
+            $this->get_yahrzeit($item_id);
         } else {
             if (!empty($table)) {
                 $this->add_query = $this->form_query($page, $display, $order, $dir, $criteria);
                 $this->get_yahrzeits();
             }
         }
+    }
+    /**
+     * create new yahrzeit
+     * $param array $data Primary yahrzeit data.
+     *              'yahrzeit' => array('key1'=>'value1','key2'=>'value2')
+     */
+    function create_yahrzeit($data, $id = '')
+    {
+        $q1A = '';
+        $q1B = '';
+        $q1clean = '';
+
+        //$task_id = $this->start_task('create_yahrzeit', 'user', 0, '');
+
+        /*foreach ($data as $name => $value) 
+        {
+            $q1A .= ",`" . $name . "`";
+            $q1B .= ",'" . $this->mysql_clean($value) . "'";
+            $q1clean .= ",'$value'";
+        }*/
+        $admin = new admin;
+        $primary = array('');
+        $ignore = array('edit','id');
+        $query_form = $admin->query_from_fields($data, 'add', $ignore, $primary );
+
+        if (empty($id))
+        {
+            $id = generate_id('random','20');
+        }
+
+        $q1 = $this->insert("
+		    INSERT INTO `ppSD_yahrzeits` (`id`".$query_form['if2'].")
+		    VALUES ('".$id."'".$query_form['iv2'].")
+        ");
+
+        $track_id ='';
+        if (! empty($_COOKIE['zen_source'])) {
+            $source = new source();
+            $source->convert($_COOKIE['zen_source'], $id, 'member');
+            $track_id = $_COOKIE['zen_source'];
+            $this->delete_cookie('zen_source');
+        }
+
+        /*$task = $this->end_task($task_id, '1', '', 'member_create', 0, $indata);*/
+        
+        //$changes = array();
+        return array('error' => '0', 'error_details' => '', 'id' => $id, 'tracking_id' => $track_id);
+
     }
      /**
      * Return the final template
@@ -139,7 +187,7 @@ class yahrzeits extends db
     /**
      * Get a single yahrzeit item
      */
-    function get_item($id)
+    function get_yahrzeit($id)
     {
         if (is_numeric($id)) {
             $his                 = $this->get_array("

@@ -19,10 +19,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author      Castlamp
+ * @author      Castlamp; Brin Kresge
  * @link        http://www.castlamp.com/
  * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
+ * @link		https://www.covebrookcode.com/
+ * @copyright   (c) 2013-2016 Castlamp, 2019 Brian Kresge
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
  * @project     Zenbership Membership Software
  */

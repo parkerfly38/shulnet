@@ -36,7 +36,7 @@ $data = $user->get_user($_POST['id']);
 $criteria = array(
     'user_id' => $data['data']['id']
 );
-
+$id = $_POST['id'];
 $get_crit = htmlentities(serialize($criteria));
 
 
@@ -81,7 +81,8 @@ $history = new yahrzeits('', $criteria, '1', '50', 'English_Date_of_Death', 'DES
 
         <div class="floatleft">
 
-            &nbsp;
+        <input type="button" value="New" class="save"
+                   onclick="return popup('yahrzeit-add','user_id=<?php echo $id; ?>&scope=','1');"/>
 
         </div>
 
