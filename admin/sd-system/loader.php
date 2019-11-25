@@ -131,11 +131,11 @@ if ($mode == 'test') {
     define('ZEN_PERFORM_TESTS','0');
 
     // Setup folder
-    $setup = PP_PATH . '/setup';
+    /*$setup = PP_PATH . '/setup';
     if (file_exists($setup)) {
         echo "Delete the setup folder before continuing.";
         exit;
-    }
+    }*/
 }
 
 
