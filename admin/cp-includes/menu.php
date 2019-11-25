@@ -215,6 +215,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         if ($employee['permissions']['admin'] == '1'|| ! empty($employee['permissions']['scopes']['logins'])) {
         ?>
         <li class="title">Other</li>
+        <li><a href="index.php?l=yahrzeits">Yahrzeits</a></li>
         <li>
             <a href="index.php?l=logins">Login Activity</a>
             <ul>

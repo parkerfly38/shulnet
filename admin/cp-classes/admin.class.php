@@ -18,12 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
+ * @author      Cove Brook Coders
+ * @link        https://www.covebrookcode.com/
+ * @copyright   (c) 2019 Cove Brook Coders
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
+ * @project     ShulNET Membership Software
  */
 class admin extends db
 {
@@ -1601,7 +1600,13 @@ class admin extends db
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
             } else if ($table == 'ppSD_yahrzeits') {
-                $scope = 'yahrzeits';
+                $the_tables = array('ppSD_yahrzeits','ppSD_member_data');
+                $where      = "";
+                $join       = 'ppSD_yahrzeits.user_id';
+                $join1      = 'ppSD_member_data.member_id';
+                $scopetable = 'ppSD_yahrzeits';
+                $select_specific = "ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, ppSD_yahrzeits.Relationship, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name";
+                $scope = 'yahrzeit';
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';
             }
