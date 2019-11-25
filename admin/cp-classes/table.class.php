@@ -585,11 +585,12 @@ class table extends db
                 'Hebrew_Name',
                 'English_Date_of_Death',
                 'Hebrew_Date_of_Death',
-                'Relationship'
+                'Relationship',
+                'Member_Name'
             );
             $this->options = array(
                 'show_type'      => 'popup_large',
-                'scope_override' => 'yahrzeit',
+                'scope_override' => 'yahrzeit-edit',
             );
         }
         else if ($this->scope_table == 'ppSD_products') {

@@ -118,10 +118,11 @@ input:focus {
 
 #penguin {
     position: absolute;
-    bottom: -350px;
+    bottom: -250px;
     left: 50%;
     margin-left: -241px;
-    background: url('../imgs/login/penguin.png') center center no-repeat;
+    background: url('../imgs/login/Synagogue-PNG-Photos.png') center center no-repeat;
+    background-size: contain;
     width: 482px;
     height: 600px;
 }
