@@ -110,7 +110,7 @@ if ($editing == '1') {
 
 
 <h1 class="noLinkColors">
-Adding Yahrzeit
+Editing Yahrzeit
 </h1>
 
 <div class="popupbody">
