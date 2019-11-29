@@ -2,17 +2,17 @@ FROM php:7.0-apache
 
 MAINTAINER Brian Kresge <brian.kresge@covebrookcode.com>
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \        
         cron \
         mcrypt \
         libmcrypt-dev \
         libcurl4-openssl-dev \
         libbz2-dev \
-        libgd-dev \
-        libfreetype6-dev \
-		libjpeg62-turbo-dev \
-		libmcrypt-dev \
+        libwebp-dev \
+        libjpeg62-turbo-dev \
 		libpng-dev \
+        libxpm-dev \
+        libfreetype6-dev \
         vim \
         wget \
         unzip \
@@ -20,9 +20,13 @@ RUN apt-get update && apt-get install -y \
         nano \
     && docker-php-ext-install -j$(nproc) curl \
     && docker-php-ext-install -j$(nproc) mcrypt \
+    && docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
+        --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir \
+        --enable-gd-native-ttf \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-enable gd
 
 RUN a2enmod rewrite
 

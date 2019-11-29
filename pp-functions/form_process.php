@@ -63,7 +63,7 @@ $formdata = $form->formdata;
 // Paypal "loophole" fix.
 // Confirm that the session matches
 // the user's cookie.
-if (! empty($_POST['session'])) {
+/*if (! empty($_POST['session'])) {
     if (empty($_COOKIE[$form->session_id])) {
         header('Location: ' . PP_URL . '/register.php?action=reset&code=L033&p=1');
         exit;
@@ -74,7 +74,7 @@ if (! empty($_POST['session'])) {
             exit;
         }
     }
-}
+}*/
 
 // Some basics...
 // $formdata = $form->get_form($form->session_info['act_id']);
