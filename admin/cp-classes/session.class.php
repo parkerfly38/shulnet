@@ -218,14 +218,16 @@ class session extends db
         } else {
             $expires = $this->get_option('member_session_inactivity');
         }
-
+        if ($expires == "") { $expires = 604800; }
         
         $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888' && $_SERVER['HTTP_HOST'] != 'localhost:8000') ? $_SERVER['HTTP_HOST'] : false; 
         
         //$this->create_cookie('zenses', $id_rand . "-" . md5(sha1($member_id)) . "-" . md5(sha1($session_salt)), $expires, $domain);
-        $this->setcookie('zenses', $id_rand . "-" . md5(sha1($member_id)) . "-" . md5(sha1($session_salt)), $expires, "/", $domain);
+        //$this->setcookie('zenses', $id_rand . "-" . md5(sha1($member_id)) . "-" . md5(sha1($session_salt)), $expires, "/", $domain);
+        setcookie('zenses', $id_rand . "-" . md5(sha1($member_id)) . "-" . md5(sha1($session_salt)), 0, "/", $domain);
         //$this->create_cookie('zenseshold', $id_rand, $expires, $domain);
-        $this->setcookie('zenseshold', $id_rand, $expires, "/", $domain);
+        //$this->setcookie('zenseshold', $id_rand, $expires, "/", $domain);
+        setcookie('zenseshold', $id_rand, 0, "/", $domain);
         $expires = $masterlog + $expires;
         $q1      = $this->insert("
 			INSERT INTO `ppSD_sessions` (
