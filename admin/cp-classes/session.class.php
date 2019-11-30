@@ -333,8 +333,13 @@ class session extends db
         else if (empty($id) && !empty($_COOKIE['zenseshold'])) {
             $id = $_COOKIE['zenseshold'];
         }
-        $this->delete_cookie('zenses');
-        $this->delete_cookie('zenseshold');
+
+        $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888' && $_SERVER['HTTP_HOST'] != 'localhost:8000') ? $_SERVER['HTTP_HOST'] : false; 
+
+        //$this->delete_cookie('zenses');
+        //$this->delete_cookie('zenseshold');
+        setcookie("zenses","", time() - 3600, "/", $domain);
+        setcookie("zenseshold", "", time() - 3600, "/", $domain);
         if (! empty($id)) {
             $q1 = $this->update("
                 UPDATE
