@@ -20,7 +20,7 @@
 // Load the basics
 require "../admin/sd-system/config.php";
 // Check for SSL
-$ssl            = $db->force_ssl('1');
+//$ssl            = $db->force_ssl('1');
 // Check a user's session
 $session = new session;
 $ses     = $session->check_session();
