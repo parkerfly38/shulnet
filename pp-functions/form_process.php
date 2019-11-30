@@ -384,7 +384,8 @@ if (empty($form->salt)) {
                     $db = new db();
                     $value = $db->encode_password(trim($form_data_put['current_password']), $member['data']['salt']);
 
-                    if ($value != $member['data']['password']) {
+                    //if ($value != $member['data']['password']) {
+                    if (!password_verify($form_data_put['current_password'], $member['data']['password'])) {
                         header('Location: ' . PP_URL . '/manage/update_account.php?code=L034');
                         exit;
                     }
