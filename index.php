@@ -2,7 +2,7 @@
 
 /**
  *
- *
+ * ShulNET Synagogue Membership Software
  * Zenbership Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
