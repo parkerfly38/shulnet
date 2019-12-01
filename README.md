@@ -1,17 +1,17 @@
-Zenbership Membership Software
+ShulNET Synagogue Membership Software
 ==============================
 
-Zenbership is open source membership software written in PHP that combines event planning, CRM, a CMS, invoicing,
-subscription management, marketing tools (like e-mail campaigns), a shopping cart, and secure content delivery.
+ShulNET is open source membership software written in PHP that combines event planning, CRM, a CMS, invoicing,
+subscription management, marketing tools (like e-mail campaigns), a shopping cart, and secure content delivery, forked from v115 of Castlamp's 
 
-Author: Castlamp (https://www.castlamp.com/)  
-Online: [http://www.zenbership.com/](http://www.zenbership.com/)
+Author: Cove Brook Coders (https://www.covebrookcode.com/)  
+Online: [https://www.covebrookcode.com/shulnet](https://www.covebrookcode.com/shulnet)
 
 
 License
 =======
 
-Zenbership is licensed under the [GPLv3](http://www.zenbership.com/Legal/License).
+ShulNET is licensed under the [GPLv3](http://www.zenbership.com/Legal/License).
 
 
 Resources
@@ -29,7 +29,7 @@ Resources
 Credits
 =======
 
-Zenbership is created and maintained by Castlamp ([@castlamp](http://twitter.com/castlamp)).  
-Jon Belelieu ([@jbelelieu](http://twitter.com/jbelelieu)) is the lead developer on the project.
+ShulNET is created and maintained by Cove Brook Code ([@parkerfly](http://twitter.com/parkerfly)).
+Brian Kresge is the lead developer on the project, based off work by Jon Belelieu.
 
 This fork is being actively maintained and developed by Brian Kresge ([@parkerfly](http://twitter.com/parkerfly)).
