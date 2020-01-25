@@ -100,11 +100,11 @@
 
             <span><a href="https://www.covebrookcode.com/" target="_blank">Cove Brook Coders</a></span>
 
-            <span><a href="https://www.zenbership.com/Legal/License" target="_blank">License</a></span>
+            <span><a href="https://www.covebrookcode.com/members/License.html" target="_blank">License</a></span>
 
             <span><a href="null.php" onclick="return print();"><img src="imgs/icon-print.png" width="16" height="16" border="1" class="iconLess"/></a></span>
             
-            <span><a href="http://documentation.zenbership.com/" target="_blank"><img src="imgs/icon-documentation.png" width="16" height="16" border="1" class="iconLess"/></a></span>
+            <span><a href="https://documentation.covebrookcode.com/" target="_blank"><img src="imgs/icon-documentation.png" width="16" height="16" border="1" class="iconLess"/></a></span>
 
             <span><a href="#" target="_blank"><img src="imgs/icon-new-window.png" width="16" height="16" border="1" class="iconLess"/></a></span>
         </div>
