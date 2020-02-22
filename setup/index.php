@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ require "assets/header.php";
 
         <h3 style="text-align:center;">Need help installing the program?</h3>
         <p class="help">
-            We offer extensive documentation, including a full video walkthrough, available <a href="http://documentation.zenbership.com/Basics/Installation-and-Setup" target="_blank">here</a>. If you would prefer to have our staff take care of this for you, we are happy to offer affordable <a href="http://zenbership.com/Services/Installations-And-Implementations" target="_blank">installation and full implementation options</a>.
+            We offer extensive documentation, including a full video walkthrough, available <a href="http://documentation.covebrookcode.com/" target="_blank">here</a>. If you would prefer to have our staff take care of this for you, we are happy to offer affordable <a href="http://zenbership.com/Services/Installations-And-Implementations" target="_blank">installation and full implementation options</a>.
         </p>
 
 
@@ -202,7 +202,7 @@ require "assets/header.php";
             <fieldset class="green">
                 <legend>MySQL Database</legend>
 
-                <p class="desc">A MySQL database is required to run the program. This database must be <b>created prior
+                <p class="desc">A MySQL or Maria database is required to run the program. This database must be <b>created prior
                         to running the setup</b>. You can create a database from your website's control panel, or by
                     contacting your web hosting provider.</p>
 
@@ -342,11 +342,11 @@ require "assets/header.php";
             <fieldset class="">
             <legend>Subscriptions</legend>
 
-                <p class="desc">Would you like to subscribe to the Zenbership newsletter to stay up-to-date with new updates, features, and news related to the product? You can unsubscribe at any time.</p>
+                <p class="desc">Would you like to subscribe to the ShulNET newsletter to stay up-to-date with new updates, features, and news related to the product? You can unsubscribe at any time.</p>
 
                 <ul class="form">
                     <li>
-                        <input type="checkbox" name="enroll_newsletter" value="1" checked="checked" /> Yes, keep me informed about all things Zenbership!
+                        <input type="checkbox" name="enroll_newsletter" value="1" checked="checked" /> Yes, keep me informed about all things ShulNET!
                     </li>
                 </ul>
 
