@@ -1,12 +1,5 @@
 <?php
 
-/**
- *
- *
- * @author  j-belelieu
- * @date    3/28/2015
- */
-
 class admin_extensions extends admin {
 
     protected $settings;
