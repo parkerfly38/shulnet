@@ -250,7 +250,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
 if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']['scopes']['menu-shop'])) {
 ?>
 <li>
-    <a href="index.php?l=shop">Shop</a>
+    <a href="index.php?l=shop">Memberships &amp; Dues</a>
     <ul class="sub_menu">
         <?php
         if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['transaction'])) {
@@ -277,7 +277,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['subscription'])) {
         ?>
         <li>
-            <a href="index.php?l=subscriptions">Subscriptions</a>
+            <a href="index.php?l=subscriptions">Subscriptions/Memberships</a>
             <ul>
                 <li><a href="index.php?l=subscriptions&filters[]=<?php echo $exp_date['0']; ?>||next_renew||like||ppSD_subscriptions&filters[]=1||status||e1||ppSD_subscriptions">Renewing Today</a></li>
                 <li><a href="index.php?l=subscriptions&filters[]=<?php echo $day3f; ?>||next_renew||lt||ppSD_subscriptions&filters[]=1||status||e1||ppSD_subscriptions">Renewing within 3 days</a></li>
@@ -334,7 +334,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         }
         if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['categories'])) {
         ?>
-        <li><a href="index.php?l=categories">Shop Categories</a></li>
+        <li><a href="index.php?l=categories">Dues/Shop Categories</a></li>
         <?php
         }
         if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['product'])) {
@@ -544,7 +544,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
 if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']['scopes']['menu-connect'])) {
 ?>
 <li>
-    <a href="index.php?l=connect">Marketing</a>
+    <a href="index.php?l=connect">Communications</a>
     <ul>
         <li class="title">E-Mail</li>
         <?php
