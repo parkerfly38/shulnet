@@ -2,6 +2,8 @@ FROM php:7.0-apache
 
 MAINTAINER Brian Kresge <brian.kresge@covebrookcode.com>
 
+ENV XDEBUG_PORT 9000
+
 RUN apt-get update && apt-get install -y \
         cron \
         mcrypt \
@@ -23,7 +25,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd
+    && docker-php-ext-enable gd \
+    && docker-php-ext-install calendar
 
 RUN a2enmod rewrite
 

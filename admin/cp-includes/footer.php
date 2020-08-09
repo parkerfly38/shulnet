@@ -1,3 +1,7 @@
+<?php //get hebrew date, too
+    $jd = new jewishdates();
+    $hebrewDate = $jd->getHebrewFromGregorian(time());
+?>
 <div id="footer" class="small">
     <div class="holder">
 
@@ -11,7 +15,7 @@
         </span>
 
             <span>
-                <?php echo format_date(current_date(), 'D, M jS, Y @ H:ia'); ?>
+                <?php echo $hebrewDate["Hebrew Date English"]." / ".format_date(current_date(), 'D, M jS, Y @ H:ia'); ?>
             </span>
 
             <?php
