@@ -38,27 +38,18 @@ if (! empty($_POST['id'])) {
     $data->final_content = $yahrzeits->final_content;
     // $data = new history($_POST['id'],'','','','','','ppSD_notes');
     $englishname       = $data->final_content['English_Name'];
-    $final_user = $data->final_content['user_id'];
     $hebrewname   = $data->final_content['Hebrew_Name'];
     $englishdate = $data->final_content['English_Date_of_Death'];
     $hebrewdate      = $data->final_content['Hebrew_Date_of_Death'];
-    $relationship        = $data->final_content['Relationship'];
     
     $cid = $_POST['id'];
 } else {
     $editing = '0';
     $englishdate      = current_date();
-    $final_user  = '';
     $englishname = '';
     $hebrewname   = '';
     $hebrewdate    = '';
-    $relationship = '';
    
-    if (!empty($_POST['user_id'])) {
-        $final_user = $_POST['user_id'];
-    } else {
-        $final_user = '';
-    }
     $cid = generate_id('random', '20');
 }
 if ($error == '1') {

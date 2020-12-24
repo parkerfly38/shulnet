@@ -2008,12 +2008,19 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_widgets_menus` (
   KEY `widget_id` (`widget_id`),
   KEY `link` (`link`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
-$create[] = "CREATE TABLE `zenbership`.`ppSD_yahrzeits` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `user_id` VARCHAR(45) NULL,
-  `English_Name` VARCHAR(255) NULL,
-  `Hebrew_Name` VARCHAR(255) NULL,
-  `English_Date_of_Death` DATETIME NULL,
-  `Hebrew_Date_of_Death` VARCHAR(255) NULL,
-  `Relationship` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`));";
+$create[] = "CREATE TABLE `ppSD_yahrzeits` (
+  `id` varchar(20) NOT NULL,
+  `English_Name` varchar(255) DEFAULT NULL,
+  `Hebrew_Name` varchar(255) DEFAULT NULL,
+  `English_Date_of_Death` datetime DEFAULT NULL,
+  `Hebrew_Date_of_Death` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+  $create[] = "CREATE TABLE `ppSD_yahrzeit_members` (
+    `yahrzeit_id` varchar(20) NOT NULL,
+    `user_id` varchar(20) DEFAULT NULL,
+    `Relationship` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`yahrzeit_id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  ";

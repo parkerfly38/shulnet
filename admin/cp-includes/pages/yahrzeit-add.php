@@ -3,32 +3,15 @@
 $admin = new admin;
 $yahrzeits = new yahrzeits;
 $error = '0';
-if (! empty($_POST['id'])) {
-    $editing             = '1';
-    $data                = new stdClass;
-    $data->final_content = $yahrzeits->get_yahrzeit($_POST['id']);
-    // $data = new history($_POST['id'],'','','','','','ppSD_notes');
-    $englishname       = $data->final_content['English_Name'];
-    $hebrewname   = $data->final_content['Hebrew_Name'];
-    $englishdate = $data->final_content['English_Date_of_Death'];
-    $hebrewdate      = $data->final_content['Hebrew_Date_of_Death'];    
-    $cid = $_POST['id'];
-} else {
-    $editing = '0';
-    $englishdate      = current_date();
-    $final_user  = '';
-    $englishname = '';
-    $hebrewname   = '';
-    $hebrewdate    = '';
-    $relationship = '';
-   
-    if (!empty($_POST['user_id'])) {
-        $final_user = $_POST['user_id'];
-    } else {
-        $final_user = '';
-    }
-    $cid = generate_id('random', '20');
-}
+
+$editing = '0';
+$englishdate      = current_date();
+$englishname = '';
+$hebrewname   = '';
+$hebrewdate    = '';
+
+$cid = generate_id('random', '20');
+
 if ($error == '1') {
     echo "You cannot view this yahrzeit.";
 } else {
@@ -36,61 +19,64 @@ if ($error == '1') {
     <script type="text/javascript">
 
 $.ctrl('S', function () {
-    return json_add('yahrzeit-add', '<?php echo $cid; ?>', '<?php echo $editing; ?>', 'popupform');
+    return json_add('yahrzeit-add', '<?php echo $cid; ?>', '<?php echo $editing; ?>', 'slider_form');
 });
 
 </script>
+<script src="js/jquery.accent-keyboard.js"></script>
+    
+    <script>
+        $("input[name*='Hebrew']:not([name*='Date'])").accentKeyboard({
+            layout: 'il_HE',
+            active_shift: true,
+            active_caps: false,
+            is_hidden: true,
+            open_speed: 300,
+            close_speed: 100,
+            show_on_focus: true,
+            hide_on_blur: true,
+            trigger: undefined,
+            enabled: true
+        });
+        $(document).ready(function() {
+            $(document).on("blur","#English_Date_of_Death", function()
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/cp-includes/widgets/gregtojd.php",
+                    data: "englishDate="+ $(this).val(),
+                    success: function(data){
+                        $("#Hebrew_Date_of_Death").val(data);
+                    }
+                });
+            });
+        });
+    </script>
 
 
-
-<form action="" method="post" id="popupform"
-  onsubmit="return json_add('yahrzeit-add','<?php echo $cid; ?>','<?php echo $editing; ?>','popupform');"
+<form action="" method="post" id="slider_form"
+  onsubmit="return json_add('yahrzeit-add','<?php echo $cid; ?>','<?php echo $editing; ?>','slider_form');"
   enctype="multipart/form-data">
 
 
-<div id="popupsave">
+  <div id="slider_submit">
+        <div class="pad24tb">
+
+            <div id="slider_right">
+
+                <input type="submit" value="Save" class="save"/>
+
+            </div>
+
+            
+            <div class="clear"></div>
+
+        </div>
+    </div>
 
 
-<?php
-
-
-
-if ($editing == '1') {
-    ?>
-
-    <button type="button"
-            onclick="return window.open('<?php echo PP_URL . '/admin/cp-includes/print/note.php?id=' . $cid; ?>','','width=980px,height=600px');">
-        <img src="imgs/icon-print.png" width="16" height="16" border="0" alt="Print" title="Print"/> Print
-    </button>
-
-<?php
-
-}
-
-?>
-
-<input type="submit" value="Save" class="save"/>
-
-<input type="hidden" name="user_id" value="<?php echo $final_user; ?>"/>
-
-
-</div>
-
-
-<h1 class="noLinkColors">
-Adding Yahrzeit
-</h1>
-
-<div class="popupbody">
-
-
-<ul id="theStepList">
-
-<li class="on" onclick="return goToStep('0');">Yahrzeit</li>
-
-
-</ul>
-
+<div id="primary_slider_content">
+    <div class="col70">
 
 <div class="pad24t">
 
@@ -142,7 +128,7 @@ Adding Yahrzeit
 
             <div class="field_entry_less">
 
-                <input type="date" name="English_Date_of_Death" value="<?php if (!empty($data->final_content['English_Date_of_Death'])) {
+                <input type="date" id="English_Date_of_Death" name="English_Date_of_Death" value="<?php if (!empty($data->final_content['English_Date_of_Death'])) {
                     echo $data->final_content['English_Date_of_Death'];
                 } ?>" style="width:100%;"/>
 
@@ -154,13 +140,13 @@ Adding Yahrzeit
             <label class="less">Hebrew Date of Death</label>
 
             <div class="field_entry_less">
-                <input type="text" name="Hebrew_Date_of_Death" value="<?php if (!empty($data->final_content['Hebrew_Date_of_Death'])) {
+                <input type="text" id="Hebrew_Date_of_Death" name="Hebrew_Date_of_Death" value="<?php if (!empty($data->final_content['Hebrew_Date_of_Death'])) {
                     echo $data->final_content['Hebrew_Date_of_Death'];
                 } ?>" style="width:100%;"/>
             </div>
         </div>
         
-        <div class="field">
+        <!--<div class="field">
             <label class="less">Relationship</label>
 
             <div class="field_entry_less">
@@ -168,7 +154,7 @@ Adding Yahrzeit
                     echo $data->final_content['Relationship'];
                 } ?>" style="width:100%;"/>
             </div>
-        </div>
+        </div>-->
     </div>
 
 
@@ -185,6 +171,7 @@ Adding Yahrzeit
 </ul>
 
 </div>
+            </div>
 
 <script src="js/form_rotator.js" type="text/javascript"></script>
 

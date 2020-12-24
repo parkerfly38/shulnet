@@ -1576,12 +1576,13 @@ class admin extends db
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
             } else if ($table == 'ppSD_yahrzeits') {
-                $the_tables = array('ppSD_yahrzeits','ppSD_member_data');
+                $the_tables = array('ppSD_yahrzeits','ppSD_yahrzeit_members','ppSD_member_data');
                 $where      = "";
-                $join       = 'ppSD_yahrzeits.user_id';
-                $join1      = 'ppSD_member_data.member_id';
+                $join       = 'ppSD_yahrzeits.id';
+                $join1      = 'ppSD_yahrzeit_members.yahrzeit_id';
+                $join2      = 'ppSD_member_data.member_id';
                 $scopetable = 'ppSD_yahrzeits';
-                $select_specific = "ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, ppSD_yahrzeits.Relationship, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name";
+                $select_specific = "ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name";
                 $scope = 'yahrzeit';
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';

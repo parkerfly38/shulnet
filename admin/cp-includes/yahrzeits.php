@@ -60,7 +60,11 @@ if ($check != '1') {
                                                                                 id="filter_arrow" width="10" height="10"
                                                                                 alt="Expand" border="0"
                                                                                 class="icon-right"/></a>
-
+                                                                                
+                <span class="div">|</span>
+                <span class="innerLinks">
+                    <a href="null.php" onclick="return load_page('yahrzeit','add');">Create Yahrzeit</a>
+                </span>
                 <?php
                 include PP_PATH . "/admin/cp-includes/user_link_menu.php";
                 ?>

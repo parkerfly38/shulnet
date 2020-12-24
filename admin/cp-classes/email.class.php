@@ -566,7 +566,7 @@ class email extends db
         $headers .= "Zenbership-ID: " . $this->email_id . PHP_EOL;
         // Some anti-spam stuff
         $headers .= "Message-ID: <message-on " . $this->email_id . "@" . $_SERVER['SERVER_NAME'] . ">" . PHP_EOL;
-        $headers .= "X-Mailer: Zenbership Membership Software" . PHP_EOL;
+        $headers .= "X-Mailer: ShulNET Membership Software" . PHP_EOL;
         $headers .= "Organization: " . COMPANY . PHP_EOL;
 
         // Formatting
