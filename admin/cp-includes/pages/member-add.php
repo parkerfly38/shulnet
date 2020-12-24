@@ -72,7 +72,7 @@ if ($check != '1') {
 
     <div id="primary_slider_content">
 
-    <div class="col33">
+    <div class="col50">
         <div class="pad24_fs_l">
 
 
@@ -88,7 +88,7 @@ if ($check != '1') {
         </div>
     </div>
 
-    <div class="col33">
+    <div class="col50">
         <div class="pad24_fs_r">
 
 
