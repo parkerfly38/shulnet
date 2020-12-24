@@ -384,7 +384,7 @@ class connect extends db
     }
 
     /**
-     * Gets "Zenbership-ID:" from email message
+     * Gets "ShulNET-ID:" from email message
      *
      * @param string $body Message body.
      */
@@ -392,7 +392,7 @@ class connect extends db
     {
         $lines = explode("\r\n", $body);
         foreach ($lines as $aline) {
-            if (strpos($aline, 'Zenbership-ID:') !== false) {
+            if (strpos($aline, 'ShulNET-ID:') !== false) {
                 $exp = explode(':', $aline);
                 $zid = trim($exp['1']);
 

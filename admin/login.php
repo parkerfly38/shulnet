@@ -100,7 +100,7 @@ $version = $db->get_option('current_version');
     </div>
     </div>
     <div id="penguin"></div>
-    <p class="links"><a href="http://documentation.zenbership.com/" target="_blank">Documentation</a> &#183; <a
+    <p class="links"><a href="http://documentation.covebrookcode.com/" target="_blank">Documentation</a> &#183; <a
             href="http://www.gnu.org/licenses/gpl-3.0.en.html"
             target="_blank">License</a><br/>v<?php echo $version; ?>
         &nbsp;&nbsp;&#183;&nbsp;&nbsp;&copy; <?php echo date('Y'); ?> <a href="https://www.covebrookcode.com/"
