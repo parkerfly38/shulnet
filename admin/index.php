@@ -1,9 +1,6 @@
 <?php
 /**
- * Zenbership Admin Control Panel
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
+ * Zenbership Admin Control Panel *
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

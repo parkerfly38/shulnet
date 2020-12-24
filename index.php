@@ -3,8 +3,7 @@
 /**
  *
  * ShulNET Synagogue Membership Software
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
+ * derived from Zenbership Membership Software by Castlamp
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

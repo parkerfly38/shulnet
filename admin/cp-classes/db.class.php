@@ -167,7 +167,7 @@ class db
         // This won't work. There is too much built in
         // logic that compares 0000-00-00 dates. Strict
         // mode won't be compatible with this version of
-        // Zenbership without deep changes.
+        // ShulNET without deep changes.
 
         /*
         if ($this->strictMode) {
@@ -422,7 +422,7 @@ class db
      * Check if a Path exists.
      * Also checks if path is writable
      * and if it isn't the base path
-     * or the base Zenbership folder.
+     * or the base ShulNET folder.
      */
     function check_path($path)
     {

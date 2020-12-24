@@ -3774,7 +3774,7 @@ class cart extends db
      *                              always empty, except for some transactions added from the
      *                              admin dashboard.
      * @param bool $skip_subs_invoices  This is only used for database transfers whereby subs
-     *                                  have already been created, such as ppSD2 to Zenbership.
+     *                                  have already been created, such as ppSD2 to ShulNET.
      *                                  In 99.9% of cases, leave this as "0", otherwise subscriptions
      *                                  will not be created, which isn't good.
      */
@@ -4765,7 +4765,7 @@ class cart extends db
     /**
      * Check product cart dependencies
      *
-     * NOT ACTUALLY WORKING OR USED IN ZENBERSHIP
+     * NOT ACTUALLY WORKING OR USED IN ShulNET
      */
     function check_dependencies($product, $qty = '', $simple = '0')
     {

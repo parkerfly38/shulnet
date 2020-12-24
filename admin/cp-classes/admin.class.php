@@ -495,7 +495,7 @@ class admin extends db
             $data .= $days_together;
             $data .= "</select> (MM/DD)";
             //$data .= "Threshold Date: " . $this->datepicker($name . '[threshold]','','0','250','1','','');
-            $data .= "<p class=\"field_desc\"><a href=\"http://documentation.zenbership.com/Dictionary/Threshold-Date\" target=\"_blank\">More Information on Threshold Dates</a></p>";
+            $data .= "<p class=\"field_desc\"><a href=\"http://documentation.covebrookcode.com/Dictionary/Threshold-Date\" target=\"_blank\">More Information on Threshold Dates</a></p>";
             $data .= "</div></div>";
         } else {
             $data .= "<input type=\"text\" name=\"" . $name . "[number]\" value=\"" . $cutup['unit'] . "\" maxlength=\"2\" id=\"$id\" style=\"width:80px;\" class=\"";
@@ -1945,9 +1945,6 @@ class admin extends db
      * Check if an employee's session is valid
      * and return an array with the employee's
      * information and permissions.
-     * Do I love typing on this keyboard.  No, I don't find it as fast as the other keyboad.  
-     * 
-     * nope I prefer this keyboard and the way it feels.
      */
     function check_employee($permission_check = '', $ajax = '1', $simple = '0')
     {

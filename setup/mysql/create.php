@@ -769,6 +769,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_fields` (
   `scope_contact` tinyint(1) DEFAULT '0',
   `scope_rsvp` tinyint(1) DEFAULT '0',
   `scope_account` tinyint(1) DEFAULT '0',
+  `osk_language` varchar(20),
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_fieldsets` (

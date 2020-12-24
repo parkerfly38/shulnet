@@ -1,33 +1,5 @@
 <?php
 
-/**
- * Installation: MySQL Inserts
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp; Brin Kresge
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @link		https://www.covebrookcode.com/
- * @copyright   (c) 2013-2016 Castlamp, 2019 Brian Kresge
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
-
 $date = date('Y-m-d H:i:s');
 
 $inserts   = array();
@@ -417,6 +389,9 @@ $inserts[] = "
 	('driver_license_no', 'Driver''s License Number', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
 	('check_no', 'Check Number', 'text', '', 0, 0, '', 'left', '', 'width:100px;', '', 0, 0, 10, '', 0, 1, 1, 3, 0, 0, 0, 0, 0),
 	('ship_directions', 'Special Directions', 'textarea', '', 0, 0, '', 'left', '', 'width:100%;height:50px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0);
+	('fathers_hebrew_name','Father''s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
+	('mothers_hebrew_name','Mother''s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
+	('hebrew_name','Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
 ";
 
 $inserts[] = "
