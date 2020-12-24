@@ -1,35 +1,5 @@
 <?php
 
-/**
- * 
- * 
- * Zenbership Membership Software (for Synagogues)
- * Copyright (c) 2013-2016 Castlamp, LLC & 2019 Brian Kresge
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or 
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * nut WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  IF not, see <http://www.gnu.org/licenses/>.
- * 
- * @author      Castlamp, Brian Kresge
- * @link        https://www.covebrookcode.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp, 2019 Brian Kresge
- * @project     Zenbership Membership Software for Synagogues 
- * 
- */
-/**
- * Create yahrzeit
- * From admin
- */
 require "../sd-system/config.php";
 $admin = new admin;
 $yahrzeit = new yahrzeits;

@@ -368,6 +368,12 @@ class delete extends admin
                 $this->ownership_check = '1';
                 $this->overrideTask    = 'member_delete';
                 break;
+            case 'ppSD_yahrzeits':
+                $this->task             = 'yahrzeit_delete';
+                $this->function         = 'delete_yahrzeit';
+                $this->static_check     = '0';
+                $this->ownership_check  = '0';
+                break;
             default:
                 $this->check_extension();
         }
@@ -1007,6 +1013,24 @@ class delete extends admin
             UPDATE `ppSD_subscriptions`
             SET `card_id`=''
             WHERE `card_id`='" . $this->mysql_clean($this->id) . "'
+        ");
+        $this->result = '1';
+    }
+
+    /**
+     * Delete a yahrzeit
+     */
+    function delete_yahrzeit()
+    {
+        $q1           = $this->delete("
+            DELETE FROM `ppSD_yahrzeits`
+            WHERE `id`='" . $this->mysql_clean($this->id) . "'
+            LIMIT 1
+        ");
+        $q2           = $this->delete("
+            DELETE FROM `ppSD_yahrzeit_members`
+            WHERE `yahrzeit_id`='" . $this->mysql_clean($this->id) . "'
+            LIMIT 1
         ");
         $this->result = '1';
     }

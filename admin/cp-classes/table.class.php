@@ -584,9 +584,7 @@ class table extends db
                 'English_Name',
                 'Hebrew_Name',
                 'English_Date_of_Death',
-                'Hebrew_Date_of_Death',
-                'Relationship',
-                'Member_Name'
+                'Hebrew_Date_of_Death'
             );
             $this->options = array(
                 'show_type'      => 'popup_large',

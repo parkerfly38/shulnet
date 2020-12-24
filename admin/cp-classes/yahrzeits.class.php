@@ -214,9 +214,10 @@ class yahrzeits extends db
     {
         $historyarr  = array();
         $this->query = "
-			SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, ppSD_yahrzeits.Relationship, concat(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name
+			SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, concat(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name
             FROM `" . $this->mysql_cleans($this->table) . "`
-            INNER Join ppSD_member_data ON ppSD_member_data.member_id = ppSD_yahrzeits.user_id
+            INNER JOIN ppSD_yahrzeit_members ON ppSD_yahrzeits.id = ppSD_yahrzeit_members.user_id
+            INNER Join ppSD_member_data ON ppSD_member_data.member_id = ppSD_yahrzeit_members.user_id
 		";
         $this->query .= " " . $this->where;
         $this->query .= " " . $this->order;
