@@ -388,10 +388,12 @@ $inserts[] = "
 	('driver_license_state', 'Driver''s License State', 'select', 'state', 0, 0, '', 'left', '', 'width:80px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
 	('driver_license_no', 'Driver''s License Number', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
 	('check_no', 'Check Number', 'text', '', 0, 0, '', 'left', '', 'width:100px;', '', 0, 0, 10, '', 0, 1, 1, 3, 0, 0, 0, 0, 0),
-	('ship_directions', 'Special Directions', 'textarea', '', 0, 0, '', 'left', '', 'width:100%;height:50px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0);
-	('fathers_hebrew_name','Father''s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
-	('mothers_hebrew_name','Mother''s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
-	('hebrew_name','Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0);
+	('ship_directions', 'Special Directions', 'textarea', '', 0, 0, '', 'left', '', 'width:100%;height:50px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('fathers_hebrew_name', 'Father''s Hebrew Name', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('mothers_hebrew_name', 'Mother''s Hebrew Name', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('hebrew_name', 'Hebrew Name', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('bnai_mitzvah_date', 'Bnai Mitzvah Date', 'date', 'date', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1, 0, 0),
+	('wedding_anniversary_date', 'Wedding Anniversary Date', 'date', 'date', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1, 0, 0);
 ";
 
 $inserts[] = "
@@ -510,6 +512,12 @@ $inserts[] = "
 
 	(15, 'password', 2, 1, 1, 0, '', ''),
 	(15, 'repeat_pwd', 3, 1, 1, 0, '', ''),
+
+	(18, 'hebrew_name', 0, 1,0,0,'',''),
+	(18, 'fathers_hebrew_name', 0,1,0,0,'',''),
+	(18, 'mothers_hebrew_name', 0,1,0,0,'',''),
+	(18, 'bnai_mitzvah_date',0,1,0,0,'',''),
+	(18, 'wedding_anniversary_date',0,1,0,0,'',''),
 
 	(22, 'password', 2, 0, 1, 0, '', ''),
 	(22, 'repeat_pwd', 3, 0, 1, 0, '', ''),
