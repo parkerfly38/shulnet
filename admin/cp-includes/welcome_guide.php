@@ -32,7 +32,7 @@
             &nbsp;
         </div>
         <div class="floatleft" id="tb_left">
-            <span><b>Thank you for choosing Zenbership!</b></span>
+            <span><b>Thank you for choosing ShulNET!</b></span>
         </div>
         <div class="clear"></div>
     </div>
@@ -45,10 +45,10 @@
         <div id="zenguin"></div>
         <div class="pad24">
 
-            <h1>Thanks for Choosing Zenbership!</h1>
+            <h1>Thanks for Choosing ShulNET!</h1>
 
             <div class="col-2">
-                <p class="pretty">Okay, so here's the deal: Zenbership has a lot of moving parts. It can be a little
+                <p class="pretty">Okay, so here's the deal: ShulNET has many moving parts. It can be a little
                     overwhelming at first, but <b>fear not</b>, the Zenguin is here to help! We've prepared a short video
                  designed to help you better understand the software. Take a look below:</p>
 
