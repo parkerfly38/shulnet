@@ -1,29 +1,5 @@
 <?php
-/**
- *
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Brian Kresge
- * @link        https://www.covebrookcode.com/
- * @copyright   (c) 2013-2016 Castlamp, 2019 Brian Kresge
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
+
 class yahrzeits extends db
 {
     public $final_content;
@@ -92,7 +68,7 @@ class yahrzeits extends db
         }*/
         $admin = new admin;
         $primary = array('');
-        $ignore = array('edit','id');
+        $ignore = array('edit','id','user_id','Relationship');
         $query_form = $admin->query_from_fields($data, 'add', $ignore, $primary );
 
         if (empty($id))
@@ -101,9 +77,12 @@ class yahrzeits extends db
         }
 
         $q1 = $this->insert("
-		    INSERT INTO `ppSD_yahrzeits` (`id`".$query_form['if2'].")
-		    VALUES ('".$id."'".$query_form['iv2'].")
+		    INSERT INTO `ppSD_yahrzeits` (`id`,`English_Name`,`Hebrew_Name`,`English_Date_of_Death`,`Hebrew_Date_of_Death`)
+		    VALUES ('".$id."','".$data["English_Name"]."','".$data["Hebrew_Name"]."','".$data["English_Date_of_Death"]."','".$data["Hebrew_Date_of_Death"]."')
         ");
+
+        $q2 = $this->insert("INSERT INTO ppSD_yahrzeit_members (`yahrzeit_id`,`user_id`,`Relationship`)
+            VALUES ('".$id."','".$data["user_id"]."','".$data["Relationship"]."')");
 
         $track_id ='';
         if (! empty($_COOKIE['zen_source'])) {
@@ -215,8 +194,8 @@ class yahrzeits extends db
         $historyarr  = array();
         $this->query = "
 			SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, concat(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name
-            FROM `" . $this->mysql_cleans($this->table) . "`
-            INNER JOIN ppSD_yahrzeit_members ON ppSD_yahrzeits.id = ppSD_yahrzeit_members.user_id
+            FROM `ppSD_yahrzeits`
+            INNER JOIN ppSD_yahrzeit_members ON ppSD_yahrzeits.id = ppSD_yahrzeit_members.yahrzeit_id
             INNER Join ppSD_member_data ON ppSD_member_data.member_id = ppSD_yahrzeit_members.user_id
 		";
         $this->query .= " " . $this->where;
