@@ -513,11 +513,11 @@ $inserts[] = "
 	(15, 'password', 2, 1, 1, 0, '', ''),
 	(15, 'repeat_pwd', 3, 1, 1, 0, '', ''),
 
-	(18, 'hebrew_name', 0, 1,0,0,'',''),
-	(18, 'fathers_hebrew_name', 0,1,0,0,'',''),
-	(18, 'mothers_hebrew_name', 0,1,0,0,'',''),
-	(18, 'bnai_mitzvah_date',0,1,0,0,'',''),
-	(18, 'wedding_anniversary_date',0,1,0,0,'',''),
+	(18, 'hebrew_name', 1, 0,0,0,'',''),
+	(18, 'fathers_hebrew_name', 2,0,0,0,'',''),
+	(18, 'mothers_hebrew_name', 3,0,0,0,'',''),
+	(18, 'bnai_mitzvah_date',4,0,0,0,'',''),
+	(18, 'wedding_anniversary_date',5,0,0,0,'',''),
 
 	(22, 'password', 2, 0, 1, 0, '', ''),
 	(22, 'repeat_pwd', 3, 0, 1, 0, '', ''),
