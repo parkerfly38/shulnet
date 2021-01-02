@@ -1576,13 +1576,24 @@ class admin extends db
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
             } else if ($table == 'ppSD_yahrzeits') {
-                $the_tables = array('ppSD_yahrzeits','ppSD_yahrzeit_members','ppSD_member_data');
+                /*$the_tables = array('ppSD_yahrzeits','ppSD_yahrzeit_members','ppSD_member_data');
                 $where      = "";
                 $join       = 'ppSD_yahrzeits.id';
                 $join1      = 'ppSD_yahrzeit_members.yahrzeit_id';
                 $join2      = 'ppSD_member_data.member_id';
                 $scopetable = 'ppSD_yahrzeits';
                 $select_specific = "ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name";
+                $scope = 'yahrzeit';*/
+                $force_query = "SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name
+                FROM `ppSD_yahrzeits`
+                LEFT JOIN `ppSD_yahrzeit_members`
+                ON ppSD_yahrzeits.id=ppSD_yahrzeit_members.yahrzeit_id
+                LEFT JOIN `ppSD_member_data`
+                ON ppSD_yahrzeit_members.user_id=ppSD_member_data.member_id
+                
+                
+                ORDER BY ppSD_yahrzeits.English_Date_of_Death DESC
+                LIMIT 0,50";
                 $scope = 'yahrzeit';
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';
