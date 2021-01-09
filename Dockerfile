@@ -1,6 +1,6 @@
 FROM php:7.0-apache
 
-MAINTAINER Brian Kresge <brian.kresge@covebrookcode.com>
+LABEL Maintainer="Brian Kresge <brian.kresge@covebrookcode.com>"
 
 ENV XDEBUG_PORT 9000
 
@@ -24,9 +24,14 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
     && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd \
     && docker-php-ext-install calendar
+
+
+RUN docker-php-ext-configure gd --with-gd --with-webp-dir --with-jpeg-dir \
+    --with-png-dir --with-zlib-dir --with-xpm-dir --with-freetype-dir \
+    --enable-gd-native-ttf
+
+RUN docker-php-ext-install gd
 
 RUN a2enmod rewrite
 

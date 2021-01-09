@@ -59,7 +59,7 @@ $.ctrl('S', function () {
   enctype="multipart/form-data">
 
 
-  <div id="slider_submit">
+  <div id="slider_submit" style="height: 90px;">
         <div class="pad24tb">
 
             <div id="slider_right">

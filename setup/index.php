@@ -166,7 +166,7 @@ require "assets/header.php";
                 <li class="indent">
                     <?php
                     //  && function_exists('gd_info')
-                    if (extension_loaded('gd')) {
+                    if (!extension_loaded('gd')) {
                         $class = 'bad';
                         // $error = '1';
                     } else {
