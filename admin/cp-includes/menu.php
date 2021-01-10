@@ -665,7 +665,7 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
     <ul>
         <!--<li class="title">Extensions</li>-->
 
-        <!--<li><a href="http://www.zenbership.com/Extensions/" target="_blank">Extension Store</a></li>-->
+        <!--<li><a href="http://www.ShulNET.com/Extensions/" target="_blank">Extension Store</a></li>-->
         <!--<li><a href="null.php" onclick="return popup('extension_store','','1');">Extension Store</a></li>
         <li><a href="index.php?l=modules">Modules</a></li>-->
         <li>
@@ -775,6 +775,9 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         }
         ?>
     </ul>
+</li>
+<li>        
+    <a href="index.php?l=cemetery">Cemetery</a>
 </li>
 <li>
     <img src="imgs/icon-quickadd.png" id="quickadd" width="16" height="16" alt="Quick Add" title="Quick Add" class="icon_flat"/>

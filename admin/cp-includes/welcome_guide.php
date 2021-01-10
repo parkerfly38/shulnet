@@ -2,7 +2,7 @@
 /**
  *
  * 
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,12 +49,12 @@
 
             <div class="col-2">
                 <p class="pretty">Okay, so here's the deal: ShulNET has many moving parts. It can be a little
-                    overwhelming at first, but <b>fear not</b>, the Zenguin is here to help! We've prepared a short video
+                    overwhelming at first, but <b>fear not</b>, we're here to help! We've prepared a short video
                  designed to help you better understand the software. Take a look below:</p>
 
                 <iframe src="https://player.vimeo.com/video/159526831" width="700" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
-                <p style="margin-top:24px;" class="pretty">If you still have questions, we're here to help! We provide a number of support and training options, all of which can be found by <a href="https://www.zenbership.com/Services" target="_blank">clicking here</a>.</p>
+                <p style="margin-top:24px;" class="pretty">If you still have questions, we're here to help! We provide a number of support and training options, all of which can be found by <a href="https://www.covebrookcode.com/shulnet" target="_blank">clicking here</a>.</p>
 
                 <p style="margin: 0 0 48px 0;"><button onclick="return json_add('welcome_seen');">Got it! Let's get started &raquo;</button></p>
             </div>

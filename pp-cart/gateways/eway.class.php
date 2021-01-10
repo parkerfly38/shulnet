@@ -4,7 +4,7 @@
 /**
  * eWay Integration
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -229,7 +229,7 @@ class gw_eway extends cart
         $data['managedCustomerID']  = $this->token;
         $data['amount']             = $this->amount;
         $data['invoiceReference']   = $this->use_order_id;
-        $data['invoiceDescription'] = 'Zenbership order';
+        $data['invoiceDescription'] = 'ShulNET order';
         // Basic XML
         $content = $this->basic_data;
         $content .= "

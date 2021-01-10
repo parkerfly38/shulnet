@@ -8,7 +8,7 @@
  * This should be included on the "skeleton"
  * file of all sliders.
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify

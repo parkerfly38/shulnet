@@ -36,7 +36,7 @@ require "assets/header.php";
 
         <h3 style="text-align:center;">Need help installing the program?</h3>
         <p class="help">
-            We offer extensive documentation, including a full video walkthrough, available <a href="http://documentation.covebrookcode.com/" target="_blank">here</a>. If you would prefer to have our staff take care of this for you, we are happy to offer affordable <a href="http://zenbership.com/Services/Installations-And-Implementations" target="_blank">installation and full implementation options</a>.
+            We offer extensive documentation, including a full video walkthrough, available <a href="http://documentation.covebrookcode.com/" target="_blank">here</a>. If you would prefer to have our staff take care of this for you, we are happy to offer affordable <a href="http://ShulNET.com/Services/Installations-And-Implementations" target="_blank">installation and full implementation options</a>.
         </p>
 
 

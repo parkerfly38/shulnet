@@ -4,7 +4,7 @@
  * Processes a form in conjuncture with the
  * $form class.
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify

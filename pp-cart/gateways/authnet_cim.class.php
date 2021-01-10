@@ -3,7 +3,7 @@
 /**
  * Authorize.net CIM Integration
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -218,7 +218,7 @@ class gw_authnet_cim extends cart
             "</merchantAuthentication>" .
             "<profile>" .
             "<merchantCustomerId>" . $useid . "</merchantCustomerId>" .
-            "<description>Zenbership Profile No. $rid</description>" .
+            "<description>ShulNET Profile No. $rid</description>" .
             "<email>" . $this->billing['email'] . "</email>" .
             "</profile>" .
             "</createCustomerProfileRequest>";

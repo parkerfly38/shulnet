@@ -9,7 +9,7 @@
 $plugin = array(
     'id'                => 'mailgun',
     'name'              => 'Mailgun',
-    'description'       => 'Integrates Mailgun with the Zenbership E-Mailing.',
+    'description'       => 'Integrates Mailgun with the ShulNET E-Mailing.',
     'author'            => 'Castlamp',
     'author_url'        => 'https://www.castlamp.com/',
     'author_twitter'    => 'castlamp',
@@ -85,7 +85,7 @@ $options[] = array(
  *          Function: Array of function names to run.
  * when: 1 = before action, 2 = after action
  *
- * Use %path% in the "data" field to let Zenbership
+ * Use %path% in the "data" field to let ShulNET
  * determine the correct path.
  */
 
@@ -140,7 +140,7 @@ $options[] = array(
  *    'path' => '/directory/{username}',
  *    'resolve' => 'myPluginFile.php',
  * This would redirect all requests typed in as
- * http://www.yoursite.com/zenbership_folder/directory/johndoe
+ * http://www.yoursite.com/ShulNET_folder/directory/johndoe
  * to the "myPluginFile.php" file, which needs to be inside the
  * plugin's folder. The {username} component would be part of the
  * request as a GET element.

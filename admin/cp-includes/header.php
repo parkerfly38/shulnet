@@ -14,7 +14,7 @@
     <title><?php echo COMPANY; ?> | <?php echo $employee['username']; ?> | ShulNET Administration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="author" content="Castlamp (http://www.castlamp.com/)"/>
-    <meta name="generator" content="Zenbership Membership Software"/>
+    <meta name="generator" content="ShulNET Membership Software"/>
     <!--Start:CSS-->
     <link type="text/css" rel="stylesheet" media="all" href="css/reset.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="css/panel.css"/>
@@ -202,7 +202,7 @@
 <div id="topdark">
 
 <div id="logo">
-    <a href="<?php echo PP_ADMIN; ?>"><img src="imgs/logo.png" alt="Zenbership Membership Software" /></a>
+    <a href="<?php echo PP_ADMIN; ?>"><img src="imgs/logo.png" alt="ShulNET Membership Software" /></a>
 </div>
 
 <div id="search">

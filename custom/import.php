@@ -16,7 +16,7 @@ TRUNCATE ppSD_member_data;
 ini_set('memory_limit', '2400M');
 ini_set('max_execution_time', '10000');
 
-// Zenbership Environment
+// ShulNET Environment
 require "../admin/sd-system/config.php";
 $note = new notes();
 
@@ -31,7 +31,7 @@ $file				= 'seed_data.csv';
 
 $start_on_line 		= 0; // 40892
 
-// Column name in CSV => Zenbership Name
+// Column name in CSV => ShulNET Name
 $dateFields			= array(
 	'joined' 			=> 'joined', // member
 	'created'			=> 'created', // contact
