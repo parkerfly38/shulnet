@@ -3,7 +3,7 @@
    
 /**
  *
- * Zenbership
+ * ShulNET
  *
  * View an order after it
  * was placed.

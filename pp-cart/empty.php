@@ -2,7 +2,7 @@
 
    
 /**
- * Zenbership
+ * ShulNET
  * Cart ajax functions.
  */
 require "../admin/sd-system/config.php";

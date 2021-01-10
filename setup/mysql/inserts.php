@@ -679,7 +679,7 @@ $inserts[] = "
 $inserts[] = "
 	INSERT INTO `ppSD_options` (`id`, `display`, `value`, `description`, `type`, `width`, `options`, `section`, `maxlength`, `class`) VALUES
 	('sms_from', 'From Line', 'noreply@$domain', 'What address should SMS messages arrive from. This should be an email address.', 'text', 0, '', 'sms', 0, ''),
-	('date_format', 'Date Format', 'm/d/Y', 'What date format would you like to use throughout the program&#63; Uses <a href=\"http://documentation.zenbership.com/Options/Date-Formatting\" target=\"_blank\">PHP Date</a> standards.', 'text', 0, '', 'general', 0, ''),
+	('date_format', 'Date Format', 'm/d/Y', 'What date format would you like to use throughout the program&#63; Uses <a href=\"http://documentation.ShulNET.com/Options/Date-Formatting\" target=\"_blank\">PHP Date</a> standards.', 'text', 0, '', 'general', 0, ''),
 	('phone_format', 'Phone Separator', '.', 'What should separate numbers in a phone number? Only works for 10 digit numbers.', 'text', '50', '', 'general', '1', ''),
 	('time_change', 'Time Adjust', '-1', 'Would you like to adjust your system time&#63;', 'select', 80, '-11|-10|-9|-8|-7|-6|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11', 'general', 0, ''),
 	('current_version', '', '$version', '', 'text', 0, '', 'system', 0, ''),
@@ -809,7 +809,7 @@ $inserts[] = "
 	('new_contact_public', 'Make New Contacts Public&#63;', '1', 'Make new contacts public to employees&#63;', 'radio', 0, '', 'contacts', 0, ''),
 	('contact_assign_type', 'Assignment Type', 'unassigned', 'How would you like to assign new contacts&#63;', 'select', 250, 'random:Random Assignment|next_employee:Next Employee|unassigned:Unassigned', 'contacts', 0, ''),
 	('contact_last_assign', '', '', 'Who was the last contact assigned to&#63;', '', 0, '', 'system', 0, ''),
-	('site_mode',  'Site Mode',  'live',  'Establish the <a href=\"http://documentation.zenbership.com/Integration/Test-Mode\" target=\"_blank\">mode</a> you wish to operate the program under.',  'select',  '', 'live:Live Mode|test:Test Mode',  'general',  '',  ''),
+	('site_mode',  'Site Mode',  'live',  'Establish the <a href=\"http://documentation.ShulNET.com/Integration/Test-Mode\" target=\"_blank\">mode</a> you wish to operate the program under.',  'select',  '', 'live:Live Mode|test:Test Mode',  'general',  '',  ''),
 	('email_queue_last_sent', '', '', '', '', 0, '', 'system', 0, ''),
 	('cron_last_run', '', '', '', '', 0, '', 'system', 0, ''),
 	('db-backup', '', '', '', '', 0, '', 'system', 0, ''),
@@ -1276,8 +1276,8 @@ $inserts[] = "
 ";
 $inserts[] = "
 	INSERT INTO `ppSD_themes` (`id`, `name`, `description`, `author`, `author_url`, `img_1`, `img_2`, `active`, `type`) VALUES
-	('zoid', 'Why Not Zoid?', 'Default theme for Zenbership.', 'Zenbership (Castlamp)', 'http://www.zenbership.com/', '', '', 1, 'html'),
-	('threefiveten', 'Three Five Ten', 'Default e-mail theme in the HTML format.', 'Zenbership (Castlamp)', 'http://www.zenbership.com/', '', '', 1, 'email');
+	('zoid', 'Why Not Zoid?', 'Default theme for ShulNET.', 'ShulNET (Castlamp)', 'http://www.ShulNET.com/', '', '', 1, 'html'),
+	('threefiveten', 'Three Five Ten', 'Default e-mail theme in the HTML format.', 'ShulNET (Castlamp)', 'http://www.ShulNET.com/', '', '', 1, 'email');
 ";
 $inserts[] = "
 	INSERT INTO `ppSD_widgets` (`id`, `name`, `type`, `menu_type`, `content`, `active`, `add_class`) VALUES

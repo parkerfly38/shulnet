@@ -2025,3 +2025,11 @@ $create[] = "CREATE TABLE `ppSD_yahrzeits` (
     PRIMARY KEY (`yahrzeit_id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
   ";
+$create[] = "CREATE TABLE ppSD_cemetery(  
+  id int NOT NULL primary key AUTO_INCREMENT comment 'primary key',
+  CemeteryName varchar(1000),
+  Latitude FLOAT(8,5),
+  Longitude FLOAT(8,5),
+  SatelliteImage varchar(255),
+  StreetAddress varchar(255)
+) default charset utf8 comment '';"

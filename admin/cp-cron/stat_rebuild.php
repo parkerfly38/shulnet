@@ -4,31 +4,7 @@
  * STATISTIC REBUILD
  * This file is part of a cron job (index.php)
  * All necessary classes have been pre-loaded.
- *
- * Purpose: Builds statistics based on what
- * happened yesterday.
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Cove Brook Coders
- * @link        https://www.covebrookcode.com/
- * @copyright   (c) 2019 Cove Brook Coders
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     ShulNET Membership Software
+
  */
 
 // ----------------------------
@@ -170,8 +146,8 @@ if ($stat_opt_in == '1' && (date('j') == 1 || date('j') == 15) && date('G') <= 4
         'currency' => $currency,
     );
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://www.castlamp.com/clients/custom/plugins/anon_zenbership_stats/index.php');
+    /*$ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://www.castlamp.com/clients/custom/plugins/anon_ShulNET_stats/index.php');
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -180,5 +156,5 @@ if ($stat_opt_in == '1' && (date('j') == 1 || date('j') == 15) && date('G') <= 4
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($send));
     $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $result = curl_exec ($ch);
-    curl_close ($ch);
+    curl_close ($ch);*/
 }

@@ -5,7 +5,7 @@
 /**
  *
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
  *
  * @author      Brian Kresge
  * @link        http://www.covebrookcode.com/
- * @link        http://www.zenbership.com/
+ * @link        http://www.ShulNET.com/
  * @copyright   (c) 2013-2016 Castlamp, 2019 Brian Kresge
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software for Synagogues
+ * @project     ShulNET Membership Software for Synagogues
  */
 $admin = new admin;
 $yahrzeits = new yahrzeits;

@@ -4,13 +4,6 @@
  * Alter field names in the top row: special_heading_rules();
  * Alter cell content: get_cell_content();
  * Alter what columns appear in the top row: get_custom_headings();
- *
- * @author          Castlamp
- * @link            http://www.castlamp.com/
- * @link            http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license         http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project         Zenbership Membership Software
  */
 class table extends db
 {
