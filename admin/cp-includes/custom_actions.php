@@ -1,4 +1,4 @@
-<?phpShulNETShulNETShulNET
+<?php 
 
 /**
  * List of custom actions.

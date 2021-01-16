@@ -1,4 +1,4 @@
-<?phpShulNETShulNETShulNET
+<?php 
 
 /**
  * Create a hook

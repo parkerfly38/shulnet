@@ -1,4 +1,4 @@
-<?phpShulNETShulNETShulNET
+<?php 
 
 /**
  * This is the starting point for building criteria.

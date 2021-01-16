@@ -1,4 +1,4 @@
-<?phpShulNETShulNETShulNET
+<?php 
 
 /**
  * This is the same as "extend_next_action.php" but for multiple users are once.

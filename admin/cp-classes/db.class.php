@@ -1147,7 +1147,7 @@ class db
                         $plugin = new plugin($action['plugin']);
                     } catch (Exception $c) {
                         $skipit = true;
-                        $this->add_history('error', '2', '', '4', '', 'Zenguin could not run a hook associated with a plugin: ' . $action['plugin']);
+                        $this->add_history('error', '2', '', '4', '', 'ShulNET could not run a hook associated with a plugin: ' . $action['plugin']);
                     }
                 }
 

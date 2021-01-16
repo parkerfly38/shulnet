@@ -1,4 +1,4 @@
-<?phpShulNETShulNETShulNET
+<?php 
 
 /**
  * Billing report: figures from transactions,
