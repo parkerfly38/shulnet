@@ -101,7 +101,7 @@ class db
         //$moreError = implode('///', $this->binding);
 
         // echo "0+++"; echo $query; pa($errors);
-        $this->add_history('error', '2', '', '4', '', $_SERVER['REMOTE_ADDR'] . '<br />' . $errors['0'] . '<br />' . $errors['1'] . '<br />' . $errors['2']);
+        $this->add_history('error', '2', '', '4', '', $_SERVER['REMOTE_ADDR'] . '<br />' . $errors['0'] . '<br />' . $errors['1'] . '<br />' . $errors['2'].'<br />'.$query);
 
         //pa("Invalid query ($query): " . $errors['0'] . "---" . $errors['1'] . "---" . $errors['2'] . '--->' . $moreError);
         //exit;

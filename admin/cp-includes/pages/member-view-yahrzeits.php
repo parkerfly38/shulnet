@@ -55,7 +55,7 @@ $history = new yahrzeits('', $criteria, '1', '50', 'English_Date_of_Death', 'DES
         <div class="floatleft">
 
         <input type="button" value="New" class="save"
-                   onclick="return popup('yahrzeit-add','user_id=<?php echo $id; ?>&scope=','1');"/>
+                   onclick="return popup('member-yahrzeit-add','user_id=<?php echo $id; ?>&scope=','1');"/>
 
         </div>
 

@@ -94,7 +94,6 @@ if ($editing == '1') {
 
 <input type="submit" value="Save" class="save"/>
 
-<input type="hidden" name="user_id" value="<?php echo $final_user; ?>"/>
 
 
 </div>
@@ -165,7 +164,7 @@ Editing Yahrzeit
 
             <div class="field_entry_less">
 
-                <input type="date" name="English_Date_of_Death" value="<?php if (!empty($data->final_content['English_Date_of_Death'])) {
+                <input type="date" id="English_Date_of_Death" name="English_Date_of_Death" value="<?php if (!empty($data->final_content['English_Date_of_Death'])) {
                     echo date_format(date_create($data->final_content['English_Date_of_Death']), "Y-m-d");
                 } ?>" style="width:100%;"/>
 
@@ -177,13 +176,13 @@ Editing Yahrzeit
             <label class="less">Hebrew Date of Death</label>
 
             <div class="field_entry_less">
-                <input type="text" name="Hebrew_Date_of_Death" value="<?php if (!empty($data->final_content['Hebrew_Date_of_Death'])) {
+                <input type="text" id="Hebrew_Date_of_Death" name="Hebrew_Date_of_Death" value="<?php if (!empty($data->final_content['Hebrew_Date_of_Death'])) {
                     echo $data->final_content['Hebrew_Date_of_Death'];
                 } ?>" style="width:100%;"/>
             </div>
         </div>
         
-        <div class="field">
+        <!--<div class="field">
             <label class="less">Relationship</label>
 
             <div class="field_entry_less">
@@ -191,7 +190,7 @@ Editing Yahrzeit
                     echo $data->final_content['Relationship'];
                 } ?>" style="width:100%;"/>
             </div>
-        </div>
+        </div>-->
     </div>
 
 
@@ -210,7 +209,35 @@ Editing Yahrzeit
 </div>
 
 <script src="js/form_rotator.js" type="text/javascript"></script>
-
+<script src="js/jquery.accent-keyboard.js"></script>
+    
+    <script>
+        $("input[name*='Hebrew']:not([name*='Date'])").accentKeyboard({
+            layout: 'il_HE',
+            active_shift: true,
+            active_caps: false,
+            is_hidden: true,
+            open_speed: 300,
+            close_speed: 100,
+            show_on_focus: true,
+            hide_on_blur: true,
+            trigger: undefined,
+            enabled: true
+        });
+        $(document).ready(function() {
+            $(document).on("blur","#English_Date_of_Death", function()
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/cp-includes/widgets/gregtojd.php",
+                    data: "englishDate="+ $(this).val(),
+                    success: function(data){
+                        $("#Hebrew_Date_of_Death").val(data);
+                    }
+                });
+            });
+        });
+    </script>
 
 </div>
 
