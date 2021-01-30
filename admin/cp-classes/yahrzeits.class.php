@@ -47,6 +47,22 @@ class yahrzeits extends db
             }
         }
     }
+
+    function create_yahrzeit_relationship($data)
+    {
+        $q1 = $this->insert("INSERT INTO ppSD_yahrzeit_members (`yahrzeit_id`,`user_id`,`Relationship`)
+            VALUES ('".$data["yahrzeit"]."','".$data["user_id"]."','".$data["Relationship"]."')");
+
+        $track_id ='';
+        if (! empty($_COOKIE['zen_source'])) {
+            $source = new source();
+            $source->convert($_COOKIE['zen_source'], $id, 'member');
+            $track_id = $_COOKIE['zen_source'];
+            $this->delete_cookie('zen_source');
+        }
+
+        return array('error' => '0', 'error_details' => '', 'id' => $data["yahrzeit"], 'tracking_id' => $track_id);
+    }
     /**
      * create new yahrzeit
      * $param array $data Primary yahrzeit data.
@@ -81,8 +97,8 @@ class yahrzeits extends db
 		    VALUES ('".$id."','".$data["English_Name"]."','".$data["Hebrew_Name"]."','".$data["English_Date_of_Death"]."','".$data["Hebrew_Date_of_Death"]."')
         ");
 
-        $q2 = $this->insert("INSERT INTO ppSD_yahrzeit_members (`yahrzeit_id`,`user_id`,`Relationship`)
-            VALUES ('".$id."','".$data["user_id"]."','".$data["Relationship"]."')");
+        //$q2 = $this->insert("INSERT INTO ppSD_yahrzeit_members (`yahrzeit_id`,`user_id`,`Relationship`)
+        //    VALUES ('".$id."','".$data["user_id"]."','".$data["Relationship"]."')");
 
         $track_id ='';
         if (! empty($_COOKIE['zen_source'])) {
@@ -151,7 +167,8 @@ class yahrzeits extends db
         }
         $low = $display * $page - $display;
         // Pages?
-        $total               = $this->get_array("SELECT COUNT(*) FROM `" . $this->mysql_cleans($this->table) . "` $this->where", '1');
+        //$total               = $this->get_array("SELECT COUNT(*) FROM `" . $this->mysql_cleans($this->table) . "` $this->where", '1');
+        $total               = $this->get_array("SELECT COUNT(*) FROM `" . $this->mysql_cleans($this->table) . "`", '1');
         $this->total_results = $total['0'];
         if ($display > 0) {
             $this->pages         = ceil($this->total_results / $display);
@@ -163,6 +180,14 @@ class yahrzeits extends db
         // Order?
         $this->order = "ORDER BY $order " . $dir;
     }
+    /**
+     * Get yahrzeits by user
+     */
+    function get_yahrzeits_by_user($id)
+    {
+
+    }
+
     /**
      * Get a single yahrzeit item
      */
@@ -193,7 +218,7 @@ class yahrzeits extends db
     {
         $historyarr  = array();
         $this->query = "
-			SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, concat(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name
+			SELECT ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, concat(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name, Relationship
             FROM `ppSD_yahrzeits`
             INNER JOIN ppSD_yahrzeit_members ON ppSD_yahrzeits.id = ppSD_yahrzeit_members.yahrzeit_id
             INNER Join ppSD_member_data ON ppSD_member_data.member_id = ppSD_yahrzeit_members.user_id
@@ -231,8 +256,11 @@ class yahrzeits extends db
             'scope_page_type' => $this->scope['type'], // Only for overrides
         );
         $force_filters = array();
-
-        $table         = $admin->get_table($table, $_GET, $defaults, $force_filters, '', '', $this->query);
+        $force_headings = array("English_Name","Hebrew_Name","English_Date_of_Death","Hebrew_Date_of_Death","Relationship");
+        if ($admin != null)
+        {
+            $table         = $admin->get_table($table, $_GET, $defaults, $force_filters, '', $force_headings, $this->query);
+        }
 
         return $table;
     }
