@@ -2032,4 +2032,4 @@ $create[] = "CREATE TABLE ppSD_cemetery(
   Longitude FLOAT(8,5),
   SatelliteImage varchar(255),
   StreetAddress varchar(255)
-) default charset utf8 comment '';"
+) default charset utf8 comment '';";

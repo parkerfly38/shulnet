@@ -497,6 +497,26 @@ function pa($array)
 
 }
 
+/*
+Generate map from lat and long
+*/
+function generate_map_latlong($lat, $long, $width = '100%', $height = '400')
+{
+    $db = new db;
+    $apikey = $db->get_option('google_maps_api');
+    return '<iframe width="' . $width . '" height="' . $height . '" frameborder="0" scrolling="no" class="map" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed/v1/view?key='.$apikey.'&center='.$lat.','.$long.'&zoom=18&maptype=satellite"></iframe>';
+}
+
+/*
+Generate Map from code
+*/
+function generate_map_code($code, $width = '100%', $height = '400')
+{
+    $db = new db;
+    $apikey = $db->get_option('google_maps_api');
+    return '<iframe width="' . $width . '" height="' . $height . '" frameborder="0" scrolling="no" class="map" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed/v1/place?key='.$apikey.'&q='.$code.'&zoom=21&maptype=satellite"></iframe>';
+}
+
 /**
  * Generate a map
 
