@@ -86,5 +86,5 @@ $history = new yahrzeits('', $criteria, '1', '50', 'English_Date_of_Death', 'DES
 <div id="bottom_delete">
     <div class="pad16"><span class="small gray caps bold" style="margin-right:24px;">With Selected:</span><input
             type="button" value="Delete" class="del"
-            onclick="return compile_delete('<?php echo $table; ?>','slider_checks');"/></div>
+            onclick="return compile_delete('yahrzeit_member','slider_checks','<?php echo $_POST['id']; ?>');"/></div>
 </div>

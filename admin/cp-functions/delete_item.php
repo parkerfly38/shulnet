@@ -4,7 +4,12 @@
 require "../sd-system/config.php";
 $deleted_ids = '';
 if (!empty($_POST['special'])) {
-    $special = '1';
+    if ($_POST["scope"] == 'yahrzeit_member')
+    {
+        $special = $_POST['special'];
+    } else {
+        $special = '1';
+    }
 
 } else {
     $special = '0';
