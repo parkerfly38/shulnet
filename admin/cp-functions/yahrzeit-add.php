@@ -36,11 +36,10 @@ if ($type == 'edit')
     }
 
     //update the yahrzeit
-    $update = $query_form['u1'];
+    $update = ltrim($query_form['u2'],',');
     $q = $db->update("
         UPDATE `ppSD_yahrzeits`
-        SET '.$update.' WHERE `id` = '".$db->mysql_clean($_POST['id'])."'
-        LIMIT 1;
+        SET ".$update." WHERE `id` = '".$_POST['id']."';
     ");
 
     $id = $_POST['id'];
@@ -52,8 +51,9 @@ if ($type == 'edit')
 }
 
 // Re-cache
-$data                  = $yahrzeit->get_yahrzeit($id);
-$content               = $data['data'];
+$yahrzeit->get_yahrzeit($id);
+$data                  = $yahrzeit->final_content;
+$content               = $data;
 $return                = array();
 $table_format          = new table('yahrzeits', 'ppSD_yahrzeits');
 $return                = array();

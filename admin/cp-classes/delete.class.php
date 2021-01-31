@@ -457,6 +457,22 @@ class delete extends admin
                         $this->reason         = 'Item not found.';
                         $this->confirm_delete = '0';
                     }
+                } else if ($this->table == 'ppSD_yahrzeits' && count(explode(",", $this->id)) > 1)
+                {
+                    $arrVals = explode(",",$this->id);
+                    $this->data = $this->get_array("
+                        SELECT * 
+                        FROM `ppSD_yahrzeit_members`
+                        WHERE `yahrzeit_id` = '".$this->mysql_clean($arrVals[0])."'
+                        AND `user_id` = '".$this->mysql_clean($arrVals[1])."'
+                        LIMIT 1
+                    ");
+                    if (empty($this->data["Relationship"]))
+                    {
+                        $this->result         = '0';
+                        $this->reason         = 'Item not found.';
+                        $this->confirm_delete = '0';
+                    }                
                 } else if ($this->table == 'yahrzeit_member') {
                     $this->data = $this->get_array("
                         SELECT *
@@ -1055,16 +1071,27 @@ class delete extends admin
      */
     function delete_yahrzeit()
     {
-        $q1           = $this->delete("
-            DELETE FROM `ppSD_yahrzeits`
-            WHERE `id`='" . $this->mysql_clean($this->id) . "'
-            LIMIT 1
-        ");
-        $q2           = $this->delete("
-            DELETE FROM `ppSD_yahrzeit_members`
-            WHERE `yahrzeit_id`='" . $this->mysql_clean($this->id) . "'
-            LIMIT 1
-        ");
+        if (explode(",",$this->id) > 1)
+        {
+            $arrValues = explode(",",$this->id);
+            $q1           = $this->delete("
+                DELETE FROM `ppSD_yahrzeit_members`
+                WHERE `yahrzeit_id`='" . $this->mysql_clean($arrValues[0]) . "'
+                AND `user_id`='".$this->mysql_clean($arrValues[1])."'
+                LIMIT 1
+            ");
+        } else {
+            $q1           = $this->delete("
+                DELETE FROM `ppSD_yahrzeits`
+                WHERE `id`='" . $this->mysql_clean($this->id) . "'
+                LIMIT 1
+            ");
+            $q2           = $this->delete("
+                DELETE FROM `ppSD_yahrzeit_members`
+                WHERE `yahrzeit_id`='" . $this->mysql_clean($this->id) . "'
+                LIMIT 1
+            ");
+        }
         $this->result = '1';
     }
 

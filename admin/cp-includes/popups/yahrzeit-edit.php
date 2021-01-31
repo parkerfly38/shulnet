@@ -73,25 +73,6 @@ $.ctrl('S', function () {
 
 <div id="popupsave">
 
-
-<?php
-
-
-
-if ($editing == '1') {
-    ?>
-
-    <button type="button"
-            onclick="return window.open('<?php echo PP_URL . '/admin/cp-includes/print/note.php?id=' . $cid; ?>','','width=980px,height=600px');">
-        <img src="imgs/icon-print.png" width="16" height="16" border="0" alt="Print" title="Print"/> Print
-    </button>
-
-<?php
-
-}
-
-?>
-
 <input type="submit" value="Save" class="save"/>
 
 
