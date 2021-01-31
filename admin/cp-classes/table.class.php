@@ -584,7 +584,6 @@ class table extends db
                 'English_Date_of_Death',
                 'Hebrew_Date_of_Death'
             );
-            if ($this->force_h)
             $this->options = array(
                 'show_type'      => 'popup_large',
                 'scope_override' => 'yahrzeit-edit',
