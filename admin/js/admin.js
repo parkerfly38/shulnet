@@ -1690,7 +1690,7 @@ function compile_delete(scope, form, special) {
         form = 'table_checkboxes';
     }
     send_data = $('#' + form).serialize() + '&special=' + special;
-    delete_item(scope, '', send_data)
+    delete_item(scope, '', send_data);
 }
 function delete_item(scope, id, id_list, close_sliderA, close_popup) {
     var agree = confirm("Confirm deletion. This is irreversible!");

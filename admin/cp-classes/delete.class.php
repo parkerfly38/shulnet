@@ -374,6 +374,12 @@ class delete extends admin
                 $this->static_check     = '0';
                 $this->ownership_check  = '0';
                 break;
+            case 'yahrzeit_member':
+                $this->task             = 'yahrzeit_member_delete';
+                $this->function         = 'delete_yahrzeit_member';                
+                $this->static_check     = '0';
+                $this->ownership_check  = '0';
+                break;
             default:
                 $this->check_extension();
         }
@@ -447,6 +453,20 @@ class delete extends admin
                         LIMIT 1
                     ");
                     if (empty($this->data['template'])) {
+                        $this->result         = '0';
+                        $this->reason         = 'Item not found.';
+                        $this->confirm_delete = '0';
+                    }
+                } else if ($this->table == 'yahrzeit_member') {
+                    $this->data = $this->get_array("
+                        SELECT *
+                        FROM `ppSD_yahrzeit_members`
+                        WHERE `yahrzeit_id`='".$this->mysql_clean($this->id)."'
+                        AND `user_id`='".$this->mysql_clean($this->special)."'
+                        LIMIT 1
+                    ");
+                    if(empty($this->data['Relationship']))
+                    {
                         $this->result         = '0';
                         $this->reason         = 'Item not found.';
                         $this->confirm_delete = '0';
@@ -1013,6 +1033,19 @@ class delete extends admin
             UPDATE `ppSD_subscriptions`
             SET `card_id`=''
             WHERE `card_id`='" . $this->mysql_clean($this->id) . "'
+        ");
+        $this->result = '1';
+    }
+
+    /**
+     * delete a yahrzeit relationship
+     */
+    function delete_yahrzeit_member()
+    {   
+        $q2           = $this->delete("
+            DELETE FROM `ppSD_yahrzeit_members`
+            WHERE `yahrzeit_id`='" . $this->mysql_clean($this->id) . "' AND `user_id` = '".$this->mysql_clean($this->special)."'
+            LIMIT 1
         ");
         $this->result = '1';
     }

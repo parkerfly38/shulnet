@@ -12,6 +12,7 @@ class table extends db
         $order, $dir, $display, $page, $options, $current_row_data, $data, $add_qs, $mobile;
     public $headings, $heading_row, $cell;
     protected $plugin_table;
+    protected $specialdelete;
 
     /**
      * @param string $scope Determines what we are rendering. 'events', 'calendars', etc.
@@ -76,6 +77,10 @@ class table extends db
         }
         else if (! empty($custom_headings)) {
             $this->headings = $custom_headings;
+            if ($this->scope_table == 'ppSD_yahrzeits')
+            {
+                $this->specialdelete = 1;
+            }
         }
         else {
 
@@ -579,6 +584,7 @@ class table extends db
                 'English_Date_of_Death',
                 'Hebrew_Date_of_Death'
             );
+            if ($this->force_h)
             $this->options = array(
                 'show_type'      => 'popup_large',
                 'scope_override' => 'yahrzeit-edit',
@@ -1063,8 +1069,12 @@ class table extends db
             else {
                 $putT = $this->scope_table;
             }
-
-            $cell .= "<a href=\"return_null.php\" onclick=\"return delete_item('" . $putT . "','" . $data['id'] . "');\"><img src=\"imgs/icon-delete.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Delete\" title=\"Delete\" /></a>";
+            if (empty($this->specialdelete))
+            {
+                $cell .= "<a href=\"return_null.php\" onclick=\"return delete_item('" . $putT . "','" . $data['id'] . "');\"><img src=\"imgs/icon-delete.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Delete\" title=\"Delete\" /></a>";
+            } else {
+                $cell .= "<a href=\"return_null.php\" onclick=\"return delete_item('" . $putT . "','" . $data['id'] . "," .$data["user_id"] . "');\"><img src=\"imgs/icon-delete.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Delete\" title=\"Delete\" /></a>";         
+            }
             $cell .= "</td>" . "\n";
         }
         if ($skip_tr != '1') {
