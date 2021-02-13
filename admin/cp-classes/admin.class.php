@@ -839,6 +839,8 @@ class admin extends db
             $table = 'ppSD_contact_data';
         } else if ($type == 'rsvp') {
             $table = 'ppSD_event_rsvp_data';
+        } else if ($type == 'yahrzeit') {
+            $table = 'ppSD_yahrzeits';
         } else {
             $table = 'ppSD_account_data';
         }
@@ -858,6 +860,12 @@ class admin extends db
                 $return[] = array('id' => 'status', 'name' => 'Status');
                 $return[] = array('id' => 'last_updated', 'name' => 'Last Updated');
                 $return[] = array('id' => 'member_type', 'name' => 'Member Type');
+            } else if ($type == 'yahrzeit') {
+                $return[] = array('id' => 'id', 'name' => 'Yahrzeit ID');
+                $return[] = array('id' => 'English_Name', 'name' => 'English Name');
+                $return[] = array('id' => 'Hebrew_Name', 'name' => 'Hebrew Name');
+                $return[] = array('id' => 'English_Date_of_Death','name'=>'English Date of Death');
+                $return[] = array('id' => 'Hebrew_Date_of_Death','name'=>'Hebrew Date of Death');
             } else {
                 $return[] = array('id' => 'type', 'name' => 'Type');
                 $return[] = array('id' => 'email', 'name' => 'E-Mail');
@@ -990,6 +998,9 @@ class admin extends db
     {
         if ($type == 'contact') {
             $default_table = 'ppSD_contacts';
+        } else if ($type == 'yahrzeit')
+        {
+            $default_talbe = 'ppSD_yahrzeits';
         } else {
             $default_table = 'ppSD_members';
         }
@@ -1438,6 +1449,10 @@ class admin extends db
             } else if ($criteria->data['type'] == 'contact') {
                 $scope      = 'contact';
                 $scopetable = 'ppSD_contacts';
+            } else if ($criteria->data['type'] == 'yahrzeit')
+            {
+                $scope      = 'yahrzeit';
+                $scopetable = 'ppSD_yahrzeits';
             }
             $query        = $criteria->query;
             $query_totals = $criteria->query_count;
@@ -1456,6 +1471,7 @@ class admin extends db
             $join            = '';
             $join1           = '';
             $join2           = '';
+            $groupby         = '';
             $scopetable      = $table;
             if ($table == 'ppSD_members') {
                 $the_tables = array('ppSD_members', 'ppSD_member_data');
@@ -1575,19 +1591,19 @@ class admin extends db
                 $scope = 'calendar';
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
-            } else if ($table == 'ppSD_yahrzeits' && strlen($force_query) == 0) {
-                /*$the_tables = array('ppSD_yahrzeits','ppSD_yahrzeit_members','ppSD_member_data');
+            } else if ($table == 'ppSD_yahrzeits') { // && strlen($force_query) == 0) {
+                $the_tables = array('ppSD_yahrzeits','view_yahrzeit_data');
                 $where      = "";
                 $join       = 'ppSD_yahrzeits.id';
-                $join1      = 'ppSD_yahrzeit_members.yahrzeit_id';
-                $join2      = 'ppSD_member_data.member_id';
+                $join1      = 'view_yahrzeit_data.yahrzeit_id';
                 $scopetable = 'ppSD_yahrzeits';
-                $select_specific = "ppSD_yahrzeits.id, ppSD_yahrzeits.English_Name, ppSD_yahrzeits.Hebrew_Name, ppSD_yahrzeits.English_Date_of_Death, ppSD_yahrzeits.Hebrew_Date_of_Death, CONCAT(ppSD_member_data.first_name,' ',ppSD_member_data.last_name) AS Member_Name";
-                $scope = 'yahrzeit';*/
-                $force_query = "SELECT *
+                $select_specific = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death, GROUP_CONCAT(DISTINCT COALESCE(MemberData,'') ORDER BY MemberData ASC SEPARATOR ';') as MemberData";
+                $groupby = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death";
+                $scope = 'yahrzeit';
+                /*$force_query = "SELECT *
                 FROM `ppSD_yahrzeits`
                 ORDER BY ppSD_yahrzeits.English_Date_of_Death DESC";
-                $scope = 'yahrzeit';
+                $scope = 'yahrzeit';*/
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';
             }
@@ -1599,6 +1615,10 @@ class admin extends db
                 $where = "WHERE " . $where;
             } else {
                 $where = '';
+            }
+            if (!empty($groupby))
+            {
+                $groupby = " GROUP BY " .$groupby;
             }
             // Get entries
             if (!empty($join)) {
@@ -1666,6 +1686,7 @@ class admin extends db
                         ON $join=$join1
                         $where
                         $add_query
+                        $groupby
                         ORDER BY $order $dir
                         LIMIT $low,$display
                     ";
@@ -1674,6 +1695,7 @@ class admin extends db
                         LEFT JOIN `" . $the_tables['1'] . "`
                         ON $join=$join1
                         $where
+                        $groupby
                         $add_query
                     ";
                 }

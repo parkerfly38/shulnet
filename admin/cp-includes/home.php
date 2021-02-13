@@ -32,6 +32,7 @@ if (empty($home_guide)) {
                 }
                 */
                 ?>
+
             </div>
             <div class="floatleft" id="tb_left">
                 <span><b>Welcome!</b></span>
@@ -156,6 +157,32 @@ if (empty($home_guide)) {
 
 
         <div class="col20c noBorder" style="border-right:1px solid #e1e1e1 !important;background-color:#fff;">
+            <h1 class="homeh1">
+            <?php
+                
+                // get our upcoming yahrzeits
+                $jd = new jewishdates;
+                $currentDate = $jd->getCurrentMonth(time());
+                echo "Yahrzeits for ".$currentDate."";
+                
+            ?>
+            </h1>
+            <?php
+                $q13 = $db->run_query("
+                    SELECT *
+                    FROM `ppSD_yahrzeits`
+                    WHERE `Hebrew_Date_of_Death` LIKE '%".$currentDate."%'
+                ");
+                $ys = $q13->fetchAll();
+                $yi = 0;
+                foreach ($ys as $y)
+                {
+                    $class = ($yi % 2 == 0) ? 'odd' : 'even';
+                    echo "<div class='contactCard ".$class."'>";
+                    echo "<div class='contactCardPad'><h3>".$y["English_Name"]."<br />".$y["Hebrew_Name"]."</h3>";
+                    echo "</div></div>";
+                }
+            ?>
             <h1 class="homeh1">
                 <a href="index.php?l=contacts&filters[]=<?php echo date('Y-m-d', time() - 259200); ?>||created||gt||ppSD_contacts&order=created&dir=asc">Recent Contacts (Action Required)</a>
             </h1>

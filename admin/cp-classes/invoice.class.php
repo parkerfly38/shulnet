@@ -972,7 +972,8 @@ class invoice extends db
 
                 $secure = $this->getSecureLink();
 
-                $payment_link = $secure . '/pp-cart/invoice_pay.php?id=' . $q1['id'] . '&h=' . $q1['hash'];
+                //$payment_link = $secure . '/pp-cart/invoice_pay.php?id=' . $q1['id'] . '&h=' . $q1['hash'];
+                $payment_link = PP_URL . '/pp-cart/invoice_pay.php?id=' . $q1['id'] . '&h=' . $q1['hash'];
                 $return['data']['payment_link'] = $payment_link;
                 //$print_pdf = PP_URL . '/pp-cart/invoice_pdf.php?id=' . $q1['id'] . '&h=' . $q1['hash'];
                 //$return['data']['print_pdf'] = $print_pdf;

@@ -52,5 +52,6 @@ $path           = '/pp-cart/invoice.php?id=' . $data['data']['id'] . '&h=' . $da
 $return_path    = $cart->update_return($cart_session, $path);
 $db->create_cookie('zen_invoice', $id . '|||' . $create_product);
 $secure = $db->getSecureLink();
-header('Location: ' . $secure . '/pp-cart/checkout.php');
+//header('Location: ' . $secure . '/pp-cart/checkout.php');
+header('Location: ' . PP_URL . '/pp-cart/checkout.php');
 exit;

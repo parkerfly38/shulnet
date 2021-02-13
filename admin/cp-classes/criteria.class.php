@@ -149,6 +149,7 @@ class criteria extends db
         // Tables
         $table3      = '';
         $join_match3 = '';
+        $groupby = '';
         if ($this->data['type'] == 'member') {
             $table1     = 'ppSD_members';
             $table2     = 'ppSD_member_data';
@@ -158,6 +159,13 @@ class criteria extends db
             } else {
                 $select     = '*';
             }
+        }
+        else if ($this->data['type'] == 'yahrzeit') {
+            $table1     = 'ppSD_yahrzeits';
+            $table2     = 'view_yahrzeit_data';
+            $join_match = 'yahrzeit_id';
+            $select     = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death, GROUP_CONCAT(DISTINCT COALESCE(MemberData,'') ORDER BY MemberData ASC SEPARATOR ';') as MemberData";
+            $groupby = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death";
         }
         else if ($this->data['type'] == 'contact') {
             $table1     = 'ppSD_contacts';
@@ -252,6 +260,11 @@ class criteria extends db
                 }
 
             }
+            if (!empty($groupby))
+            {
+                $this->query .= " GROUP BY " . $groupby;
+                $this->query_count .= " GROUP BY " . $groupby;
+            }
 
         } else {
 
@@ -269,13 +282,13 @@ class criteria extends db
                     $this->query       = "
                         SELECT $select
                         FROM `" . $table1 . "`
-                        JOIN " . $table2 . "
+                        LEFT JOIN " . $table2 . "
                         ON " . $table1 . ".id=" . $table2 . "." . $join_match . "
                     ";
                     $this->query_count = "
                         SELECT COUNT(*)
                         FROM `" . $table1 . "`
-                        JOIN " . $table2 . "
+                        LEFT JOIN " . $table2 . "
                         ON " . $table1 . ".id=" . $table2 . "." . $join_match . "
                     ";
                 } else {
@@ -318,6 +331,9 @@ class criteria extends db
                 $where .= ' ' . $this->data['inclusive'];
                 if ($this->data['type'] == 'member') {
                     $where .= ' ppSD_members.id';
+                } else if($this->data['type'] == 'yahrzeit')
+                {
+                    $where .= ' ppSD_yahrzeits.id';
                 } else {
                     $where .= ' ppSD_contacts.id';
                 }
@@ -341,6 +357,9 @@ class criteria extends db
                 $where .= ' ' . $this->data['inclusive'];
                 if ($this->data['type'] == 'member') {
                     $where .= ' ppSD_members.id';
+                } else if ($this->data['type'] == 'yahrzeit')
+                {
+                    $where .= ' ppSD_yahrzeits.id';
                 } else {
                     $where .= ' ppSD_contacts.id';
                 }
@@ -360,6 +379,11 @@ class criteria extends db
             }
             $this->query .= " WHERE " . $where;
             $this->query_count .= " WHERE " . $where;
+            if (!empty($groupby))
+            {
+                $this->query .= " GROUP BY " . $groupby;
+                $this->query_count .= " GROUP BY " . $groupby;
+            }
         }
     }
 
@@ -776,7 +800,13 @@ class criteria extends db
             } else {
 
                 if ($use_sim == ' LIKE ') {
-                    $value['value'] = '%' . $value['value'] . '%';
+                    if ($value['value'] == '{current_hebrew_month}')
+                    {
+                        $jc = new jewishdates;
+                        $value['value'] = '%' . $jc->getCurrentMonth(time()) . '%';
+                    } else {
+                        $value['value'] = '%' . $value['value'] . '%';
+                    }
                 }
                 $where = $table . '.' . $name . ' ' . $use_sim . ' ' . "'" . $this->mysql_cleans($value['value']) . "'";
 
@@ -808,7 +838,9 @@ class criteria extends db
 
             } else if ($this->data['type'] == 'account') {
                 $list = '<div id="crit_preview" class="pad24">All accounts.</div>';
-            }
+            } else if ($this->data['type'] == 'yahrzeit') {
+                $list = '<div id="crit_preview" class="pad24">All yahzrzeits.</div>';
+            }            
         } else {
             // Preview list settings
             if ($this->data['type'] == 'member') {

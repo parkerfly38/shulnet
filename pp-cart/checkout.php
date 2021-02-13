@@ -47,7 +47,8 @@ if (empty($cart->id)) {
 
                 $ssl = $db->getSecureLink();
 
-                header('Location: ' . $ssl . '/pp-cart/payment.php');
+                //header('Location: ' . $ssl . '/pp-cart/payment.php');
+                header('Location: ' . PP_URL . '/pp-cart/payment.php');
                 exit;
             }
             // Not an API

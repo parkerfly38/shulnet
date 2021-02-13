@@ -3,6 +3,7 @@
  *
  * 
  * ShulNET Membership Software
+ * Based on Zenbership
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +53,7 @@
                     overwhelming at first, but <b>fear not</b>, we're here to help! We've prepared a short video
                  designed to help you better understand the software. Take a look below:</p>
 
-                <iframe src="https://player.vimeo.com/video/159526831" width="700" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <iframe src="https://player.vimeo.com/video/507087715" width="700" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
                 <p style="margin-top:24px;" class="pretty">If you still have questions, we're here to help! We provide a number of support and training options, all of which can be found by <a href="https://www.covebrookcode.com/shulnet" target="_blank">clicking here</a>.</p>
 
