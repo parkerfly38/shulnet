@@ -22,7 +22,7 @@ if (empty($cart->id)) {
     $ses     = $session->check_session();
 
     // Check for SSL
-    $ssl            = $db->force_ssl('1');
+    //$ssl            = $db->force_ssl('1');
 
     // Zero dollar cart?
     /*

@@ -40,4 +40,14 @@ class jewishdates extends db
         $arrJewish = array("English Date"=>date("F j, Y, g:i a",$date),"Hebrew Date"=>$jewishDate,"Hebrew Date English"=>$jewishDateinEnglish);
         return $arrJewish;
     }
+
+    function getCurrentMonth($date)
+    {
+        $julianDate = gregoriantojd(date("n",$date), date("j", $date), date("Y",$date));
+        $jewishDate = mb_convert_encoding(jdtojewish($julianDate, true), "UTF-8", "ISO-8859-8");
+        $jewishDateNotHebrew= jdtojewish($julianDate);
+        list($jewishMonth, $jewishDay, $jewishYear) = explode('/', $jewishDateNotHebrew);
+        //$jewishDateinEnglish = $jewishDay. " " . $this->getJewishMonthName($jewishMonth, $jewishYear) . " " . $jewishYear;
+        return $this->getJewishMonthName($jewishMonth, $jewishYear);
+    }
 }

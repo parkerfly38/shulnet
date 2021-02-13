@@ -5,6 +5,34 @@ $check = $admin->check_permissions($permission, $employee);
 if ($check != '1') {
     $admin->show_no_permissions();
 } else {
+    
+    if (!empty($_GET['criteria_id'])) {
+        $criteria_id = $_GET['criteria_id'];
+    } else {
+        $criteria_id = '';
+    }
+
+    $useDisplay = '';
+    $useSort = '';
+    $useOrder = '';
+
+    if (! empty($criteria_id)) {
+        $crit = new criteria($criteria_id);
+        if (! empty($crit->data['sort'])) {
+            $useSort = $crit->data['sort'];
+            if ($useSort == 'username') {
+                $useSort = 'ppSD_members.username';
+            } else {
+                $useSort = 'ppSD_member_data.' . $useSort;
+            }
+        }
+        if (! empty($crit->data['sort_order'])) {
+            $useOrder = $crit->data['sort_order'];
+        }
+        if (! empty($crit->data['display_per_page'])) {
+            $useDisplay = $crit->data['display_per_page'];
+        }
+    }
     $ordering = $admin->build_ordering('ppSD_yahrzeits.English_Date_of_Death','DESC','50','1');
     $table = 'ppSD_yahrzeits';
     $defaults = array(
@@ -24,7 +52,7 @@ if ($check != '1') {
         );
 
     }
-    $gen_table = $admin->get_table($table, $_GET, $defaults, $force_filters);
+    $gen_table = $admin->get_table($table, $_GET, $defaults, $force_filters, $criteria_id);
     ?>
 
 
@@ -54,20 +82,13 @@ if ($check != '1') {
 
                 <span><b>Listing Yahrzeits</b></span>
 
-                <span class="div">|</span>
-
-                <a href="null.php" onclick="return show_filters();">Filters<img src="imgs/down-arrow.png"
-                                                                                id="filter_arrow" width="10" height="10"
-                                                                                alt="Expand" border="0"
-                                                                                class="icon-right"/></a>
+                
                                                                                 
                 <span class="div">|</span>
                 <span class="innerLinks">
                     <a href="null.php" onclick="return load_page('yahrzeit','add');">Create Yahrzeit</a>
                 </span>
-                <?php
-                include PP_PATH . "/admin/cp-includes/user_link_menu.php";
-                ?>
+                
 
             </div>
 

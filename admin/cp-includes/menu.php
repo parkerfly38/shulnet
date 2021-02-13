@@ -215,7 +215,6 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         if ($employee['permissions']['admin'] == '1'|| ! empty($employee['permissions']['scopes']['logins'])) {
         ?>
         <li class="title">Other</li>
-        <li><a href="index.php?l=yahrzeits">Yahrzeits</a></li>
         <li>
             <a href="index.php?l=logins">Login Activity</a>
             <ul>
@@ -243,6 +242,26 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         <?php
         }
         ?>
+    </ul>
+</li>
+<?php
+}
+if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['yahrzeit'])) {
+?>
+<li>
+    <a href="index.php?l=yahrzeits">Yahzrzeits</a>
+    <ul class="sub_menu">
+    <?php
+        $list = $admin->saved_criteria_list('yahrzeit', '', true);
+        $upa = false;
+        foreach ($list as $item) {
+            $upa = true;
+            echo '<li><a href="index.php?l=yahrzeits&criteria_id=' . $item['id'] . '">' . $item['name'] . '</a></li>';
+        }
+        if (! $upa) {
+            echo '<li><i>No custom reports.</i></li>';
+        }
+    ?>
     </ul>
 </li>
 <?php

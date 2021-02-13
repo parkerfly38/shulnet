@@ -745,7 +745,7 @@ style=\"\" class=\"" . $class . "\" /><input type=\"hidden\" name=\"$fieldName\"
 
         if (! empty($val)) {
             $field = new field;
-            $get = $field->get_field_name($val);
+            $name = $field->get_field_name($val);
         } else {
             $name = '';
         }
