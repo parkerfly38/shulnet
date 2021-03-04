@@ -46,7 +46,7 @@ if (PP_DEBUG_IP == $_SERVER['REMOTE_ADDR']) {
 /**
  * Auto-loader
  */
-function __autoload($class) {
+/*function __autoload($class) {
     if (substr($class,0,3) == 'gw_') {
         $class = str_replace('gw_','',$class);
         include_once(PP_PATH . "/pp-cart/gateways/" . $class . ".class.php");
@@ -73,7 +73,35 @@ function __autoload($class) {
             }
         }
     }
-}
+}*/
+spl_autoload_register(function($class){
+    if (substr($class,0,3) == 'gw_') {
+        $class = str_replace('gw_','',$class);
+        include_once(PP_PATH . "/pp-cart/gateways/" . $class . ".class.php");
+    }
+    else if (substr($class,0,3) == 'zp_') {
+        // Ignore... plugin model.
+        // Will be loaded by the plugin class.
+    }
+    else {
+        $file = PP_ADMINPATH . "/cp-classes/" . $class . ".class.php";
+        if (file_exists($file)) {
+            include_once(PP_ADMINPATH . "/cp-classes/" . $class . ".class.php");
+        } else {
+            // Interface?
+            $file = PP_ADMINPATH . "/cp-classes/" . $class . ".contract.php";
+            if (file_exists($file)) {
+                include_once(PP_ADMINPATH . "/cp-classes/" . $class . ".contract.php");
+            } else {
+                // Field Rule?
+                $file = PP_ADMINPATH . "/cp-functions/field_rules/" . $class . ".php";
+                if (file_exists($file)) {
+                    include_once(PP_ADMINPATH . "/cp-functions/field_rules/" . $class . ".php");
+                }
+            }
+        }
+    }
+});
 
 /**
  * Connect to the database.

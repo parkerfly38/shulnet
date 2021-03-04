@@ -281,3 +281,4 @@ if (empty($home_guide)) {
 
 <?php
 }
+?>

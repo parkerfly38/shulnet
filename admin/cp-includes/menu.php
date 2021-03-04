@@ -246,6 +246,14 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
 </li>
 <?php
 }
+if ($employee['permissions']['admin'] == '1' ||  !empty($employee['permissions']['scopes']['gabbaim']))
+{
+    ?>
+<li>
+    <a href="index.php?l=gabbaim">Gabbaim</a>
+</li>
+<?php
+}
 if ($employee['permissions']['admin'] == '1' ||  ! empty($employee['permissions']['scopes']['yahrzeit'])) {
 ?>
 <li>
