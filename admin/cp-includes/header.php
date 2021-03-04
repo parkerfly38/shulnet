@@ -13,7 +13,7 @@
 <head>
     <title><?php echo COMPANY; ?> | <?php echo $employee['username']; ?> | ShulNET Administration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="author" content="Castlamp (http://www.castlamp.com/)"/>
+    <meta name="author" content="Cove Brook Code (http://www.covebrookcode.com/)"/>
     <meta name="generator" content="ShulNET Membership Software"/>
     <!--Start:CSS-->
     <link type="text/css" rel="stylesheet" media="all" href="css/reset.css"/>

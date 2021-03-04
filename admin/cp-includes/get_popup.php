@@ -30,7 +30,7 @@ if (! empty($_POST['p'])) {
         $content = $ae->runTask($edit['1'], 'views/popup');
     } else {
         ob_start();
-        include($lit);
+        require($lit);
         $content = ob_get_contents();
         ob_end_clean();
     }

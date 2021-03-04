@@ -2343,7 +2343,7 @@ class db
         $getform   = $this->get_array("
             SELECT *
             FROM `ppSD_forms`
-            WHERE `id`='" . $this->mysql_cleans($id) . "' OR `id`='" . $this->mysql_cleans($check_id1) . "'
+            WHERE `id`='" . $this->mysql_cleans($id) . "' OR `id`='" . $this->mysql_cleans($check_id1) . "' or `act_id` = '" . $this->mysql_cleans($id) . "'
             LIMIT 1
         ");
 

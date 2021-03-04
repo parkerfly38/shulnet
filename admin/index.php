@@ -36,35 +36,37 @@ ob_start();
 $extension = false;
 
 // Redirect to the control panel
+//use a variable instead of $_GET
 if (empty($_GET['l'])) {
     $lit       = PP_ADMINPATH . "/cp-includes/home.php";
-    $_GET['l'] = 'home';
+    $l = 'home';
 }
 
 // If no location was submitted, redirect
 // to the control panel homepage.
 else {
+    $l = $_GET['l'];
     if (! empty($_GET['plugin'])) {
         $lit = PP_PATH . "/custom/plugins/" . htmlentities($_GET['plugin']) . "/admin/views/" . htmlentities($_GET['l']) . ".php";
         if (! file_exists($lit)) {
             $lit       = PP_ADMINPATH . "/cp-includes/error.php";
-            $_GET['l'] = 'error';
+            $l = 'error';
         } else {
-            $ae = new admin_extensions($_GET['l'], $employee, $_GET['plugin']);
-            $content = $ae->runTask($_GET['l']);
+            $ae = new admin_extensions($l, $employee, $_GET['plugin']);
+            $content = $ae->runTask($l);
 
             if (empty($content)) {
                 $lit       = PP_ADMINPATH . "/cp-includes/error.php";
-                $_GET['l'] = 'error';
+                $l = 'error';
             } else {
                 $extension = true;
             }
         }
     } else {
-        $lit = PP_ADMINPATH . "/cp-includes/" . $_GET['l'] . ".php";
+        $lit = PP_ADMINPATH . "/cp-includes/" . $l . ".php";
         if (! file_exists($lit)) {
             $lit       = PP_ADMINPATH . "/cp-includes/error.php";
-            $_GET['l'] = 'error';
+            $l = 'error';
         }
     }
 }
@@ -89,16 +91,16 @@ if (! empty($_GET['print'])) {
 }
 
 // Continue
-$task_id = $db->start_task('load_page', 'staff', $_GET['l'], $employee['username']);
+$task_id = $db->start_task('load_page', 'staff', $l, $employee['username']);
 
 if (! $extension) {
     include($lit);
     $content = ob_get_contents();
 }
 
-ob_end_clean();
+    ob_end_clean();
 
-$task = $db->end_task($task_id, '1');
+    $task = $db->end_task($task_id, '1');
 
 include PP_ADMINPATH . "/cp-includes/" . $header . ".php";
 echo $content;

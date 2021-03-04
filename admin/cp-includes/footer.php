@@ -102,6 +102,8 @@
 
         <div class="floatright" id="footer_right">
 
+            <span>This system donated in honor of Billy and Gloria Miller by Brian and Leah Kresge</span>
+
             <span><a href="https://www.covebrookcode.com/" target="_blank">Cove Brook Coders</a></span>
 
             <span><a href="https://www.covebrookcode.com/members/License.html" target="_blank">License</a></span>
