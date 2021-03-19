@@ -368,7 +368,7 @@ class event extends db
 			FROM `ppSD_events`
 			WHERE
 			    `starts` LIKE '" . $this->mysql_clean($build_date) . "' AND
-			    `calendar_id`='" . $this->mysql_clean($this->calendar_id) . "' AND `status`='1'
+			    `calendar_id`='" . $this->mysql_clean($this->calendar_id) . "' AND ``='1'
 			ORDER BY `starts` DESC
 		");
         while ($row = $STH->fetch()) {
@@ -428,7 +428,7 @@ class event extends db
 			WHERE
                 `starts` LIKE '" . $this->mysql_cleans($build_date) . "%' AND
                 `calendar_id`='" . $this->mysql_cleans($this->calendar_id) . "' AND
-                `status`='1'
+                ``='1'
 			ORDER BY `starts` DESC
 		");
         while ($row = $STH->fetch()) {
@@ -588,10 +588,10 @@ class event extends db
                 else {
                     $return['data']['reg_closed'] = '0';
                 }
-                // Show status
-                $status = $this->get_event_status($return['data']);
-                $return['data']['status_code'] = $status['code'];
-                $return['data']['status_show'] = $status['status'];
+                // Show 
+                $ = $this->get_event_($return['data']);
+                $return['data']['_code'] = $['code'];
+                $return['data']['_show'] = $[''];
                 // Format address
                 $format_address = format_address($q1['address_line_1'], $q1['address_line_2'], $q1['city'], $q1['state'], $q1['zip'], $q1['country']);
                 $return['data']['formatted_address'] = $format_address;
@@ -694,10 +694,10 @@ class event extends db
     }
 
     /**
-     * Get the status of an event
+     * Get the  of an event
      * @param array $data $this->get_event['data'] array.
      */
-    function get_event_status($data)
+    function get_event_($data)
     {
         if ($data['close_registration'] == '1920-01-01 00:01:01') {
             $data['close_registration'] = $data['starts'];
@@ -707,19 +707,19 @@ class event extends db
             if (current_date() <= $data['start_registrations']) {
                 return array(
                     'code' => '6',
-                    'status' => 'Registration Has Not Begun'
+                    '' => 'Registration Has Not Begun'
                 );
             }
             else if (current_date() < $data['early_bird_end']) {
                 return array(
                     'code' => '1',
-                    'status' => 'Early Bird Registration Period'
+                    '' => 'Early Bird Registration Period'
                 );
             }
             else {
                 return array(
                     'code' => '2',
-                    'status' => 'Registration Period'
+                    '' => 'Registration Period'
                 );
             }
         } else {
@@ -727,25 +727,25 @@ class event extends db
                 if (current_date() < $data['starts']) {
                     return array(
                         'code' => '3',
-                        'status' => 'Pre-Event Stage'
+                        '' => 'Pre-Event Stage'
                     );
                 } else {
                     return array(
                         'code' => '7',
-                        'status' => 'Registration is Closed'
+                        '' => 'Registration is Closed'
                     );
                 }
             }
             else if (current_date() >= $data['starts'] && current_date() < $data['ends']) {
                 return array(
                     'code' => '4',
-                    'status' => 'Event is under way'
+                    '' => 'Event is under way'
                 );
 
             } else {
                 return array(
                     'code' => '5',
-                    'status' => 'Event is over'
+                    '' => 'Event is over'
                 );
             }
 
@@ -998,9 +998,9 @@ class event extends db
     /**
      * Transfer an RSVP form to
      * an actual RSVP!
-     * @param string $fstatus 1 = paid, 2 = pending payment
+     * @param string $f 1 = paid, 2 = pending payment
      */
-    function complete_rsvp($form_session_id, $fstatus = '1')
+    function complete_rsvp($form_session_id, $f = '1')
     {
 
         // Get form session
@@ -1018,12 +1018,12 @@ class event extends db
         */
         // Main RSVP
         $registrant = unserialize($formses->{'s2'});
-        $make_rsvp = $this->create_rsvp($formses->act_id, $registrant, $formses->member_id, $formses->order_id, '0', '', $fstatus);
+        $make_rsvp = $this->create_rsvp($formses->act_id, $registrant, $formses->member_id, $formses->order_id, '0', '', $f);
         // Guests
         if (!empty($formses->s4)) {
             $guests = unserialize($formses->s4);
             foreach ($guests as $data) {
-                $guest_rsvp = $this->create_rsvp($formses->act_id, $data, $formses->member_id, $formses->order_id, '1', $make_rsvp, $fstatus);
+                $guest_rsvp = $this->create_rsvp($formses->act_id, $data, $formses->member_id, $formses->order_id, '1', $make_rsvp, $f);
 
             }
 
@@ -1036,14 +1036,14 @@ class event extends db
             $added_guests = $get['guests'];
             while ($added_guests > 0) {
                 $data = array('email' => '');
-                $guest_rsvp = $this->create_rsvp($formses->act_id, $data, $formses->member_id, $formses->order_id, '1', $make_rsvp, $fstatus);
+                $guest_rsvp = $this->create_rsvp($formses->act_id, $data, $formses->member_id, $formses->order_id, '1', $make_rsvp, $f);
                 $added_guests--;
 
             }
 
         }
         // Update Invoice, if any
-        if ($fstatus == '2') {
+        if ($f == '2') {
             $invoice = new invoice;
             $indat = $invoice->find_by_orderid($formses->order_id);
             if ($indat['error'] != '1') {
@@ -1100,7 +1100,7 @@ class event extends db
             if (!empty($order_id)) {
                 $cart = new cart;
                 $order = $cart->get_order($order_id);
-                if ($order['data']['status'] == '2') {
+                if ($order['data'][''] == '2') {
                     $paid = '2';
 
                 } else {
@@ -1132,7 +1132,7 @@ class event extends db
             $history = $this->add_history('event_rsvp', '2', $member_id, '', $format_id, '');
         }
         // MySQL
-        $insert = '`id`,`date`,`event_id`,`user_id`,`type`,`status`,`primary_rsvp`,`qrcode_key`,`ip`,`order_id`';
+        $insert = '`id`,`date`,`event_id`,`user_id`,`type`,``,`primary_rsvp`,`qrcode_key`,`ip`,`order_id`';
         $values = "'" . $this->mysql_cleans($format_id) . "','" . current_date() . "','" . $this->mysql_cleans($event_id) . "','" . $this->mysql_cleans($member_id) . "','$primary','$paid','" . $this->mysql_cleans($guest_main) . "','" . $this->mysql_cleans($qrcode_key) . "','" . $this->mysql_cleans(get_ip()) . "','" . $this->mysql_cleans($order_id) . "'";
         $insert1 = "`rsvp_id`";
         $values1 = "'" . $this->mysql_cleans($format_id) . "'";
@@ -1414,26 +1414,26 @@ class event extends db
                 }
                 $q1['guest_list'] = array();
             }
-            if ($q1['status'] == '1') {
+            if ($q1[''] == '1') {
                 $q1['link'] = PP_URL . '/event_ticket.php?id=' . $q1['id'] . '&s=' . $q1['qrcode_key'];
                 if ($q1['arrived'] == '1') {
                     $q1['show_arrived'] = 'Arrived';
                     $q1['formatted_arrived_date'] = format_date($q1['arrived_date']);
-                    $q1['show_status'] = 'Arrived';
+                    $q1['show_'] = 'Arrived';
                 } else {
                     $q1['show_arrived'] = 'Has Not Arrived';
                     $q1['formatted_arrived_date'] = '';
-                    $q1['show_status'] = 'Confirmed';
+                    $q1['show_'] = 'Confirmed';
                 }
 
             } else {
                 $invoice = new invoice();
                 $iId = $invoice->find_by_rsvp($q1['id']);
                 if ($iId['error'] != '1') {
-                    $q1['show_status'] = '<a href="' . $iId['data']['link'] . '">Payment Pending</a>';
+                    $q1['show_'] = '<a href="' . $iId['data']['link'] . '">Payment Pending</a>';
 
                 } else {
-                    $q1['show_status'] = 'Payment Pending';
+                    $q1['show_'] = 'Payment Pending';
 
                 }
                 $q1['show_arrived'] = 'Has Not Arrived';
@@ -1507,7 +1507,7 @@ class event extends db
                 $message = 'Confirmed re-entry at ' . current_date();
                 $error = 1;
             } else {
-                /*if ($get_rsvp['status'] != '1' && $get_rsvp['status'] != '3') {
+                /*if ($get_rsvp[''] != '1' && $get_rsvp[''] != '3') {
                     $message = 'Ticket is pending payment.';
                     $error = 1;
                 } else {*/
@@ -1555,7 +1555,7 @@ class event extends db
         $host = gethostbyaddr(get_ip());
         $q1 = $this->get_array("
 			SELECT `employee_id` FROM `ppSD_qr_devices`
-			WHERE `status`='1' AND `host`='" . $this->mysql_clean($host) . "' AND `ip`='" . $this->mysql_clean(get_ip()) . "'
+			WHERE ``='1' AND `host`='" . $this->mysql_clean($host) . "' AND `ip`='" . $this->mysql_clean(get_ip()) . "'
 		");
         if (!empty($q1['employee_id'])) {
             return $q1['employee_id'];
@@ -2260,7 +2260,7 @@ class event extends db
     function edit_rsvp($rsvp_id, $data)
     {
 
-        $primary = array('event_id', 'user_id', 'email', 'type', 'primary_rsvp', 'date', 'order_id', 'status', 'arrived', 'arrived_date', 'checked_in_by');
+        $primary = array('event_id', 'user_id', 'email', 'type', 'primary_rsvp', 'date', 'order_id', '', 'arrived', 'arrived_date', 'checked_in_by');
         $ignore = array('id', 'edit');
         // Scope fields
         $final_data = array();
@@ -2385,7 +2385,7 @@ class event extends db
         $special = array(
             'id' => $new_id,
             'owner' => $employee['id'],
-            'status' => '0',
+            '' => '0',
             'created' => current_date(),
             'name' => $event_name . ' (copy)',
         );
@@ -2443,10 +2443,10 @@ class event extends db
     {
 
         if ($fail == '1') {
-            $status = '0';
+            $ = '0';
 
         } else {
-            $status = '1';
+            $ = '1';
 
         }
         $q1 = $this->insert("
@@ -2461,9 +2461,9 @@ class event extends db
 
               `date`,
 
-              `status`,
+              ``,
 
-              `status_msg`
+              `_msg`
 
             )
 
@@ -2477,7 +2477,7 @@ class event extends db
 
               '" . current_date() . "',
 
-              '" . $this->mysql_clean($status) . "',
+              '" . $this->mysql_clean($) . "',
 
               '" . $this->mysql_clean($fail_reason) . "'
 
