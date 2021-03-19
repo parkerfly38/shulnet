@@ -68,7 +68,19 @@ if ($check != '1') {
                     foreach($arrLeyning as $leyning)
                     {
                         echo "<tr><td>".$leyning["honor"]."</td>";
-                        echo "<td><input type='text' id='honoree".$leyning["id"]."' value='".$leyning["honoree"]."' /></td>";
+                        ?>
+                            <td><input type="text" id="master_userf" name="master_user_dud" value="<?php echo $leyning['honoree']; ?>"
+                                       onkeyup="return autocom(this.id,'id','username','ppSD_members','username,email','username');"
+                                       value="" style="width:250px;"/><a href="null.php"
+                                                                         onclick="return get_list('member','honoreeid','master_userf');"><img
+                                        src="imgs/icon-list.png" width="16" height="16" border="0"
+                                        alt="Select from list" title="Select from list" class="icon-right"/></a>
+
+                                <input type="hidden" name="honoreeid" id="honoreeid" value="<?php echo $leyning['honoree']; ?>"/>
+                                <input type="hidden" name="leyning_id" id="leyning_id" value="<?php echo $leyning["id"]; ?>" />
+                            </td>
+                                
+                        <?php
                         echo "<td><input type='button' id='save' class='saveButton' value='Save' /></td></tr>";
                     }
                     echo "</tbody>";
@@ -78,5 +90,23 @@ if ($check != '1') {
     </div>
 </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $(".saveButton").on("click",function()
+        {
+            id = $(this).parent().parent().find("#leyning_id").val();
+            honoree = $(this).parent().parent().find("#master_userf").val();
+            $.ajax({
+                url: "../admin/cp-includes/save_aliyot.php",
+                type: "POST",
+                data: "id="+id+"&honoree="+honoree
+            }).error(function() {
+                alert("There was a problem saving this aliyah.");
+            }).done(function(){
 
+            });
+        });
+    });
+</script>
 <?php } ?>

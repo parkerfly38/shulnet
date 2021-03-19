@@ -251,6 +251,10 @@ if ($employee['permissions']['admin'] == '1' ||  !empty($employee['permissions']
     ?>
 <li>
     <a href="index.php?l=gabbaim">Gabbaim</a>
+    <ul class="sub_menu">
+        <li><a href="index.php?l=aliyot">Arrange Aliyot</a></li>
+        <li><a href="index.php?l=updateluach">Update Parashot and Holidays</li>
+    </ul>
 </li>
 <?php
 }
@@ -803,9 +807,9 @@ if ($employee['permissions']['admin'] == '1' || ! empty($employee['permissions']
         ?>
     </ul>
 </li>
-<li>        
+<!--<li>        
     <a href="index.php?l=cemetery">Cemetery</a>
-</li>
+</li>-->
 <li>
     <img src="imgs/icon-quickadd.png" id="quickadd" width="16" height="16" alt="Quick Add" title="Quick Add" class="icon_flat"/>
     <ul>
