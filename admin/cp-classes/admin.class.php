@@ -1690,14 +1690,20 @@ class admin extends db
                         ORDER BY $order $dir
                         LIMIT $low,$display
                     ";
-                    $query_totals = "
-                        SELECT COUNT(*) FROM `" . $the_tables['0'] . "`
-                        LEFT JOIN `" . $the_tables['1'] . "`
-                        ON $join=$join1
-                        $where
-                        $groupby
-                        $add_query
-                    ";
+                    if ($table == "ppSD_yahrzeits")
+                    {
+                        $query_totals = "SELECT COUNT(*) FROM `ppSD_yahrzeits`
+                        $where";
+                    } else {
+                        $query_totals = "
+                            SELECT COUNT(*) FROM `" . $the_tables['0'] . "`
+                            LEFT JOIN `" . $the_tables['1'] . "`
+                            ON $join=$join1
+                            $where
+                            $groupby
+                            $add_query
+                        ";
+                    }
                 }
             } else {
                 $query        = "
