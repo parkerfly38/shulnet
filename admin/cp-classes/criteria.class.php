@@ -285,12 +285,19 @@ class criteria extends db
                         LEFT JOIN " . $table2 . "
                         ON " . $table1 . ".id=" . $table2 . "." . $join_match . "
                     ";
-                    $this->query_count = "
-                        SELECT COUNT(*)
-                        FROM `" . $table1 . "`
-                        LEFT JOIN " . $table2 . "
-                        ON " . $table1 . ".id=" . $table2 . "." . $join_match . "
-                    ";
+                    if ($table1 == "ppSD_yahrzeits")
+                    {
+                        $this->query_count = "
+                            SELECT COUNT(*) FROM `ppSD_yahrzeits`
+                        ";
+                    } else {
+                        $this->query_count = "
+                            SELECT COUNT(*)
+                            FROM `" . $table1 . "`
+                            LEFT JOIN " . $table2 . "
+                            ON " . $table1 . ".id=" . $table2 . "." . $join_match . "
+                        ";
+                    }
                 } else {
                     $this->query       = "
                         SELECT $select
@@ -382,7 +389,12 @@ class criteria extends db
             if (!empty($groupby))
             {
                 $this->query .= " GROUP BY " . $groupby;
-                $this->query_count .= " GROUP BY " . $groupby;
+                if ($this->data["type"] == 'yahrzeit')
+                {
+                    $this->query_count .= "";
+                } else {
+                    $this->query_count .= " GROUP BY " . $groupby;
+                }
             }
         }
     }
