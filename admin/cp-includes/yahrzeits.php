@@ -354,7 +354,12 @@ if ($check != '1') {
         </form>
 
     </div>
-
+            <script type="text/javascript">
+            function print_yahrzeitletters(data)
+            {
+                alert(data);
+            }
+            </script>
 
 
 <?php

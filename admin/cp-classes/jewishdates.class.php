@@ -18,7 +18,7 @@ class jewishdates extends db
                                       "Shevat", "Adar I", "Adar II", "Nisan",
                                       "Iyar", "Sivan", "Tammuz", "Av", "Elul");
         $jewishMonthNamesNonLeap = array("Tishri", "Heshvan", "Kislev", "Tevet",
-                                         "Shevat", "", "Adar", "Nisan",
+                                         "Shevat", "Adar", "Adar", "Nisan",
                                          "Iyar", "Sivan", "Tammuz", "Av", "Elul");
         if ($this->isLeapYear($jewishYear))
         {
@@ -27,6 +27,100 @@ class jewishdates extends db
         else
         {
           return $jewishMonthNamesNonLeap[$jewishMonth-1];
+        }
+    }
+
+    function getJewishMonthNumber($jewishMonth, $jewishYear)
+    {
+        if ($this->isLeapYear($jewishYear))
+        {
+          switch ($jewishMonth)
+          {
+            case "Tishri":
+                return 1;
+                break;
+            case "Heshvan":
+                return 2;
+                break;
+            case "Kislev":
+                return 3;
+                break;
+            case "Tevet":
+                return 4;
+                break;
+            case "Shevat":
+                return 5;
+                break;
+            case "Adar I":
+                return 6;
+                break;
+            case "Adar II":
+                return 7;
+                break;
+            case "Nisan":
+                return 8;
+                break;
+            case "Iyar":
+                return 9;
+                break;
+            case "Sivan":
+                return 10;
+                break;
+            case "Tammuz":
+                return 11;
+                break;
+            case "Av":
+                return 12;
+                break;
+            case "Elul":
+                return 13;
+                break;        
+          }
+        }
+        else
+        {
+            switch ($jewishMonth)
+            {
+              case "Tishri":
+                  return 1;
+                  break;
+              case "Heshvan":
+                  return 2;
+                  break;
+              case "Kislev":
+                  return 3;
+                  break;
+              case "Tevet":
+                  return 4;
+                  break;
+              case "Shevat":
+                  return 5;
+                  break;
+              case "Adar":
+                  return 6;
+                  break;
+              case "Adar":
+                  return 7;
+                  break;
+              case "Nisan":
+                  return 8;
+                  break;
+              case "Iyar":
+                  return 9;
+                  break;
+              case "Sivan":
+                  return 10;
+                  break;
+              case "Tammuz":
+                  return 11;
+                  break;
+              case "Av":
+                  return 12;
+                  break;
+              case "Elul":
+                  return 13;
+                  break;        
+            }
         }
     }
 
@@ -49,5 +143,15 @@ class jewishdates extends db
         list($jewishMonth, $jewishDay, $jewishYear) = explode('/', $jewishDateNotHebrew);
         //$jewishDateinEnglish = $jewishDay. " " . $this->getJewishMonthName($jewishMonth, $jewishYear) . " " . $jewishYear;
         return $this->getJewishMonthName($jewishMonth, $jewishYear);
+    }
+
+    function getCurrentJewishYear($date)
+    {
+        $julianDate = gregoriantojd(date("n",$date), date("j", $date), date("Y",$date));
+        $jewishDate = mb_convert_encoding(jdtojewish($julianDate, true), "UTF-8", "ISO-8859-8");
+        $jewishDateNotHebrew= jdtojewish($julianDate);
+        list($jewishMonth, $jewishDay, $jewishYear) = explode('/', $jewishDateNotHebrew);
+        //$jewishDateinEnglish = $jewishDay. " " . $this->getJewishMonthName($jewishMonth, $jewishYear) . " " . $jewishYear;
+        return $jewishYear;
     }
 }
