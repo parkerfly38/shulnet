@@ -56,7 +56,8 @@ if ($check != '1') {
     ?>
 
 
-
+<link rel="stylesheet" type="text/css" href="css/print.min.css" />
+<script src="js/print.min.js" type="text/javascript"></script>
     <form action="cp-includes/get_table.php" id="table_filters" method="post" onsubmit="return update_table();">
 
     <input type="hidden" name="order" value="<?php echo $gen_table['order']; ?>"/>
@@ -355,9 +356,10 @@ if ($check != '1') {
 
     </div>
             <script type="text/javascript">
-            function print_yahrzeitletters(data)
+            function print_yahrzeitletters(data,hebrewdate,englishdate,englishname)
             {
-                alert(data);
+                //alert(data);
+                popup('yahrzeit-print','data='+data+'&hebrewdate='+hebrewdate+'&englishdate='+englishdate+'&englishname='+englishname,true);
             }
             </script>
 
