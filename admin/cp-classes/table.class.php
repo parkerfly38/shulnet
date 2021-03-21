@@ -1047,6 +1047,10 @@ class table extends db
             if (! empty($this->options['checkin']) ||  ! empty($this->options['duplicate']) ||  ! empty($this->options['complete'])) {
                 $width = "52px";
             }
+            if ($this->scope_table == 'ppSD_yahrzeits')
+            {
+                $width = "72px";
+            }
             $cell .= "<td class=\"options\" style=\"width:$width;\">";
             if ( ! empty($this->options['duplicate'])) {
                 $cell .= "<a href=\"return_null.php\" onclick=\"return command('duplicate-" . $this->scope . "','" . $data['id'] . "');\" style=\"margin-right:2px;\"><img src=\"imgs/icon-duplicate.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Duplicate\" title=\"Duplicate\" /></a>";
@@ -1067,6 +1071,15 @@ class table extends db
             }
             else {
                 $putT = $this->scope_table;
+            }
+            if ($this->scope_table == 'ppSD_yahrzeits')
+            {
+                $jd = new jewishdates;
+                $hebrewdate = $data["Hebrew_Date_of_Death"]." ".$jd->getCurrentJewishYear(time());
+                list($day, $month, $year) = explode(" ",$hebrewdate);
+                $julianenglishdate = jewishtojd($jd->getJewishMonthNumber($month, $year), $day, $year);
+                $englishdate = jdtogregorian($julianenglishdate);
+                $cell .= "<a href=\"#\" onclick=\"return print_yahrzeitletters('".$data['MemberData']."','".$hebrewdate."','".$englishdate."');\"><img src=\"imgs/icon-print.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Print Yahrzeit Letter\" title=\"Print Yahrzeit Letter\" /></a>&nbsp;";
             }
             if (empty($this->specialdelete))
             {
