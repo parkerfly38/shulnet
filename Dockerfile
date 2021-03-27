@@ -1,6 +1,6 @@
 FROM php:7.0-apache
 
-LABEL Maintainer="Brian Kresge <brian.kresge@covebrookcode.com>"
+LABEL Maintainer="Brian Kresge <brian.kresge@gmail.com>"
 
 ENV XDEBUG_PORT 9000
 

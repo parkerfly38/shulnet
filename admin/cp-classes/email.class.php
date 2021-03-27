@@ -124,7 +124,7 @@ class email extends db
      */
     function check_limits()
     {
-        $hourly_limit = $this->get_option('emails_per_hour');
+        /*$hourly_limit = $this->get_option('emails_per_hour');
         if ($hourly_limit > 0) {
             $stat = new stats('emails_sent', 'get', 'hour');
             if ($stat >= $hourly_limit) {
@@ -135,9 +135,9 @@ class email extends db
             } else {
                 $this->send_email();
             }
-        } else {
+        } else {*/
             $this->send_email();
-        }
+        //}
     }
 
     /**
