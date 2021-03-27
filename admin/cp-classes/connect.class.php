@@ -531,9 +531,11 @@ class connect extends db
             $STH = $this->run_query("
                 SELECT *
                 FROM `ppSD_email_scheduled`
-                $limit
+                LIMIT 500
             ");
-            while ($row = $STH->fetch()) {
+            $rows = $STH->fetchAll();
+            //while ($row = $STH->fetch()) {
+            foreach($rows as $row) {
                 $email = $this->get_saved_email($row['email_id']);
                 if ($email['error'] != '1') {
                     if ($row['type'] == 'sms') {

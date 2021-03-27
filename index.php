@@ -31,6 +31,10 @@ $in = '';
 if (! empty($_GET['in'])) {
 	$in = $_GET['in'];
 }
-
+if ($in == '')
+{
+	header('Location: https://members.cbisrael.org/news.php');
+	exit;
+}
 echo new site($in);
 exit;
