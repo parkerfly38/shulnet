@@ -181,7 +181,7 @@ if (file_exists(PP_ADMINPATH . "/sd-system/salt.php")) {
 /**
  * Magic Quotes Solution
  */
-if (get_magic_quotes_gpc()) {
+/*if (get_magic_quotes_gpc()) {
     $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
     while (list($key, $val) = each($process)) {
         foreach ($val as $k => $v) {
@@ -195,7 +195,7 @@ if (get_magic_quotes_gpc()) {
         }
     }
     unset($process);
-}
+}*/
 
 /**
  * Define some items

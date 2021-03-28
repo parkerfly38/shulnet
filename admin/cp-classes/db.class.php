@@ -555,9 +555,6 @@ class db
         $string = $this->prePrepString($string);
 
         if (!empty($string) && !is_array($string)) {
-            if (get_magic_quotes_gpc()) {
-                $string = stripslashes($string);
-            }
             $string = trim($string);
             if (empty($string)) {
                 if ($string == '0') {

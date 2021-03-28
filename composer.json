@@ -2,6 +2,9 @@
     "require": {
         "quickbooks/v3-php-sdk": "^5.4",
         "guzzlehttp/guzzle": "^7.2",
-        "mpdf/mpdf": "^8.0"
+        "mpdf/mpdf": "^8.0",
+        "mailgun/mailgun-php": "^3.5",
+        "kriswallsmith/buzz": "^1.2",
+        "nyholm/psr7": "^1.4"
     }
 }

@@ -8,7 +8,7 @@
             "name": "Listen for XDebug",
             "type": "php",
             "request": "launch",
-            "port": 9000,
+            "port": 9003,
             "pathMappings": {
                 "/var/www/html": "${workspaceFolder}/"
             }
@@ -22,7 +22,7 @@
             "pathMappings": {
                 "/var/www/html": "${workspaceFolder}/src"
             },
-            "port": 9000,
+            "port": 9003,
             "runtimeExecutable": "C:\\xampp\\php\\php.exe"
         }
     ]

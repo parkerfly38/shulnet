@@ -67,7 +67,7 @@
 
             $email_queue_last_sent = $db->get_option('email_queue_last_sent');
 
-            if (empty($last_cron)) {
+            if (empty($email_queue_last_sent)) {
                 ?>
 
                 <span><img src="imgs/icon-warning-big.png" width="16" height="16" border="1" class="icon"/>E-mail queue has not been sent</span>
