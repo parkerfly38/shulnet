@@ -75,12 +75,12 @@ foreach ($rows as $row)
 
     $mailResponse = $mg->messages()->send($domain, $mailarray);
     //delete from queue
-    $insertSavedMail = $pdo->prepare("INSERT INTO ppSD_saved_emails (id, date, content, subject, to, from, cc, bcc, format, newsletter, user_id, user_type, fail, sentvia, vendor_id)
+    $insertSavedMail = $pdo->prepare("INSERT INTO ppSD_saved_emails (`id`, `date`, `content`, `subject`, `to`, `from`, `cc`, `bcc`, `format`, `newsletter`, `user_id`, `user_type`, `fail`, `sentvia`, `vendor_id`)
                                         VALUES ('".$row["email_id"]."',NOW(),'".$message."','".$subject."','".$to."','".$from."','".$cc."','".$bcc.",1,0,'".$row["user_id"]."','".$row["user_type"]."',0,'mailgun','".$mailResponse->getId()."')");
     $insertSavedMail->execute();
-    $delSavedMail = $pdo->prepare("DELETE FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
-    $delSavedMail->execute();
-    $delfromMessageQueue = $pdo->prepare("DELETE FROM ppSD_email_scheduled WHERE email_id = '".$row["email_id"]."'");
+    //$delSavedMail = $pdo->prepare("DELETE FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
+    //$delSavedMail->execute();
+    $delfromMessageQueue = $pdo->prepare("DELETE FROM ppSD_email_scheduled WHERE email_id = '".$row["email_id"]."' and user_id = '".$row["user_id"]."')");
     $delfromMessageQueue->execute();
 }
 $updateEmailQueue = $pdo->prepare("UPDATE ppSD_options SET `value` = '".date('Y-m-d H:i:s', time())."' WHERE id = 'email_queue_last_sent'");
