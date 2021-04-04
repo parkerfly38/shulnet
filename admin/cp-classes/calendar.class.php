@@ -1,31 +1,5 @@
 <?php
-/**
- *
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @license     GNU General Public License v3.0
- * @link        http://www.gnu.org/licenses/gpl.html
- * @date        2/20/13 1:34 PM
- * @version     v1.0
- * @project
- */
+
 class calendar
 {
 
@@ -102,7 +76,7 @@ class calendar
         $first_day     = mktime(0, 0, 0, $this->month, 1, $this->year);
         $day_of_week   = date('D', $first_day);
 
-        $days_in_month = cal_days_in_month(0, $this->month, $this->year);
+        $days_in_month = date("t", mktime(0,0,0, $this->month, 1,$this->year));
         switch ($day_of_week) {
             case "Sun":
                 $blank = 0;

@@ -1,7 +1,9 @@
 <?php
 /**
  *
- *
+ * ShulNET Membership Software
+ * Copyright (c) 2019 Cove Brook Code
+ * forked from
  * Zenbership Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
@@ -18,12 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
+ * @author      Cove Brook Coders
+ * @link        https://www.covebrookcode.com/
+ * @copyright   (c) 2019 Cove Brook Coders
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
+ * @project     ShulNET Membership Software
  */
 require "sd-system/config.php";
 $version = $db->get_option('current_version');
@@ -33,9 +34,9 @@ $version = $db->get_option('current_version');
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" lang="en" xml:lang="en">
 <head>
-    <title>Welcome to Zenbership... ahh!</title>
+    <title>Welcome to ShulNET</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="author" content="Zenbership Membership Software"/>
+    <meta name="author" content="ShulNET Membership Software"/>
     <link type="text/css" rel="stylesheet" media="all" href="css/login.css" />
     <link type="text/css" rel="stylesheet" media="handheld, only screen and (max-device-width: 720px)" href="css/login_mobile.css" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75">
@@ -99,11 +100,11 @@ $version = $db->get_option('current_version');
     </div>
     </div>
     <div id="penguin"></div>
-    <p class="links"><a href="http://documentation.zenbership.com/" target="_blank">Documentation</a> &#183; <a
+    <p class="links"><a href="http://documentation.covebrookcode.com/" target="_blank">Documentation</a> &#183; <a
             href="http://www.gnu.org/licenses/gpl-3.0.en.html"
             target="_blank">License</a><br/>v<?php echo $version; ?>
-        &nbsp;&nbsp;&#183;&nbsp;&nbsp;&copy; <?php echo date('Y'); ?> <a href="http://www.castlamp.com/"
-                                                                         target="_blank">Castlamp</a>.</p>
+        &nbsp;&nbsp;&#183;&nbsp;&nbsp;&copy; <?php echo date('Y'); ?> <a href="https://www.covebrookcode.com/"
+                                                                         target="_blank">Cove Brook Coders</a>.</p>
 </form>
 
 <?php

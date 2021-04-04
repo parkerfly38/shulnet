@@ -1,8 +1,8 @@
 <?php
 
 /**
- *    Zenbership
- *    http://www.zenbership.com/
+ *    ShulNET
+ *    http://www.ShulNET.com/
  *    (c) 2012, Castlamp.
  *
  *    Purpose: User management page:
@@ -18,6 +18,7 @@
  *
  */
 // Load the basics
+try {
 require "../admin/sd-system/config.php";
 // Check a user's session
 $session = new session;
@@ -42,7 +43,8 @@ if ($ses['error'] == '1') {
     $user   = new user;
     $member = $user->get_user($ses['member_id']);
     // Form session
-    $form = new form('', 'update', 'account', $ses['member_id'], '', '1');
+    $form = new form('', 'update', 'account', $ses['member_id'], '', '1', true);
+    
     $form->start_session();
     // Fieldsets
     $fields    = new field;
@@ -67,5 +69,10 @@ if ($ses['error'] == '1') {
     $wrapper = new template('manage_update_account', $changes, '1');
     echo $wrapper;
     exit;
+}
+}
+catch (Exception $e)
+{
+    print_r($e);
 }
 

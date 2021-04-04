@@ -1,6 +1,6 @@
 <?php
 /**
- * Zenbership
+ * ShulNET
  * Widget: feature product
  *
  * The program sends the following:
@@ -10,7 +10,7 @@
  * @param array $options
  *      pa($options)
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify

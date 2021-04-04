@@ -5,7 +5,7 @@
  * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_admin_IPNSetup
  * Send notify_url with transaction.
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
+ * @author      Cove Brook Coders
+ * @link        https://www.covebrookcode.com/
+ * @copyright   (c) 2019 Cove Brook Coders
  * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
+ * @project     ShulNET Membership Software
  */
 // Basics
 require "../../admin/sd-system/config.php";

@@ -1,39 +1,97 @@
 <?php
 
-/**
- * E-MAIL QUEUE DISPATCHER
- *
- * This file is used as a cron-job.
- * Recommended cron timeframe is every 15 minutes
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
 // Sample Command (every 15 minutes):
 // */15	*	*	*	*	php /full/server/path/to/members/admin/cp-cron/emailing.php
-require dirname(dirname(__FILE__)) . '/sd-system/config.php';
+require '../../vendor/autoload.php';
+use Mailgun\Mailgun;
+
+$mg =  Mailgun::create("<mgkey>");
+$domain = "<domain>";
+
+//prod conn string
+$pdo = new PDO("<connectionstring>");
+$stmt = $pdo->prepare("SELECT * FROM `ppSD_email_scheduled` LIMIT 500");
+$stmt->execute();
+$rows = $stmt->fetchAll();
+foreach ($rows as $row)
+{
+    $to = "";
+    $from = "<email addy>";
+    if ($row["user_type"] == 'contact')
+    {
+        $getUser = $pdo->prepare("SELECT email FROM ppSD_contacts where id = '".$row['user_id']."'");
+        $getUser->execute();
+        $todata = $getUser->fetch();
+        $to = $todata["email"];
+    }
+    if ($row["user_type"] == 'member')
+    {
+        $getUser = $pdo->prepare("SELECT email FROM ppSD_members WHERE id = '".$row['user_id']."'");
+        $getUser->execute();
+        $todata = $getUser->fetch();
+        $to = $todata["email"];
+    }
+    //get message
+    $getEmail = $pdo->prepare("SELECT * FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
+    $getEmail->execute();
+    $emailData = $getEmail->fetch();
+    $subject = $emailData["subject"];
+    $message = $emailData["message"];
+    $cc = $emailData["cc"];
+    $bcc = $emailData["bcc"];
+    //look for attachments
+    $getUploads = $pdo->prepare("SELECT * FROM ppSD_uploads WHERE email_id = '".$row["email_id"]."'");
+    $getUploads->execute();
+    $uploads = $getUploads->fetchAll();
+    $attachmentarray = array();
+    foreach($uploads as $upload)
+    {
+        $file_path = "../admin/sd-system/attachments/" . $upload['filename'];
+        $size      = filesize($file_path);
+        $attachments = array("filePath"=>$file_path, "filename"=>$upload["filename"]);
+        if ($size > 0)
+        {
+            array_push($attachmentarray, $attachments);
+        }
+    }
+    $mailarray = array(
+        'from'=>$from,
+        'to'=> $to,
+        'subject' => $subject,
+        'html' => $message,
+        'o:tracking' => true,
+        'o:tracking-clicks' => true,
+        'o:tracking-opens' => true
+    );
+    if (strlen($cc) > 0)
+    {
+        $mailarray["cc"] = $cc;
+    }
+    if (strlen($bcc) > 0)
+    {
+        $mailarray["bcc"] = $bcc;
+    }
+    if (count($attachmentarray) > 0)
+    {
+        $mailarray['attachment'] = $attachmentarray;
+    }
+
+    $mailResponse = $mg->messages()->send($domain, $mailarray);
+    //delete from queue
+    $insertSavedMail = $pdo->prepare("INSERT INTO ppSD_saved_emails (`id`, `date`, `content`, `subject`, `to`, `from`, `cc`, `bcc`, `format`, `newsletter`, `user_id`, `user_type`, `fail`, `sentvia`, `vendor_id`)
+                                        VALUES ('".$row["email_id"]."',NOW(),'".$message."','".$subject."','".$to."','".$from."','".$cc."','".$bcc.",1,0,'".$row["user_id"]."','".$row["user_type"]."',0,'mailgun','".$mailResponse->getId()."')");
+    $insertSavedMail->execute();
+    //$delSavedMail = $pdo->prepare("DELETE FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
+    //$delSavedMail->execute();
+    $delfromMessageQueue = $pdo->prepare("DELETE FROM ppSD_email_scheduled WHERE email_id = '".$row["email_id"]."' and user_id = '".$row["user_id"]."')");
+    $delfromMessageQueue->execute();
+}
+$updateEmailQueue = $pdo->prepare("UPDATE ppSD_options SET `value` = '".date('Y-m-d H:i:s', time())."' WHERE id = 'email_queue_last_sent'");
+$updateEmailQueue->execute();
+
+
 // Send scheduled queue
-$connect = new connect();
-$sent    = $connect->send_queue();
+//$connect = new connect();
+//$sent    = $connect->send_queue();
 // Bounced e-mails
-require "bounced_emails.php";
+//require "bounced_emails.php";

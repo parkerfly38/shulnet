@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="author" content="%pp_company%" />
     <meta name="description" content="%meta_desc%" />
-    <meta name="generator" content="Zenbership Membership Software (www.zenbership.com)"/>
+    <meta name="generator" content="ShulNET Membership Software (www.ShulNET.com)"/>
     <link href="%theme_url%/css/primary.css" rel="stylesheet" type="text/css" />
     <link href="%theme_url%/css/media.css" rel="stylesheet" type="text/css" />
 </head>

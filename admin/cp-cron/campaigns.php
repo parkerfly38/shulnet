@@ -1,33 +1,4 @@
 <?php
-
-/**
- * CRITERIA-BASED CAMPAIGNS
- * This file is part of a cron job (index.php)
- * All necessary classes have been pre-loaded.
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
 $date = explode(' ', current_date());
 $q1   = $db->run_query("
     SELECT
@@ -64,12 +35,12 @@ while ($row = $q1->fetch()) {
     $criteria   = new criteria($row['criteria_id'], true);
 
     if ($criteria->error) {
-        $cronObject->alert('Zenguin could not send a campaign! The criteria that was set up for campaign "' . $row['name'] . '" has been deleted or cannot be found.');
+        $cronObject->alert('ShulNET could not send a campaign! The criteria that was set up for campaign "' . $row['name'] . '" has been deleted or cannot be found.');
         continue;
     }
 
     if (strpos($criteria->query, 'ppSD_accounts') !== false) {
-        $cronObject->alert('Zenguin could not send a campaign! The criteria that was set up for campaign "' . $row['name'] . '" has is for accounts, not members or contacts.');
+        $cronObject->alert('ShulNET could not send a campaign! The criteria that was set up for campaign "' . $row['name'] . '" has is for accounts, not members or contacts.');
         continue;
     }
 

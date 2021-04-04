@@ -4,113 +4,86 @@
  * Installation: MySQL Table Creation
  *
  * A successful installation should have 133 tables.
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
  */
 $create   = array();
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_abuse` (
-  `id` int(9) auto_increment,
-  `ip` varchar(30),
-  `time` varchar(15),
-  PRIMARY KEY  (`id`),
+$create[] = "CREATE TABLE `ppSD_abuse` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `ip` varchar(30) DEFAULT NULL,
+  `time` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `ip` (`ip`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_access_granters` (
-  `id` int(9) auto_increment,
-  `item_id` varchar(35) COMMENT 'ppSD_products ID or ppSD_',
-  `type` enum('content','newsletter'),
-  `grants_to` varchar(25) COMMENT 'ppSD_content ID ppSD_event_timeline ID or ppSD_events ID',
-  `timeframe` varchar(12) COMMENT 'For subscription product, always matches that timeframe.',
-  PRIMARY KEY  (`id`),
-  KEY `item_id` (`item_id`,`grants_to`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_accounts` (
-  `id` varchar(10),
-  `name` varchar(65),
-  `contact_frequency` varchar(12),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_accounts` (
+  `id` varchar(10) NOT NULL DEFAULT '',
+  `name` varchar(65) DEFAULT NULL,
+  `contact_frequency` varchar(12) DEFAULT NULL,
   `created` datetime DEFAULT '1920-01-01 00:01:01',
   `default` tinyint(1) DEFAULT '0',
-  `master_user` varchar(20) COMMENT 'This is a ppSD_member ID.',
-  `owner` mediumint(6),
+  `master_user` varchar(20) DEFAULT NULL COMMENT 'This is a ppSD_member ID.',
+  `owner` mediumint(6) DEFAULT NULL,
   `public` tinyint(1) DEFAULT '0',
   `last_updated` datetime DEFAULT '1920-01-01 00:01:01',
-  `last_updated_by` mediumint(6),
+  `last_updated_by` mediumint(6) DEFAULT NULL,
   `last_action` datetime DEFAULT '1920-01-01 00:01:01',
-  `source` mediumint(5),
+  `source` mediumint(5) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '0',
-  `start_page` VARCHAR( 255 ),
-  PRIMARY KEY  (`id`),
+  `start_page` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `master_user` (`master_user`),
   KEY `owner` (`owner`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_account_data` (
-  `account_id` varchar(10),
-  `address_line_1` varchar(125),
-  `address_line_2` varchar(75),
-  `city` varchar(45),
-  `state` varchar(50),
-  `zip` varchar(10),
-  `country` varchar(45),
-  `phone` varchar(20),
-  `office_phone` varchar(25),
-  `alt_phone` varchar(25),
-  `fax` varchar(25),
-  `company_name` varchar(50),
-  `url` varchar(125),
-  `industry` varchar(45),
-  `account_type` varchar(25),
-  `email_optout` tinyint(1) DEFAULT '0',
-  `facebook` varchar(125),
-  `twitter` varchar(125),
-  `linkedin` varchar(125),
-  PRIMARY KEY  (`account_id`),
-  KEY `company_name` (`company_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_account_types` (
-  `id` mediumint(4) auto_increment,
-  `type` varchar(35),
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_activity_methods` (
-  `id` varchar(35),
-  `icon` varchar(35),
-  `link` varchar(35),
-  `link_type` enum('popup','popup_large','link','slider'),
-  `custom` tinyint(1) DEFAULT '1',
-  `text` VARCHAR( 75 ),
-  `in_feed` TINYINT( 1 ) DEFAULT '1',
-  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_bounced_emails` (
-  `id` int(10) auto_increment,
-  `email_id` varchar(35),
+$create[] = "CREATE TABLE `ppSD_account_data` (
+  `account_id` varchar(10) NOT NULL DEFAULT '',
+  `address_line_1` varchar(125) DEFAULT NULL,
+  `address_line_2` varchar(75) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zip` varchar(10) DEFAULT NULL,
+  `country` varchar(45) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `office_phone` varchar(25) DEFAULT NULL,
+  `alt_phone` varchar(25) DEFAULT NULL,
+  `fax` varchar(25) DEFAULT NULL,
+  `company_name` varchar(50) DEFAULT NULL,
+  `url` varchar(125) DEFAULT NULL,
+  `industry` varchar(45) DEFAULT NULL,
+  `account_type` varchar(25) DEFAULT NULL,
+  `email_optout` tinyint(1) DEFAULT '0',
+  `facebook` varchar(125) DEFAULT NULL,
+  `twitter` varchar(125) DEFAULT NULL,
+  `linkedin` varchar(125) DEFAULT NULL,
+  PRIMARY KEY (`account_id`),
+  KEY `company_name` (`company_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_account_types` (
+  `id` mediumint(4) NOT NULL AUTO_INCREMENT,
+  `type` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_activity_methods` (
+  `id` varchar(35) NOT NULL DEFAULT '',
+  `icon` varchar(35) DEFAULT NULL,
+  `link` varchar(35) DEFAULT NULL,
+  `link_type` enum('popup','popup_large','link','slider') DEFAULT NULL,
+  `custom` tinyint(1) DEFAULT '1',
+  `text` varchar(75) DEFAULT NULL,
+  `in_feed` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_bounced_emails` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `email_id` varchar(35) DEFAULT NULL,
   `date` datetime DEFAULT '1920-01-01 00:01:01',
-  `user_id` varchar(25),
-  `user_type` enum('member','contact','rsvp'),
-  PRIMARY KEY  (`id`),
+  `user_id` varchar(25) DEFAULT NULL,
+  `user_type` enum('member','contact','rsvp') DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `email_id` (`email_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_cache` (
   `act_id` varchar(45),
   `data` longtext,
@@ -400,66 +373,72 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_cart_tracking` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
 //`type` ENUM(  'Contact',  'Lead',  'Opportunity',  'Customer' ),
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_contacts` (
-  `id` varchar(20),
-  `type` INT(5) DEFAULT '1',
+$create[] = "CREATE TABLE `ppSD_contacts` (
+  `id` varchar(20) NOT NULL DEFAULT '',
+  `type` int(5) DEFAULT '1',
   `created` datetime DEFAULT '1920-01-01 00:01:01',
-  `bounce_notice` DATETIME DEFAULT '1920-01-01 00:01:01',
+  `bounce_notice` datetime DEFAULT '1920-01-01 00:01:01',
   `last_updated` datetime DEFAULT '1920-01-01 00:01:01',
   `last_action` datetime DEFAULT '1920-01-01 00:01:01',
   `next_action` datetime DEFAULT '1920-01-01 00:01:01',
   `email_optout` datetime DEFAULT '1920-01-01 00:01:01',
   `sms_optout` datetime DEFAULT '1920-01-01 00:01:01',
-  `owner` mediumint(5) COMMENT 'ppSD_staff ID, or 2 = system = unassigned',
-  `email` varchar(125),
-  `last_updated_by` mediumint(6),
-  `source` mediumint(5),
-  `account` varchar(10),
+  `owner` mediumint(5) DEFAULT NULL COMMENT 'ppSD_staff ID, or 2 = system = unassigned',
+  `email` varchar(125) DEFAULT NULL,
+  `last_updated_by` mediumint(6) DEFAULT NULL,
+  `source` mediumint(5) DEFAULT NULL,
+  `account` varchar(10) DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1' COMMENT '1 = Active, 2 = Converted, 3 = Dead',
   `public` tinyint(1) DEFAULT '1' COMMENT '1 = All can see, 0 = admin and owner, 2 = permission group only',
-  `email_pref` enum('html','text'),
+  `email_pref` enum('html','text') DEFAULT NULL,
   `converted` tinyint(1) DEFAULT '0',
-  `converted_id` int(9) COMMENT 'Matches ppSD_lead_conversion ID',
-  `expected_value` decimal(10,2),
-  `actual_dollars` decimal(10,2),
-  PRIMARY KEY  (`id`),
+  `converted_id` int(9) DEFAULT NULL COMMENT 'Matches ppSD_lead_conversion ID',
+  `expected_value` decimal(10,2) DEFAULT NULL,
+  `actual_dollars` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `owner` (`owner`),
   KEY `account` (`account`),
   KEY `source` (`source`),
   KEY `converted` (`converted_id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_contact_data` (
-  `contact_id` varchar(20),
-  `first_name` varchar(40),
-  `last_name` varchar(40),
-  `title` varchar(10) default NULL,
-  `middle_name` varchar(40) default NULL,
-  `gender` varchar(10) default NULL,
-  `address_line_1` varchar(80),
-  `address_line_2` varchar(30),
-  `city` varchar(40),
-  `state` varchar(50),
-  `zip` varchar(10),
-  `country` varchar(35),
-  `phone` varchar(20),
-  `cell` varchar(15),
-  `cell_carrier` varchar(20),
-  `office_phone` varchar(20),
-  `alt_phone` varchar(20),
-  `fax` varchar(15),
-  `company_name` varchar(50),
-  `url` varchar(100),
-  `facebook` varchar(100),
-  `twitter` varchar(80),
-  `linkedin` varchar(100),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_contact_data` (
+  `contact_id` varchar(20) NOT NULL DEFAULT '',
+  `first_name` varchar(40) DEFAULT NULL,
+  `last_name` varchar(40) DEFAULT NULL,
+  `title` varchar(10) DEFAULT NULL,
+  `middle_name` varchar(40) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `address_line_1` varchar(80) DEFAULT NULL,
+  `address_line_2` varchar(30) DEFAULT NULL,
+  `city` varchar(40) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zip` varchar(10) DEFAULT NULL,
+  `country` varchar(35) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `cell` varchar(15) DEFAULT NULL,
+  `cell_carrier` varchar(20) DEFAULT NULL,
+  `office_phone` varchar(20) DEFAULT NULL,
+  `alt_phone` varchar(20) DEFAULT NULL,
+  `fax` varchar(15) DEFAULT NULL,
+  `company_name` varchar(50) DEFAULT NULL,
+  `url` varchar(100) DEFAULT NULL,
+  `facebook` varchar(100) DEFAULT NULL,
+  `twitter` varchar(80) DEFAULT NULL,
+  `linkedin` varchar(100) DEFAULT NULL,
   `dob` date DEFAULT '1920-01-01',
-  `occupation` varchar(40),
+  `occupation` varchar(40) DEFAULT NULL,
   `sms_optout` tinyint(1) DEFAULT '0',
   `email_optout` tinyint(1) DEFAULT '0',
-  PRIMARY KEY  (`contact_id`),
+  `deceased` tinyint(1) NOT NULL,
+  `fathers_hebrew_name` varchar(50) NOT NULL,
+  `hebrew_name` varchar(50) NOT NULL,
+  `mothers_hebrew_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`contact_id`),
   KEY `last_name` (`last_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_content` (
   `id` int(9) auto_increment,
   `permalink` varchar(150),
@@ -792,6 +771,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_fields` (
   `scope_contact` tinyint(1) DEFAULT '0',
   `scope_rsvp` tinyint(1) DEFAULT '0',
   `scope_account` tinyint(1) DEFAULT '0',
+  `osk_language` varchar(20),
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_fieldsets` (
@@ -1245,35 +1225,49 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_member_activations` (
   PRIMARY KEY  (`id`),
   KEY `member_id` (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-$create[] = "CREATE TABLE IF NOT EXISTS `ppSD_member_data` (
-  `member_id` varchar(20),
-  `first_name` varchar(40) default NULL,
-  `last_name` varchar(40) default NULL,
-  `address_line_1` varchar(80) default NULL,
-  `address_line_2` varchar(30) default NULL,
-  `city` varchar(40) default NULL,
-  `state` varchar(50) default NULL,
-  `zip` varchar(10) default NULL,
-  `country` varchar(35) default NULL,
-  `phone` varchar(20) default NULL,
-  `fax` varchar(20) default NULL,
+$create[] = "CREATE TABLE `ppSD_member_data` (
+  `member_id` varchar(20) NOT NULL DEFAULT '',
+  `first_name` varchar(40) DEFAULT NULL,
+  `last_name` varchar(40) DEFAULT NULL,
+  `address_line_1` varchar(80) DEFAULT NULL,
+  `address_line_2` varchar(30) DEFAULT NULL,
+  `city` varchar(40) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `zip` varchar(10) DEFAULT NULL,
+  `country` varchar(35) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `fax` varchar(20) DEFAULT NULL,
   `sms_optout` tinyint(1) DEFAULT '0',
   `email_optout` tinyint(1) DEFAULT '0',
   `dob` date DEFAULT '1920-01-01',
-  `title` varchar(10) default NULL,
-  `middle_name` varchar(40) default NULL,
-  `gender` varchar(10) default NULL,
-  `industry` varchar(30),
-  `facebook` varchar(100),
-  `twitter` varchar(80),
-  `linkedin` varchar(100),
-  `cell` varchar(15),
-  `cell_carrier` varchar(20),
-  `alt_phone` varchar(20),
-  `office_phone` varchar(20),
-  PRIMARY KEY  (`member_id`),
+  `title` varchar(10) DEFAULT NULL,
+  `middle_name` varchar(40) DEFAULT NULL,
+  `gender` varchar(10) DEFAULT NULL,
+  `industry` varchar(30) DEFAULT NULL,
+  `facebook` varchar(100) DEFAULT NULL,
+  `twitter` varchar(80) DEFAULT NULL,
+  `linkedin` varchar(100) DEFAULT NULL,
+  `cell` varchar(15) DEFAULT NULL,
+  `cell_carrier` varchar(20) DEFAULT NULL,
+  `alt_phone` varchar(20) DEFAULT NULL,
+  `office_phone` varchar(20) DEFAULT NULL,
+  `aliyah` tinyint(1) NOT NULL,
+  `bnai_mitzvah_date` date NOT NULL,
+  `chazanut` tinyint(1) NOT NULL,
+  `cohenleviisrael` varchar(50) NOT NULL,
+  `dvar_torah` tinyint(1) NOT NULL,
+  `deceased` tinyint(1) NOT NULL,
+  `fathers_hebrew_name` varchar(50) NOT NULL,
+  `haftarah` tinyint(1) NOT NULL,
+  `hebrew_name` varchar(50) NOT NULL,
+  `kria_batorah` tinyint(1) NOT NULL,
+  `maftir` tinyint(1) NOT NULL,
+  `mothers_hebrew_name` varchar(50) NOT NULL,
+  `wedding_anniversary_date` date NOT NULL,
+  `quickbooks_customer_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`member_id`),
   KEY `last_name` (`last_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_newsletters_subscribers` (
   `id` int(9) auto_increment,
   `user_id` varchar(20),
@@ -2031,3 +2025,53 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_widgets_menus` (
   KEY `widget_id` (`widget_id`),
   KEY `link` (`link`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+$create[] = "CREATE TABLE `ppSD_yahrzeits` (
+  `id` varchar(20) NOT NULL,
+  `English_Name` varchar(255) DEFAULT NULL,
+  `Hebrew_Name` varchar(255) DEFAULT NULL,
+  `English_Date_of_Death` datetime DEFAULT NULL,
+  `Hebrew_Date_of_Death` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+  $create[] = "CREATE TABLE `ppSD_yahrzeit_members` (
+    `yahrzeit_id` varchar(20) NOT NULL,
+    `user_id` varchar(20) DEFAULT NULL,
+    `Relationship` varchar(255) DEFAULT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  ";
+$create[] = "CREATE TABLE `ppSD_leyning` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parashat_id` int(11) DEFAULT NULL,
+  `honor` varchar(1500) DEFAULT NULL,
+  `honoree` varchar(1500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1482 DEFAULT CHARSET=latin1;
+";
+$create[] = "CREATE TABLE `ppSD_QBInvoicePull` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+  `lastAccessToken` varchar(1000) DEFAULT NULL,
+  `refreshToken` varchar(1000) DEFAULT NULL,
+  `refreshTokenExpires` varchar(1000) DEFAULT NULL,
+  `expires_in` varchar(1000) DEFAULT NULL,
+  `realmId` varchar(1000) DEFAULT '9130349632301756',
+  `update_time` datetime DEFAULT NULL COMMENT 'update time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE `ppSD_parashat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'primary key',
+  `parsha_date` datetime DEFAULT NULL COMMENT 'parsha date',
+  `title` varchar(1500) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
+";
+$create[] = "CREATE TABLE ppSD_cemetery(  
+  id int NOT NULL primary key AUTO_INCREMENT comment 'primary key',
+  CemeteryName varchar(1000),
+  Latitude FLOAT(8,5),
+  Longitude FLOAT(8,5),
+  SatelliteImage varchar(255),
+  StreetAddress varchar(255)
+) default charset utf8 comment '';";
