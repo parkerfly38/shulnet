@@ -30,6 +30,14 @@ class jewishdates extends db
         }
     }
 
+    function JewishToGregorian($day, $month)
+    {
+        $year = $this->getCurrentJewishYear(time());
+        $month = $this->getJewishMonthNumber($month, $year);
+        $jddate = jewishtojd($month, $day, $year);
+        return jdtogregorian($jddate);
+    }
+
     function getJewishMonthNumber($jewishMonth, $jewishYear)
     {
         if ($this->isLeapYear($jewishYear))
