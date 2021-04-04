@@ -180,6 +180,10 @@ if (empty($home_guide)) {
                     $class = ($yi % 2 == 0) ? 'odd' : 'even';
                     echo "<div class='contactCard ".$class."'>";
                     echo "<div class='contactCardPad'><h3>".$y["English_Name"]."<br />".$y["Hebrew_Name"]."</h3>";
+                    echo "<p>".$y["Hebrew_Date_of_Death"]."</p>";
+                    $jewishday = explode(" ", $y["Hebrew_Date_of_Death"])[0];
+                    $jewishmonth = explode(" ", $y["Hebrew_Date_of_Death"])[1];
+                    echo "<p>".$jd->JewishToGregorian($jewishday, $jewishmonth)."</p>";
                     echo "</div></div>";
                 }
             ?>

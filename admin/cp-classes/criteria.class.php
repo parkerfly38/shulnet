@@ -161,6 +161,7 @@ class criteria extends db
             }
         }
         else if ($this->data['type'] == 'yahrzeit') {
+            $math_field = "English_Date_of_Death";
             $table1     = 'ppSD_yahrzeits';
             $table2     = 'view_yahrzeit_data';
             $join_match = 'yahrzeit_id';

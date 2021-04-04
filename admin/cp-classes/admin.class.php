@@ -1453,6 +1453,7 @@ class admin extends db
             {
                 $scope      = 'yahrzeit';
                 $scopetable = 'ppSD_yahrzeits';
+                $math_field = 'English_Date_of_Death';
             }
             $query        = $criteria->query;
             $query_totals = $criteria->query_count;
@@ -1600,6 +1601,7 @@ class admin extends db
                 $select_specific = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death, GROUP_CONCAT(DISTINCT COALESCE(MemberData,'') ORDER BY MemberData ASC SEPARATOR ';') as MemberData";
                 $groupby = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death";
                 $scope = 'yahrzeit';
+                $math_field = "English_Date_of_Death";
                 /*$force_query = "SELECT *
                 FROM `ppSD_yahrzeits`
                 ORDER BY ppSD_yahrzeits.English_Date_of_Death DESC";
@@ -1743,7 +1745,19 @@ class admin extends db
         $STH       = $this->run_query($query);
         while ($rowF = $STH->fetch()) {
             if (!empty($math_field)) {
-                $math += $rowF[$math_field];
+                if ($math_field == "English_Date_of_Death")
+                {
+                    if (empty($rowF[$math_field]))
+                    {
+                        $arrJdComponents = explode(" ",$rowF["Hebrew_Date_of_Death"]);
+                        $jd = new jewishdates;
+                        $jewishday = $arrJdComponents[0];
+                        $jewishMonth = $arrJdComponents[1];
+                        $rowF[$math_field] = $jd->JewishToGregorian($jewishday, $jewishMonth);
+                    }
+                } else {
+                    $math += $rowF[$math_field];
+                }
             }
             if (!empty($math_field1)) {
                 $math1 += $rowF[$math_field1];

@@ -58,7 +58,10 @@ foreach ($rows as $row)
         'from'=>$from,
         'to'=> $to,
         'subject' => $subject,
-        'html' => $message
+        'html' => $message,
+        'o:tracking' => true,
+        'o:tracking-clicks' => true,
+        'o:tracking-opens' => true
     );
     if (strlen($cc) > 0)
     {
