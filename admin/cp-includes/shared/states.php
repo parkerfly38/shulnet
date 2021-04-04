@@ -5,7 +5,7 @@
  * Licensed under the Creative Commons Attribution-Non-Commercial-Share Alike 2.5 Australia License
  *
  * Remaining data was compiled by Jon Belelieu (@jbelelieu)
- * as part of the Zenbership Project (http://www.zenbership.com/)
+ * as part of the ShulNET Project (http://www.ShulNET.com/)
  */
 
 return array(

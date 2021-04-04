@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="author" content="%pp_company%" />
     <meta name="description" content="%meta_desc%" />
-    <meta name="generator" content="Zenbership "/>
+    <meta name="generator" content="ShulNET "/>
     <style type="text/css">
         body {
             font-family: arial, sans-serif;

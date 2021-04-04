@@ -1,28 +1,9 @@
-FROM php:7.0-apache
+FROM parkerfly38/shulnet:shulnet-apache
 
-MAINTAINER Brian Kresge <brian.kresge@covebrookcode.com>
+LABEL Maintainer="Brian Kresge <brian.kresge@gmail.com>"
 
-RUN apt-get update && apt-get install -y \
-        cron \
-        mcrypt \
-        libmcrypt-dev \
-        libcurl4-openssl-dev \
-        libbz2-dev \
-        libgd-dev \
-        libfreetype6-dev \
-		libjpeg62-turbo-dev \
-		libmcrypt-dev \
-		libpng-dev \
-        vim \
-        wget \
-        unzip \
-        git \
-        nano \
-    && docker-php-ext-install -j$(nproc) curl \
-    && docker-php-ext-install -j$(nproc) mcrypt \
-    && docker-php-ext-configure pdo_mysql --with-pdo-mysql \
-    && docker-php-ext-install -j$(nproc) pdo_mysql \
-    && docker-php-ext-install -j$(nproc) gd
+ENV XDEBUG_PORT 9003
+
 
 RUN a2enmod rewrite
 

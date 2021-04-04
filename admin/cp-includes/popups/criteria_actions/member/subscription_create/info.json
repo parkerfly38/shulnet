@@ -15,7 +15,7 @@
     {
       "label": "Next Renewal Date",
       "name": "next_renew",
-      "description": "When should the subscription next renew? If blank Zenbership will auto-calculate based on the product's settings.",
+      "description": "When should the subscription next renew? If blank ShulNET will auto-calculate based on the product's settings.",
       "value": "",
       "type": "date",
       "class": ""

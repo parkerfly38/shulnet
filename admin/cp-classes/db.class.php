@@ -1,30 +1,5 @@
 <?php
 
-/**
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
-
 class db
 {
 
@@ -126,7 +101,7 @@ class db
         //$moreError = implode('///', $this->binding);
 
         // echo "0+++"; echo $query; pa($errors);
-        $this->add_history('error', '2', '', '4', '', $_SERVER['REMOTE_ADDR'] . '<br />' . $errors['0'] . '<br />' . $errors['1'] . '<br />' . $errors['2']);
+        $this->add_history('error', '2', '', '4', '', $_SERVER['REMOTE_ADDR'] . '<br />' . $errors['0'] . '<br />' . $errors['1'] . '<br />' . $errors['2'].'<br />'.$query);
 
         //pa("Invalid query ($query): " . $errors['0'] . "---" . $errors['1'] . "---" . $errors['2'] . '--->' . $moreError);
         //exit;
@@ -192,7 +167,7 @@ class db
         // This won't work. There is too much built in
         // logic that compares 0000-00-00 dates. Strict
         // mode won't be compatible with this version of
-        // Zenbership without deep changes.
+        // ShulNET without deep changes.
 
         /*
         if ($this->strictMode) {
@@ -447,7 +422,7 @@ class db
      * Check if a Path exists.
      * Also checks if path is writable
      * and if it isn't the base path
-     * or the base Zenbership folder.
+     * or the base ShulNET folder.
      */
     function check_path($path)
     {
@@ -580,9 +555,6 @@ class db
         $string = $this->prePrepString($string);
 
         if (!empty($string) && !is_array($string)) {
-            if (get_magic_quotes_gpc()) {
-                $string = stripslashes($string);
-            }
             $string = trim($string);
             if (empty($string)) {
                 if ($string == '0') {
@@ -1172,7 +1144,7 @@ class db
                         $plugin = new plugin($action['plugin']);
                     } catch (Exception $c) {
                         $skipit = true;
-                        $this->add_history('error', '2', '', '4', '', 'Zenguin could not run a hook associated with a plugin: ' . $action['plugin']);
+                        $this->add_history('error', '2', '', '4', '', 'ShulNET could not run a hook associated with a plugin: ' . $action['plugin']);
                     }
                 }
 
@@ -1661,6 +1633,23 @@ class db
         $reg = array();
         $reg['name'] = $theme;
         $reg['url'] = $url_put . "/pp-templates/html/" . $theme;
+        $reg['classes'] = $this->get_theme_classes($theme);
+        return $reg;
+    }
+
+    /**
+     * Get theme classes for templating
+     */
+    function get_theme_classes($theme)
+    {
+        $reg = array();
+        $q1 = $this->run_query("
+                SELECT `id`, `value`
+                FROM `ppSD_themes_classes`
+                WHERE `theme` = '".$this->mysql_clean($theme)."'");
+        while ($row = $q1->fetch()) {
+            $reg[$row['id']] = $row['value'];
+        }
         return $reg;
     }
 
@@ -2351,7 +2340,7 @@ class db
         $getform   = $this->get_array("
             SELECT *
             FROM `ppSD_forms`
-            WHERE `id`='" . $this->mysql_cleans($id) . "' OR `id`='" . $this->mysql_cleans($check_id1) . "'
+            WHERE `id`='" . $this->mysql_cleans($id) . "' OR `id`='" . $this->mysql_cleans($check_id1) . "' or `act_id` = '" . $this->mysql_cleans($id) . "'
             LIMIT 1
         ");
 

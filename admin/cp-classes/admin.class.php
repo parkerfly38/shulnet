@@ -1,30 +1,5 @@
 <?php
-/**
- *
- *
- * Zenbership Membership Software
- * Copyright (C) 2013-2016 Castlamp, LLC
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @author      Castlamp
- * @link        http://www.castlamp.com/
- * @link        http://www.zenbership.com/
- * @copyright   (c) 2013-2016 Castlamp
- * @license     http://www.gnu.org/licenses/gpl-3.0.en.html
- * @project     Zenbership Membership Software
- */
+
 class admin extends db
 {
     /**
@@ -520,7 +495,7 @@ class admin extends db
             $data .= $days_together;
             $data .= "</select> (MM/DD)";
             //$data .= "Threshold Date: " . $this->datepicker($name . '[threshold]','','0','250','1','','');
-            $data .= "<p class=\"field_desc\"><a href=\"http://documentation.zenbership.com/Dictionary/Threshold-Date\" target=\"_blank\">More Information on Threshold Dates</a></p>";
+            $data .= "<p class=\"field_desc\"><a href=\"http://documentation.covebrookcode.com/Dictionary/Threshold-Date\" target=\"_blank\">More Information on Threshold Dates</a></p>";
             $data .= "</div></div>";
         } else {
             $data .= "<input type=\"text\" name=\"" . $name . "[number]\" value=\"" . $cutup['unit'] . "\" maxlength=\"2\" id=\"$id\" style=\"width:80px;\" class=\"";
@@ -864,6 +839,8 @@ class admin extends db
             $table = 'ppSD_contact_data';
         } else if ($type == 'rsvp') {
             $table = 'ppSD_event_rsvp_data';
+        } else if ($type == 'yahrzeit') {
+            $table = 'ppSD_yahrzeits';
         } else {
             $table = 'ppSD_account_data';
         }
@@ -883,6 +860,12 @@ class admin extends db
                 $return[] = array('id' => 'status', 'name' => 'Status');
                 $return[] = array('id' => 'last_updated', 'name' => 'Last Updated');
                 $return[] = array('id' => 'member_type', 'name' => 'Member Type');
+            } else if ($type == 'yahrzeit') {
+                $return[] = array('id' => 'id', 'name' => 'Yahrzeit ID');
+                $return[] = array('id' => 'English_Name', 'name' => 'English Name');
+                $return[] = array('id' => 'Hebrew_Name', 'name' => 'Hebrew Name');
+                $return[] = array('id' => 'English_Date_of_Death','name'=>'English Date of Death');
+                $return[] = array('id' => 'Hebrew_Date_of_Death','name'=>'Hebrew Date of Death');
             } else {
                 $return[] = array('id' => 'type', 'name' => 'Type');
                 $return[] = array('id' => 'email', 'name' => 'E-Mail');
@@ -1015,6 +998,9 @@ class admin extends db
     {
         if ($type == 'contact') {
             $default_table = 'ppSD_contacts';
+        } else if ($type == 'yahrzeit')
+        {
+            $default_talbe = 'ppSD_yahrzeits';
         } else {
             $default_table = 'ppSD_members';
         }
@@ -1463,6 +1449,11 @@ class admin extends db
             } else if ($criteria->data['type'] == 'contact') {
                 $scope      = 'contact';
                 $scopetable = 'ppSD_contacts';
+            } else if ($criteria->data['type'] == 'yahrzeit')
+            {
+                $scope      = 'yahrzeit';
+                $scopetable = 'ppSD_yahrzeits';
+                $math_field = 'English_Date_of_Death';
             }
             $query        = $criteria->query;
             $query_totals = $criteria->query_count;
@@ -1481,6 +1472,7 @@ class admin extends db
             $join            = '';
             $join1           = '';
             $join2           = '';
+            $groupby         = '';
             $scopetable      = $table;
             if ($table == 'ppSD_members') {
                 $the_tables = array('ppSD_members', 'ppSD_member_data');
@@ -1600,6 +1592,20 @@ class admin extends db
                 $scope = 'calendar';
             } else if ($table == 'ppSD_payment_gateways') {
                 $scope = 'payment_gateway';
+            } else if ($table == 'ppSD_yahrzeits') { // && strlen($force_query) == 0) {
+                $the_tables = array('ppSD_yahrzeits','view_yahrzeit_data');
+                $where      = "";
+                $join       = 'ppSD_yahrzeits.id';
+                $join1      = 'view_yahrzeit_data.yahrzeit_id';
+                $scopetable = 'ppSD_yahrzeits';
+                $select_specific = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death, GROUP_CONCAT(DISTINCT COALESCE(MemberData,'') ORDER BY MemberData ASC SEPARATOR ';') as MemberData";
+                $groupby = "id, English_Name, Hebrew_Name, English_Date_of_Death, Hebrew_Date_of_Death";
+                $scope = 'yahrzeit';
+                $math_field = "English_Date_of_Death";
+                /*$force_query = "SELECT *
+                FROM `ppSD_yahrzeits`
+                ORDER BY ppSD_yahrzeits.English_Date_of_Death DESC";
+                $scope = 'yahrzeit';*/
             } else {
                 $scope = (! empty($get['plugin'])) ? $get['plugin'] : '';
             }
@@ -1611,6 +1617,10 @@ class admin extends db
                 $where = "WHERE " . $where;
             } else {
                 $where = '';
+            }
+            if (!empty($groupby))
+            {
+                $groupby = " GROUP BY " .$groupby;
             }
             // Get entries
             if (!empty($join)) {
@@ -1678,16 +1688,24 @@ class admin extends db
                         ON $join=$join1
                         $where
                         $add_query
+                        $groupby
                         ORDER BY $order $dir
                         LIMIT $low,$display
                     ";
-                    $query_totals = "
-                        SELECT COUNT(*) FROM `" . $the_tables['0'] . "`
-                        LEFT JOIN `" . $the_tables['1'] . "`
-                        ON $join=$join1
-                        $where
-                        $add_query
-                    ";
+                    if ($table == "ppSD_yahrzeits")
+                    {
+                        $query_totals = "SELECT COUNT(*) FROM `ppSD_yahrzeits`
+                        $where";
+                    } else {
+                        $query_totals = "
+                            SELECT COUNT(*) FROM `" . $the_tables['0'] . "`
+                            LEFT JOIN `" . $the_tables['1'] . "`
+                            ON $join=$join1
+                            $where
+                            $groupby
+                            $add_query
+                        ";
+                    }
                 }
             } else {
                 $query        = "
@@ -1727,7 +1745,19 @@ class admin extends db
         $STH       = $this->run_query($query);
         while ($rowF = $STH->fetch()) {
             if (!empty($math_field)) {
-                $math += $rowF[$math_field];
+                if ($math_field == "English_Date_of_Death")
+                {
+                    if (empty($rowF[$math_field]))
+                    {
+                        $arrJdComponents = explode(" ",$rowF["Hebrew_Date_of_Death"]);
+                        $jd = new jewishdates;
+                        $jewishday = $arrJdComponents[0];
+                        $jewishMonth = $arrJdComponents[1];
+                        $rowF[$math_field] = $jd->JewishToGregorian($jewishday, $jewishMonth);
+                    }
+                } else {
+                    $math += $rowF[$math_field];
+                }
             }
             if (!empty($math_field1)) {
                 $math1 += $rowF[$math_field1];
@@ -1961,9 +1991,6 @@ class admin extends db
      * Check if an employee's session is valid
      * and return an array with the employee's
      * information and permissions.
-     * Do I love typing on this keyboard.  No, I don't find it as fast as the other keyboad.  
-     * 
-     * nope I prefer this keyboard and the way it feels.
      */
     function check_employee($permission_check = '', $ajax = '1', $simple = '0')
     {

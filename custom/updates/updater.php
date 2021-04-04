@@ -3,7 +3,7 @@
 /**
  * This file allow you to run updates and keep your database in sync.
  *
- * Zenbership Membership Software
+ * ShulNET Membership Software
  * Copyright (C) 2013-2016 Castlamp, LLC
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-echo "<html><head><title>Zenbership Database Updater</title><style>";
+echo "<html><head><title>ShulNET Database Updater</title><style>";
 echo <<<qq
 body {
     padding: 42px 25%;

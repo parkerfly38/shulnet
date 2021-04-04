@@ -1,3 +1,12 @@
 .idea
 .DS_Store
 custom/errors.txt
+custom/uploads/95ee558e804bff105d7c5cd1238b26.png
+shulnetv115.zip
+xdebug.log
+composer.lock
+composer.lock
+/vendor/
+/vendor/composer/
+vendor/guzzlehttp/
+vendor/quickbooks/
