@@ -176,7 +176,7 @@ class yahrzeits extends db
             $this->pages         = '1';
         }
         // Limit?
-        $this->limit = "LIMIT $low,$display";
+        //$this->limit = "LIMIT $low,$display";
         // Order?
         $this->order = "ORDER BY $order " . $dir;
     }
