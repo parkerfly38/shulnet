@@ -8,7 +8,6 @@ use Mailgun\Mailgun;
 $mg =  Mailgun::create("key-b25b4f8a77f1f981ca630925563b4a20");
 $domain = "mg.cbisrael.org";
 
-$this_trackback_id = generate_id('random', '27');
 //prod conn string
 $pdo = new PDO("mysql:host=216.15.188.201;dbname=cbisrael_shulnet", "cbisrael_dbuser", "NUgget38!@");
 $stmt = $pdo->prepare("SELECT * FROM `ppSD_email_scheduled` LIMIT 500");
@@ -55,6 +54,8 @@ foreach ($rows as $row)
             array_push($attachmentarray, $attachments);
         }
     }
+
+    $this_trackback_id = generate_id('random', '27');
     $final_url = "https://members.cbisrael.org/pp-functions/etc.php?id=" . $this_trackback_id;
     $message .= "<img src=\"$final_url\" width=\"0\" height=\"0\" border=\"0\" />";
     $mailarray = array(

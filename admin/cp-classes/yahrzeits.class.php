@@ -56,7 +56,7 @@ class yahrzeits extends db
         $track_id ='';
         if (! empty($_COOKIE['zen_source'])) {
             $source = new source();
-            $source->convert($_COOKIE['zen_source'], $id, 'member');
+            $source->convert($_COOKIE['zen_source'], $this->id, 'member');
             $track_id = $_COOKIE['zen_source'];
             $this->delete_cookie('zen_source');
         }
@@ -103,7 +103,7 @@ class yahrzeits extends db
         $track_id ='';
         if (! empty($_COOKIE['zen_source'])) {
             $source = new source();
-            $source->convert($_COOKIE['zen_source'], $id, 'member');
+            $source->convert($_COOKIE['zen_source'], $this->id, 'member');
             $track_id = $_COOKIE['zen_source'];
             $this->delete_cookie('zen_source');
         }
