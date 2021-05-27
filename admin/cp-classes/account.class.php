@@ -423,6 +423,48 @@ class account extends db
         return $q;
     }
 
+    // Get account details
+
+    function get_account_info($address_line_1 ='', $city ='', $state ='', $country ='', $company_name ='', $industry ='', $account_type = ''){
+
+        $this->address_line_1 = $address_line_1;
+        $this->city = $city;
+        $this->state = $state;
+        $this->country = $country;
+        $this->company_name = $company_name;
+        $this->industry = $industry;
+        $this->account_type = $account_type;
+
+        $account_info= "SELECT * 
+            FROM ppSD_account_data AS ad
+            JOIN ppSD_accounts AS a
+			ON ad.account_id=a.id 
+            WHERE 1=1";
+
+        if(!empty($this->address_line_1)){
+            $account_info=  $account_info." "."AND address_line_1='" .$this->address_line_1."'";
+        }
+        if(!empty($this->city)){
+            $account_info=  $account_info." "."AND city='" .$this->city."'";
+        }
+        if(!empty($this->state)){
+            $account_info=  $account_info." "."AND state='" .$this->state."'";
+        }
+        if(!empty($this->country)){
+            $account_info=  $account_info." "."AND country='" .$this->country."'";
+        }
+        if(!empty($this->company_name)){
+            $account_info=  $account_info." "."AND company_name='" .$this->company_name."'";
+        }
+        if(!empty($this->industry)){
+            $account_info=  $account_info." "."AND industry='" .$this->industry."'";
+        }
+        if(!empty($this->account_type)){
+            $account_info=  $account_info." "."AND account_type='" .$this->account_type."'";
+        }
+        $result = $this->get_array($account_info);
+        return $result;
+    }
 }
 
 
