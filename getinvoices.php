@@ -1,14 +1,15 @@
 <?php
-require_once(__DIR__.'/vendor/autoload.php');
+session_start();
+
+require 'vendor/quickbooks/v3-php-sdk/src/config.php';
 require 'admin/sd-system/config.php';
 
 use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2AccessToken;
-
 $config = QBConfig;
-
-session_start();
-
+echo "<br />got this far";
+try {
+echo "<br />set dataservice start";
 $dataService = DataService::Configure(array(
     'auth_mode' => 'oauth2',
     'ClientID' => $config["client_id"],
@@ -17,7 +18,8 @@ $dataService = DataService::Configure(array(
     'scope' => $config['oauth_scope'],
     'baseUrl' => "production"
 ));
-
+//print_r($dataService);
+echo "<br />set dataservice end";
 
 $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
 $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
@@ -25,7 +27,16 @@ $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
 // Store the url in PHP Session Object;
 $_SESSION['authUrl'] = $authUrl;
-
+echo "set session";
+} catch (Exception $e)
+{
+    print_r($e);
+}
+catch (Throwable $t)
+{
+    print_r($t);
+}
+try {
 //update from last db
 $db = new db;
 $arr = $db->get_array("SELECT * FROM ppSD_QBInvoicePull ORDER BY update_time DESC LIMIT 1");
@@ -38,7 +49,14 @@ if (!empty($arr))
 
     $_SESSION["sessionAccessToken"] = $accessToken;
 }
-
+} catch (Exception $e)
+{
+    print_r($e);
+}
+catch (Throwable $t)
+{
+    print_r($t);
+}
 //set the access token using the auth object
 if (isset($_SESSION['sessionAccessToken'])) {
 
@@ -81,10 +99,13 @@ if (isset($_SESSION['sessionAccessToken'])) {
     //insert invoices
     foreach($arrCustomers as $customer)
     {
-        //print_r($customer);
-        $invoices = $dataService->Query("SELECT * FROM Invoice WHERE CustomerRef = '".$customer["quickbooks_customer_id"]."' AND TxnDate > '".$arr["update_time"]."'");
+        print_r($customer);
+        echo "<br /><br />";
+        $invoices = $dataService->Query("SELECT * FROM Invoice WHERE CustomerRef = '".$customer["quickbooks_customer_id"]."'");// AND TxnDate > '".$arr["update_time"]."'");
         foreach ($invoices as $invoice)
         {
+            print_r($invoice);
+            echo "<br /><br />";
             //does invoice exist
             
                 // determine invoice status
@@ -154,6 +175,30 @@ if (isset($_SESSION['sessionAccessToken'])) {
                 $insertTotals = $db->insert($insertTotalsSql);
             //}
         }
+        echo "<h2>Receipts</h2>";
+        $receipts = $dataService->Query("SELECT * FROM SalesReceipt WHERE CustomerRef = '".$customer["quickbooks_customer_id"]."'");// AND TxnDate > '".$arr["update_time"]."'");
+        foreach ($receipts as $receipt)
+        {
+            print_r($receipt);
+            echo "<br /><br />";
+            
+        }
+        echo "<h2>Purchases</h2>";
+        $purchases = $dataService->Query("SELECT * FROM Purchase WHERE CustomerRef = '".$customer["quickbooks_customer_id"]."'");// AND TxnDate > '".$arr["update_time"]."'");
+        foreach ($purchases as $purchase)
+        {
+            print_r($purchase);
+            echo "<br /><br />";
+            
+        }
+        echo "<h2>Payments</h2>";
+        $payments = $dataService->Query("SELECT * FROM Payment WHERE CustomerRef = '".$customer["quickbooks_customer_id"]."'");// AND TxnDate > '".$arr["update_time"]."'");
+        foreach ($payments as $payment)
+        {
+            print_r($payment);
+            echo "<br /><br />";
+            
+        }
     }
-    
+    echo "<br />finished processing.";
 }?>

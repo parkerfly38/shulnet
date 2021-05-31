@@ -225,7 +225,7 @@ class send extends pluginLoader {
             $sending['o:tag'] = $this->tag;
         }
 
-        if (! empty($this->campaing)) {
+        if (! empty($this->campaign)) {
             $sending['o:campaign'] = $this->campaign;
         }
 

@@ -203,21 +203,21 @@ class history extends db
      */
     function get_item($id)
     {
-        if (is_numeric($id)) {
-            $his                 = $this->get_array("
-                SELECT *
-                FROM `" . $this->table . "`
-                WHERE `id`='" . $this->mysql_clean($id) . "'
-                LIMIT 1
-            ");
-        } else {
-            $his                 = $this->get_array("
-                SELECT *
-                FROM `" . $this->table . "`
-                WHERE `id` LIKE '" . $this->mysql_clean($id) . "'
-                LIMIT 1
-            ");
-        }
+           if (is_numeric($id)) {
+                $his                 = $this->get_array("
+                    SELECT *
+                    FROM `" . $this->table . "`
+                    WHERE `id`='" . $this->mysql_clean($id) . "'
+                    LIMIT 1
+                ");
+            } else {
+                $his                 = $this->get_array("
+                    SELECT *
+                    FROM `" . $this->table . "`
+                    WHERE `id` LIKE '" . $this->mysql_clean($id) . "'
+                    LIMIT 1
+                ");
+            }
         $this->final_content = $his;
         //$this->table_cells   = $this->format_cell($his);
     }
@@ -459,13 +459,18 @@ class history extends db
                 WHERE `id`='" . $this->mysql_clean($act_id) . "'
                 LIMIT 1
             ");
-            if ($email['user_type'] == 'member') {
-                $user      = new user;
-                $final_use = $user->get_username($email['user_id']);
-            }
-            else if ($email['user_type'] == 'contact') {
-                $contact   = new contact;
-                $final_use = $contact->get_name($email['user_id']);
+            if ($user_id == '') {
+                if ($email['user_type'] == 'member') {
+                    $user      = new user;
+                    $final_use = $user->get_username($email['user_id']);
+                }
+                else if ($email['user_type'] == 'contact') {
+                    $contact   = new contact;
+                    $final_use = $contact->get_name($email['user_id']);
+                }
+            } else {
+                $user = new user;
+                $final_use = $user->get_username($user_id);
             }
 
             if (! empty($notes)) {

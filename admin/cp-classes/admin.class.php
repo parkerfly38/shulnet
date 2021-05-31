@@ -1726,6 +1726,7 @@ class admin extends db
         if (! empty($force_query)) {
             $query = $force_query;
             $query_totals = str_replace('*', 'COUNT(*)', $query);
+            $query_totals = str_replace('LIMIT 0,','', $query);
         }
 
         // Totals
