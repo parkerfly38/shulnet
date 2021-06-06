@@ -83,8 +83,8 @@ class import extends db
                     FROM
                         `ppSD_fields`
                     WHERE
-                        `display_name`='" . $this->mysql_clean($clean) . "' OR
-                        `id`='" . $this->mysql_clean($clean) . "'
+                        `display_name`='" . $clean . "' OR
+                        `id`='" . $clean . "'
                     LIMIT 1
                 ");
                 if (!empty($id['id'])) {

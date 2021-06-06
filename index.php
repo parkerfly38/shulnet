@@ -33,7 +33,7 @@ if (! empty($_GET['in'])) {
 }
 if ($in == '')
 {
-	header('Location: https://members.cbisrael.org/news.php');
+	header('Location: http://localhost:8000/news.php');
 	exit;
 }
 echo new site($in);

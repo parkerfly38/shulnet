@@ -588,10 +588,10 @@ class event extends db
                 else {
                     $return['data']['reg_closed'] = '0';
                 }
-                // Show 
-                $ = $this->get_event_($return['data']);
-                $return['data']['_code'] = $['code'];
-                $return['data']['_show'] = $[''];
+                // Show status
+                $status = $this->get_event_($return['data']);
+                $return['data']['_code'] = $status['code'];
+                $return['data']['_show'] = $status['status'];
                 // Format address
                 $format_address = format_address($q1['address_line_1'], $q1['address_line_2'], $q1['city'], $q1['state'], $q1['zip'], $q1['country']);
                 $return['data']['formatted_address'] = $format_address;
@@ -2443,10 +2443,10 @@ class event extends db
     {
 
         if ($fail == '1') {
-            $ = '0';
+            $status = '0';
 
         } else {
-            $ = '1';
+            $status = '1';
 
         }
         $q1 = $this->insert("
@@ -2477,7 +2477,7 @@ class event extends db
 
               '" . current_date() . "',
 
-              '" . $this->mysql_clean($) . "',
+              '" . $this->mysql_clean($status) . "',
 
               '" . $this->mysql_clean($fail_reason) . "'
 

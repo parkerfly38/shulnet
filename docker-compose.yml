@@ -33,6 +33,10 @@ services:
       MYSQL_PASSWORD: "shulnet"
       MYSQL_USER: shulnet_user
       MYSQL_ROOT_PASSWORD: "shulnetroot"
+    #volumes:
+      #- ./dbinit:/docker-entrypoint-initdb.d
+      # remove the volumes piece if you'd like to use the setup process instead of using this structure, we recommend that...this works if you already
+      # have a backup of data you'd like to use in this
     networks:
       - shulnet-net
     command: mysqld --sql_mode=NO_ENGINE_SUBSTITUTION
