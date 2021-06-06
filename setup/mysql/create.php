@@ -1583,7 +1583,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_saved_emails` (
   `fail` TINYINT( 1 ) DEFAULT '0',
   `fail_reason` VARCHAR( 100 ),
   `sentvia` VARCHAR(30) NULL,
-  `vendor_id` VARCHAR(100) NULL,
+  `vendor_id` VARCHAR(1000) NULL,
   PRIMARY KEY  (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
