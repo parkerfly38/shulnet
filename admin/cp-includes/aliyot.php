@@ -35,32 +35,57 @@ if ($check != '1') {
         $arrEvents = $db->run_query($selectEventSql,0)->fetchAll();
     }
 ?>
-<div id="mainsection">
 
-<div class="nontable_section">
-    <div class="pad24">
-            <div style="float:left;">
-                <form method="post" action="index.php?l=aliyot">
+<link rel="stylesheet" type="text/css" href="css/print.min.css" />
+<script src="js/print.min.js" type="text/javascript"></script>
+<div id="topblue" class="fonts small">
+            <div class="holder">
+
+                <div class="floatright" id="tb_right">
+                <div class="floatleft">
+                <form id="prevform" method="post" action="index.php?l=aliyot">
                     <input type="hidden" name="previd" id="previd" value="<?php echo $arrEvents[0]["id"]; ?>" />
                     <input type="hidden" name="parsha_date" id="parsha_date" value="<?php echo $arrEvents[0]["parsha_date"]; ?>" />
-                    <input type="submit" value="<< Previous Event" />
+                    <a href="javascript:jQuery('#prevform').submit();">&lt;&lt; Previous Event</a>
                 </form>
-            </div>
-            <div style="float:right;">
-                <form method="post" action="index.php?l=aliyot">
+                </div>
+                <div class="floatright">
+                <form id="nextform" method="post" action="index.php?l=aliyot">
                     <input type="hidden" name="nextid" id="nextid" value="<?php echo $arrEvents[0]["id"]; ?>" />
                     <input type="hidden" name="parsha_date" id="parsha_date" value="<?php echo $arrEvents[0]["parsha_date"]; ?>" />
-                    <input type="submit" value="Next Event >>" />
+                    <span class="div">|</span><a href="javascript:jQuery('#nextform').submit();">Next Event &gt;&gt;</a>
                 </form>
+                </div>
+                </div>
+
+                <div class="floatleft" id="tb_left">
+
+                    <span><b>Assign Aliyot and Kibbudim</b></span>
+
+                    <span class="div">|</span>
+
+                    <?php echo "<span>" . $arrEvents[0]["title"]." - ".date("D, M j Y",strtotime($arrEvents[0]["parsha_date"]))."</span>"; ?>
+
+                    <span class="div">|</span>
+
+			<span id="innerLinks">
+
+				<a href="javascript: printCard();">Print Gabbai Card</a>
+
+			</span>
+
+                </div>
+
+                <div class="clear"></div>
+
             </div>
-            <div style="clear: both;"></div>
-            <h1 style="text-align: center;">Assign Aliyot and Kibbudim</h1>
+        </div>
+<div id="mainsection">
+
             <?php
                 foreach ($arrEvents as $event)
                 {
-                    echo "<h2 style='margin-top:20px;'>".$event["title"]." - ".date("D, M j Y",strtotime($event["parsha_date"]))."</h2>";
-                    
-                    echo "<table class='listings'>";
+                    echo "<table id='aliyotTable' class='tablesorter listings' border=0>";
                     $getAssignmentsSql = "SELECT a.*, CONCAT(b.first_name,' ', b.last_name) AS `honoreename` FROM ppSD_leyning a LEFT JOIN ppSD_member_data b ON a.honoree = b.member_id WHERE parashat_id = ".$event["id"];
                     $arrLeyning = $db->run_query($getAssignmentsSql,0)->fetchAll();
                     echo "<thead><tr><th>Aliyah/Honor</th><th>Oleh</th><th></th></tr></thead>";
@@ -87,9 +112,8 @@ if ($check != '1') {
                     echo "</table>";
                 }
             ?>
-    </div>
 </div>
-</div>
+<div id="printableArea" style="display:none;"></div>
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -108,5 +132,19 @@ if ($check != '1') {
             });
         });
     });
+    function printCard()
+    {
+        let rawHtml = "<div id='printableArea2'><h1>Gabbai Card for <?php echo $arrEvents[0]["title"]." - ".date("D, M j Y",strtotime($arrEvents[0]["parsha_date"]));?></h1>";
+        rawHtml += "<table border='0' cellpadding='5' cellspacing='5'>";
+        rawHtml += "<thead><tr><th>Portion/Role</th><th>Honoree</th></tr></thead>";
+        rawHtml += "<tbody>";
+        $('#aliyotTable tbody tr').each(function(){
+            rawHtml += "<tr><td>" + $(this).find('td').eq(0).html() + "</td>";
+            rawHtml += "<td>" + $(this).find('td').eq(1).find('input').eq(0).val() + "</td></tr>";
+        })
+        rawHtml += "</tr></tbody></table>";
+        $("#printableArea").html(rawHtml);
+        printJS({ type: "html", printable: 'printableArea2'});
+    }
 </script>
 <?php } ?>
