@@ -1,0 +1,2 @@
+# Mostly for Drupal 8: enabling PHP execution
+RewriteRule "uploader.php" - [L]

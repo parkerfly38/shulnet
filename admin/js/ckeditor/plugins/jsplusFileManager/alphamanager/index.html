@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>JS+ File Manager</title>
+
+	
+
+	
+	 <script type="text/javascript" src="js/alphamanager.js"></script>
+	 
+
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+<div id="wraper" style="display: flex;">
+		<div class="pnlDirs" id="dirActions">
+			<div class="actions">
+				<!-- inserted in runtime -->
+			</div>
+			<div class="scrollingWrap">
+				<ul id="pnlDirList"></ul>
+			</div>
+		</div>
+		<div id="fileActions">
+			<input type="hidden" id="hdViewType" value="list">
+			<input type="hidden" id="hdOrder" value="asc">
+
+			<div class="actions">
+				<!-- inserted in runtime -->
+			</div>
+
+			<div id="pnlFiles" class="pnlFiles" style="height: 85%;">
+				<div class="scrollingWrap">
+
+					<div id="pnlEmptyDir">
+						<div data-lang="DirIsEmpty">This folder is empty</div>
+					</div>
+
+					<div id="pnlSearchNoFiles">
+						<div data-lang="NoFilesFound">No files found</div>
+					</div>
+
+					<div id="pnlFileList">
+						<table id="pnlViewList" cellpadding="0" cellmargin="0">
+							<tbody>
+								<!-- Files as list are inserted here -->
+							</tbody>
+						</table>
+						<div id="pnlViewThumbs">
+							<table>
+								<tbody>
+									<tr>
+										<td>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- Files as thumbs are inserted here -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="pnlLoading">
+				<div id="pnlLoadingInner">
+					<div data-lang="LoadingFiles">Loading files...</div>
+				</div>
+			</div>
+
+			<div id="pnlUploadFiles">
+			</div>
+
+		</div>
+</div>
+
+<iframe name="frmDownloadDir" style="display:none"></iframe>
+
+<div id="menuFile" class="contextMenu">
+	<!-- inserted in runtime -->
+</div>
+<div id="menuDir" class="contextMenu">
+	<!-- inserted in runtime -->
+</div>
+
+<div id="dlgTextBg" class="dlg-bg"></div>
+<div class="dlg-outer" id="dlgText" >
+	<div class="dlg-wrap">
+		<div class="dlg">
+			<div class="title"></div>
+			<div class="content">
+				<input>
+			</div>
+			<div class="buttons">
+				<a href="javascript:void(0)" class="dlg-btn" id="dlgTextBtnOK">OK</a>
+				<a href="javascript:void(0)" class="dlg-btn" id="dlgTextBtnCancel" data-lang="Cancel">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="dlgConfirmBg" class="dlg-bg"></div>
+<div class="dlg-outer" id="dlgConfirm" >
+	<div class="dlg-wrap">
+		<div class="dlg">
+			<div class="content">
+			</div>
+			<div class="buttons">
+				<a href="javascript:void(0)" class="dlg-btn" id="dlgConfirmBtnOK">OK</a>
+				<a href="javascript:void(0)" class="dlg-btn" id="dlgConfirmBtnCancel" data-lang="Cancel">Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="dlgAlertBg" class="dlg-bg"></div>
+<div class="dlg-outer" id="dlgAlert" >
+	<div class="dlg-wrap">
+		<div class="dlg">
+			<div class="content">
+			</div>
+			<div class="buttons">
+				<a href="javascript:void(0)" class="dlg-btn" id="dlgAlertBtnOK">OK</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

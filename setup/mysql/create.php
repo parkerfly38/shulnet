@@ -2075,3 +2075,4 @@ $create[] = "CREATE TABLE ppSD_cemetery(
   SatelliteImage varchar(255),
   StreetAddress varchar(255)
 ) default charset utf8 comment '';";
+$create[] = "CREATE OR REPLACE VIEW `view_yahrzeit_data` AS (select `a`.`yahrzeit_id` AS `yahrzeit_id`,concat(coalesce(`b`.`member_id`,''),',',coalesce(`a`.`Relationship`,''),',',coalesce(`b`.`first_name`,''),' ',coalesce(`b`.`last_name`,''),',',coalesce(`b`.`address_line_1`,''),',',coalesce(`b`.`address_line_2`,''),',',coalesce(`b`.`city`,''),',',coalesce(`b`.`state`,''),',',coalesce(`b`.`zip`,'')) AS `MemberData` from (`ppSD_yahrzeit_members` `a` left join `ppSD_member_data` `b` on((`a`.`user_id` = `b`.`member_id`))));";

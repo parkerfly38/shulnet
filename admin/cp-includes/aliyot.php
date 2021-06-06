@@ -61,7 +61,7 @@ if ($check != '1') {
                     echo "<h2 style='margin-top:20px;'>".$event["title"]." - ".date("D, M j Y",strtotime($event["parsha_date"]))."</h2>";
                     
                     echo "<table class='listings'>";
-                    $getAssignmentsSql = "SELECT * FROM ppSD_leyning WHERE parashat_id = ".$event["id"];
+                    $getAssignmentsSql = "SELECT a.*, CONCAT(b.first_name,' ', b.last_name) AS `honoreename` FROM ppSD_leyning a LEFT JOIN ppSD_member_data b ON a.honoree = b.member_id WHERE parashat_id = ".$event["id"];
                     $arrLeyning = $db->run_query($getAssignmentsSql,0)->fetchAll();
                     echo "<thead><tr><th>Aliyah/Honor</th><th>Oleh</th><th></th></tr></thead>";
                     echo "<tbody>";
@@ -69,14 +69,14 @@ if ($check != '1') {
                     {
                         echo "<tr><td>".$leyning["honor"]."</td>";
                         ?>
-                            <td><input type="text" id="master_userf" name="master_user_dud" value="<?php echo $leyning['honoree']; ?>"
-                                       onkeyup="return autocom(this.id,'id','username','ppSD_members','username,email','username');"
+                            <td><input type="text" id="honoreeid_<?php echo $leyning["id"]; ?>" name="master_user_dud" value="<?php echo $leyning['honoreename']; ?>"
+                                       onkeyup="return autocom(this.id,'member_id','first_name,last_name','ppSD_member_data','first_name,last_name','members');"
                                        value="" style="width:250px;"/><a href="null.php"
-                                                                         onclick="return get_list('member','honoreeid','master_userf');"><img
+                                                                         onclick="return get_list('members_withnames','honoreeid_id<?php echo $leyning["id"]; ?>','honoreeid_<?php echo $leyning["id"]; ?>');"><img
                                         src="imgs/icon-list.png" width="16" height="16" border="0"
                                         alt="Select from list" title="Select from list" class="icon-right"/></a>
 
-                                <input type="hidden" name="honoreeid" id="honoreeid" value="<?php echo $leyning['honoree']; ?>"/>
+                                <input type="hidden" class="honoreeid_id" name="honoreeid" id="honoreeid_id<?php echo $leyning["id"]; ?>" value="<?php echo $leyning['honoree']; ?>"/>
                                 <input type="hidden" name="leyning_id" id="leyning_id" value="<?php echo $leyning["id"]; ?>" />
                             </td>
                                 
@@ -96,7 +96,7 @@ if ($check != '1') {
         $(".saveButton").on("click",function()
         {
             id = $(this).parent().parent().find("#leyning_id").val();
-            honoree = $(this).parent().parent().find("#master_userf").val();
+            honoree = $(this).parent().parent().find(".honoreeid_id").val();
             $.ajax({
                 url: "../admin/cp-includes/save_aliyot.php",
                 type: "POST",

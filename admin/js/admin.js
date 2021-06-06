@@ -457,9 +457,9 @@ function popup(page, pass_fields, large) {
     return false;
 }
 function get_list(inpage, pop_id, pop_name, letter_filter, page) {
-    if ($('#get_list').length != 0) {
-        close_list();
-    } else {
+    //if ($('#get_list').length != 0) {
+    //    close_list();
+    //} else {
         show_loading();
         if (!page) {
             page = 1;
@@ -491,7 +491,7 @@ function get_list(inpage, pop_id, pop_name, letter_filter, page) {
                 handle_error(returned['1']);
             }
         });
-    }
+    //}
     return false;
 }
 function get_list_populate(id, name, pop_id, pop_name) {

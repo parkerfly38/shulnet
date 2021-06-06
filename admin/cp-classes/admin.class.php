@@ -1727,6 +1727,7 @@ class admin extends db
             $query = $force_query;
             $query_totals = str_replace('*', 'COUNT(*)', $query);
             $query_totals = str_replace('LIMIT 0,','', $query);
+            $query_totals = str_replace('DESC 50','', $query);
         }
 
         // Totals
