@@ -2076,3 +2076,20 @@ $create[] = "CREATE TABLE ppSD_cemetery(
   StreetAddress varchar(255)
 ) default charset utf8 comment '';";
 $create[] = "CREATE OR REPLACE VIEW `view_yahrzeit_data` AS (select `a`.`yahrzeit_id` AS `yahrzeit_id`,concat(coalesce(`b`.`member_id`,''),',',coalesce(`a`.`Relationship`,''),',',coalesce(`b`.`first_name`,''),' ',coalesce(`b`.`last_name`,''),',',coalesce(`b`.`address_line_1`,''),',',coalesce(`b`.`address_line_2`,''),',',coalesce(`b`.`city`,''),',',coalesce(`b`.`state`,''),',',coalesce(`b`.`zip`,'')) AS `MemberData` from (`ppSD_yahrzeit_members` `a` left join `ppSD_member_data` `b` on((`a`.`user_id` = `b`.`member_id`))));";
+$create[] = "CREATE TABLE ppSD_member_family(  
+  id int NOT NULL primary key AUTO_INCREMENT comment 'primary key',
+  member_id varchar(20) NOT NULL,
+  first_name varchar(40),
+  last_name varchar(40),
+  address_line_1 varchar(80),
+  address_line_2 varchar(30),
+  city varchar(40),
+  `state` varchar(50),
+  zip varchar(10),
+  country varchar(35),
+  phone varchar(20),
+  email varchar(110),
+  DOB DATETIME,
+  hebrew_name varchar(255),
+  bnai_mitzvah_date date
+) default charset utf8 comment '';"
