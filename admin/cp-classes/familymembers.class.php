@@ -8,9 +8,9 @@ class familymembers extends db
 
     }
 
-    function getFamilyMembersByMemberID($member_id)
+    function getFamilyMembersByMemberID($member_id, $page = 1, $limit = 50)
     {
-        $query = "SELECT * FROM `ppSD_member_family` WHERE `member_id` = '".$member_id."'";
+        $query = "SELECT * FROM `ppSD_member_family` WHERE `member_id` = '".$member_id."' LIMIT ".$page.",".$limit;
         $familymembers = array();
         $STH = $this->run_query($query);
         while ($row = $STH->fetch())
@@ -62,8 +62,8 @@ class familymembers extends db
     function updateFamilyMember($fm)
     {
         $query = "UPDATE `ppSD_member_family`
-            SET first_name = '".$fm["first_name"]"',
-                last_name = '".$fm["last_name"]"',
+            SET first_name = '".$fm["first_name"]."',
+                last_name = '".$fm["last_name"]."',
                 address_line_1 = '".$fm["address_line_1"]."',
                 address_line_2 = '".$fm["address_line_2"]."',
                 city = '".$fm["city"]."',
@@ -75,8 +75,15 @@ class familymembers extends db
                 DOB = '".$fm["DOB"]."',
                 hebrew_name = '".$fm["hebrew_name"]."',
                 bnai_mitzvah_date = '".$fm["bnai_mitzvah_date"]."'
-            WHERE id = ".$fm["id"]."";
+            WHERE id = ".$fm["id"];
         $this->update($query);
+        return "";
+    }
+
+    function deleteFamilyMember($id)
+    {
+        $query = "DELETE FROM `ppSD_member_family` WHERE id = ".$id;
+        $this->delete($query);
         return "";
     }
 }

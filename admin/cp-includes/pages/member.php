@@ -131,6 +131,8 @@ if ($show != '1') {
 
                 <li id="data">Data</li>
 
+                <li id="familymembers">Family Members</li>
+
                 <li id="yahrzeits">Yahrzeits</li>
 
                 <li id="history">Activity</li>
