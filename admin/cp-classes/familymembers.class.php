@@ -26,7 +26,6 @@ class familymembers extends db
     function getFamilyMemberByID($id)
     {
         $query = "SELECT * FROM `ppSD_member_family` WHERE `id` = ".$id;
-        $fm;
         $STH = $this->run_query($query);
         while ($row = $STH->fetch())
         {
@@ -41,20 +40,20 @@ class familymembers extends db
     {
         $query = "INSERT INTO `ppSD_member_family` (member_id, first_name, last_name, address_line_1, address_line_2, city, `state`, zip, country, phone, email, DOB, hebrew_name, bnai_mitzvah_date)
             VALUES (
-                '".$fm["member_id"]."',
-                '".$fm["first_name"]."',
-                '".$fm["last_name"]."',
-                '".$fm["address_line_1"]."',
-                '".$fm["address_line_2"]."',
-                '".$fm["city"]."',
-                '".$fm["state"]."',
-                '".$fm["zip"]."',
-                '".$fm["country"]."',
-                '".$fm["phone"]."',
-                '".$fm["email"]."',
-                '".$fm["DOB"]."',
-                '".$fm["hebrew_name"]."',
-                '".$fm["bnai_mitzvah_date"]."')";
+                '".$fm->member_id."',
+                '".$fm->first_name."',
+                '".$fm->last_name."',
+                '".$fm->address_line_1."',
+                '".$fm->address_line_2."',
+                '".$fm->city."',
+                '".$fm->state."',
+                '".$fm->zip."',
+                '".$fm->country."',
+                '".$fm->phone."',
+                '".$fm->email."',
+                '".$fm->DOB."',
+                '".$fm->hebrew_name."',
+                '".$fm->bnai_mitzvah_date."')";
         $insertedid = $this->insert($query);
         return $insertedid;
     }

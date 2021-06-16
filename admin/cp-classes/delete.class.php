@@ -138,6 +138,12 @@ class delete extends admin
                 $this->static_check    = '0';
                 $this->ownership_check = '0';
                 break;
+            case 'ppSD_member_family':
+                $this->task            = 'member_family-delete';
+                $this->function        = 'delete_member_family';
+                $this->static_check    = '0';
+                $this->ownership_check = '0';
+                break;
             case 'ppSD_accounts':
                 $this->task            = 'account-delete';
                 $this->function        = 'delete_account';
@@ -1356,6 +1362,13 @@ class delete extends admin
             WHERE `id`='" . $this->mysql_clean($this->id) . "'
             LIMIT 1
         ");
+        $this->result = '1';
+    }
+
+    function delete_member_family()
+    {
+        $fms = new familymembers();
+        $fms->deleteFamilyMember($this->id);
         $this->result = '1';
     }
 

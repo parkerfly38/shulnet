@@ -46,13 +46,13 @@ $data = $familymember->getFamilyMembersByMemberID($_POST["id"]);
             foreach($data as $row)
             {
                 echo "<tr>";
-                echo "  <td><input type='checkbox' name='".$row["id"]."' value='1' /></td>";
-                echo "  <td>".$row["last_name"].", ".$row["first_name"]."</td>";
-                echo "  <td>".$row["city"]."</td>";
-                echo "  <td>".$row["state"]."</td>";
-                echo "  <td>".$row["email"]."</td>";
-                echo "  <td>".$row["DOB"]."</td>";
-                echo "  <td class=\"options\" style=\"width:52px;\"><a href=\"return_null.php\" onclick=\"return delete_item('ppSD_member_family','".$row["id"]."');\"><img src=\"imgs/icon-delete.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Delete\" title=\"Delete\"></a></td>";
+                echo "  <td><input type='checkbox' name='".$row->id."' value='1' /></td>";
+                echo "  <td><a href='null.php' onclick=\"return popup('familymember-add','id=".$row->id."','1');\">".$row->last_name.", ".$row->first_name."</a></td>";
+                echo "  <td>".$row->city."</td>";
+                echo "  <td>".$row->state."</td>";
+                echo "  <td>".$row->email."</td>";
+                echo "  <td>".$row->DOB."</td>";
+                echo "  <td class=\"options\" style=\"width:52px;\"><a href=\"return_null.php\" onclick=\"return delete_item('ppSD_member_family','".$row->id."');\"><img src=\"imgs/icon-delete.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Delete\" title=\"Delete\"></a></td>";
                 echo "</tr>";
             }
             ?>

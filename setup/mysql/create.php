@@ -2092,4 +2092,4 @@ $create[] = "CREATE TABLE ppSD_member_family(
   DOB DATETIME,
   hebrew_name varchar(255),
   bnai_mitzvah_date date
-) default charset utf8 comment '';"
+) default charset utf8 comment '';";

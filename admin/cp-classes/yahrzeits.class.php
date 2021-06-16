@@ -185,7 +185,15 @@ class yahrzeits extends db
      */
     function get_yahrzeits_by_user($id)
     {
+    }
 
+    function get_member_yarhzeit($id, $user_id)
+    {
+        $query = "SELECT a.id, a.English_Name, a.Hebrew_Name, a.English_Date_of_Death, a.Hebrew_Date_of_Death, b.Relationship
+            FROM ppSD_yahrzeits a INNER JOIN ppSD_yahrzeit_members b ON a.id = b.yahrzeit_id WHERE a.id = '".$id."' AND b.user_id = '".$user_id."'";
+        $STH = $this->run_query($query);
+        $row = $STH->fetch();
+        return $row;
     }
 
     /**
