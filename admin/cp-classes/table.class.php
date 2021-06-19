@@ -1079,7 +1079,7 @@ class table extends db
                 list($day, $month, $year) = explode(" ",$hebrewdate);
                 $julianenglishdate = jewishtojd($jd->getJewishMonthNumber($month, $year), $day, $year);
                 $englishdate = jdtogregorian($julianenglishdate);
-                if (strlen($data["MemberData"]) > 0)
+                if (strlen($data["MemberData"]) > 0 && $data["MemberData"] !== ',, ,,,,,')
                 {
                     $cell .= "<a href=\"#\" onclick=\"return print_yahrzeitletters('".$data['MemberData']."','".$hebrewdate."','".$englishdate."','".$data["English_Name"]."');\"><img src=\"imgs/icon-print.png\" width=\"16\" height=\"16\" border=\"0\" class=\"icon\" alt=\"Print Yahrzeit Letter\" title=\"Print Yahrzeit Letter\" /></a>&nbsp;";
                 }

@@ -15,7 +15,7 @@ if ($ses['error'] == '1') {
     $trs = "";
     foreach($fms as $fm)
     {
-        $trs .= "<tr><td>".$fm->last_name.", ".$fm->first_name."</td><td>".$fm->DOB."</td><td>View</td></tr>";
+        $trs .= "<tr><td>".$fm->last_name.", ".$fm->first_name."</td><td>".date_format(date_create($fm->DOB), 'm/d/Y')."</td><td>View</td></tr>";
     }
     $changes = array(
         'familymembers' => $trs

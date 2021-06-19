@@ -1749,7 +1749,7 @@ class admin extends db
             if (!empty($math_field)) {
                 if ($math_field == "English_Date_of_Death")
                 {
-                    if (empty($rowF[$math_field]))
+                    if (empty($rowF[$math_field]) || $rowF["English_Date_of_Death"] == '0000-00-00 00:00:00')
                     {
                         $arrJdComponents = explode(" ",$rowF["Hebrew_Date_of_Death"]);
                         $jd = new jewishdates;
