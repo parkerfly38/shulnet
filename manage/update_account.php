@@ -3,7 +3,6 @@
 /**
  *    ShulNET
  *    http://www.ShulNET.com/
- *    (c) 2012, Castlamp.
  *
  *    Purpose: User management page:
  *    -> Update Account

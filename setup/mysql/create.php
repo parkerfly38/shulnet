@@ -8,7 +8,7 @@
 $create   = array();
 $create[] = "CREATE TABLE `ppSD_abuse` (
   `id` int(9) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(30) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
   `time` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ip` (`ip`)
@@ -311,7 +311,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_cart_sessions` (
   `member_id` varchar(20) NOT NULL,
   `member_type` enum('member','contact','rsvp','other') NOT NULL,
   `code` varchar(15) NOT NULL,
-  `ip` varchar(35) NOT NULL,
+  `ip` varchar(255) NOT NULL,
   `payment_gateway` varchar(35) NOT NULL,
   `gateway_order_id` varchar(50) NOT NULL,
   `gateway_resp_code` varchar(8) NOT NULL,
@@ -581,7 +581,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_email_trackback` (
   `user_type` enum('member','contact','rsvp'),
   `campaign_id` varchar(11),
   `campaign_saved_id` varchar(35),
-  `ip` VARCHAR( 30 ),
+  `ip` VARCHAR( 255 ),
   PRIMARY KEY  (`id`),
   KEY `user_id` (`user_id`),
   KEY `email_id` (`email_id`),
@@ -680,7 +680,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_event_rsvps` (
   `checked_in_by` mediumint(5),
   `arrived` tinyint(1) DEFAULT '0',
   `qrcode_key` varchar(65),
-  `ip` varchar(35),
+  `ip` varchar(255),
   PRIMARY KEY  (`id`),
   KEY `event_id` (`event_id`),
   KEY `primary_rsvp` (`primary_rsvp`),
@@ -930,7 +930,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_form_sessions` (
   `s6` int(11),
   `s7` int(11),
   `s8` int(11),
-  `ip` varchar(35),
+  `ip` varchar(255),
   `salt` varchar(6),
   `cart_id` varchar(14),
   `products` text,
@@ -985,7 +985,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_invoices` (
   `tax_rate` decimal(5,2),
   `shipping_rule` mediumint(5),
   `shipping_name` varchar(125),
-  `ip` varchar(35),
+  `ip` varchar(255),
   `owner` mediumint(5),
   `hourly` decimal(8,2),
   `rsvp_id` varchar(21),
@@ -1093,7 +1093,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_logins` (
   `session_id` varchar(35),
   `date` datetime DEFAULT '1920-01-01 00:01:01',
   `member_id` varchar(20),
-  `ip` varchar(35),
+  `ip` varchar(255),
   `status` tinyint(1) DEFAULT '1',
   `host` VARCHAR(80),
   `browser` VARCHAR(150),
@@ -1151,7 +1151,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_login_announcement_logs` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_login_temp` (
   `id` int(9) auto_increment,
-  `ip` varchar(35),
+  `ip` varchar(255),
   `attempt` smallint(2),
   PRIMARY KEY  (`id`),
   KEY `ip` (`ip`)
@@ -1184,7 +1184,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_members` (
   `public` tinyint(1) DEFAULT '0',
   `owner` mediumint(6),
   `email_pref` enum('html','text'),
-  `locked_ip` varchar(25),
+  `locked_ip` varchar(255),
   `login_attempts` tinyint(1) DEFAULT '0',
   `account` varchar(10),
   `activation_code` varchar(40),
@@ -1539,7 +1539,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_qr_devices` (
   `id` mediumint(6) auto_increment,
   `employee_id` mediumint(6),
   `status` tinyint(1) DEFAULT '1',
-  `ip` varchar(35),
+  `ip` varchar(255),
   `host` varchar(75),
   `browser` varchar(150),
   PRIMARY KEY  (`id`)
@@ -1652,7 +1652,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_sessions` (
   `ended` datetime DEFAULT '1920-01-01 00:01:01',
   `last_activity` datetime DEFAULT '1920-01-01 00:01:01',
   `ended_by` TINYINT(1) DEFAULT '0',
-  `ip` varchar(35),
+  `ip` varchar(255),
   `browser` varchar(100),
   `host` varchar(100),
   `remember` tinyint(1) DEFAULT '0',
@@ -1728,7 +1728,7 @@ $create[] = "CREATE TABLE `ppSD_source_tracking` (
   `date` datetime DEFAULT '1920-01-01 00:01:01',
   `converted_date` datetime DEFAULT '1920-01-01 00:01:01',
   `referrer` varchar(255) DEFAULT NULL,
-  `ip` varchar(20) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
   `converted` tinyint(1) DEFAULT '0',
   `user_id` varchar(50) DEFAULT NULL,
   `user_type` enum('member','contact','rsvp') DEFAULT NULL,
@@ -1767,7 +1767,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_staff` (
   `department` varchar(50),
   `occupation` varchar(75),
   `locked` datetime DEFAULT '1920-01-01 00:01:01',
-  `locked_ip` varchar(25),
+  `locked_ip` varchar(255),
   `login_attempts` tinyint(1) DEFAULT '0',
   `status` tinyint(1) DEFAULT '1',
   `options` mediumtext,
@@ -1786,7 +1786,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_staff_in` (
   `complete` datetime DEFAULT '1920-01-01 00:01:01',
   `username` varchar(100),
   `remember` tinyint(1) DEFAULT '0',
-  `ip` varchar(25),
+  `ip` varchar(255),
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_stats` (
@@ -1985,7 +1985,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_usage_logs` (
   `success` tinyint(1) NOT NULL DEFAULT '1',
   `msg` varchar(255),
   `task` varchar(75),
-  `ip` varchar(25),
+  `ip` varchar(255),
   `session` varchar(30),
   PRIMARY KEY  (`id`),
   KEY `username` (`username`,`task`),
@@ -2076,3 +2076,20 @@ $create[] = "CREATE TABLE ppSD_cemetery(
   StreetAddress varchar(255)
 ) default charset utf8 comment '';";
 $create[] = "CREATE OR REPLACE VIEW `view_yahrzeit_data` AS (select `a`.`yahrzeit_id` AS `yahrzeit_id`,concat(coalesce(`b`.`member_id`,''),',',coalesce(`a`.`Relationship`,''),',',coalesce(`b`.`first_name`,''),' ',coalesce(`b`.`last_name`,''),',',coalesce(`b`.`address_line_1`,''),',',coalesce(`b`.`address_line_2`,''),',',coalesce(`b`.`city`,''),',',coalesce(`b`.`state`,''),',',coalesce(`b`.`zip`,'')) AS `MemberData` from (`ppSD_yahrzeit_members` `a` left join `ppSD_member_data` `b` on((`a`.`user_id` = `b`.`member_id`))));";
+$create[] = "CREATE TABLE ppSD_member_family(  
+  id int NOT NULL primary key AUTO_INCREMENT comment 'primary key',
+  member_id varchar(20) NOT NULL,
+  first_name varchar(40),
+  last_name varchar(40),
+  address_line_1 varchar(80),
+  address_line_2 varchar(30),
+  city varchar(40),
+  `state` varchar(50),
+  zip varchar(10),
+  country varchar(35),
+  phone varchar(20),
+  email varchar(110),
+  DOB DATETIME,
+  hebrew_name varchar(255),
+  bnai_mitzvah_date date
+) default charset utf8 comment '';";
