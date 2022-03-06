@@ -183,6 +183,13 @@ if (empty($home_guide)) {
                     echo "<p>".$y["Hebrew_Date_of_Death"]."</p>";
                     $jewishday = explode(" ", $y["Hebrew_Date_of_Death"])[0];
                     $jewishmonth = explode(" ", $y["Hebrew_Date_of_Death"])[1];
+                    if ($jewishmonth == 'Adar')
+                    {
+                        if (explode(" ", $y["Hebrew_Date_of_Death"])[2] == "I" || explode(" ", $y["Hebrew_Date_of_Death"])[2] == "II")
+                        {
+                            $jewishmonth .= 'Adar ' + explode(" ", $y["Hebrew_Date_of_Death"])[2];
+                        }
+                    }
                     echo "<p>".$jd->JewishToGregorian($jewishday, $jewishmonth)."</p>";
                     echo "</div></div>";
                 }

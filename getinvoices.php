@@ -7,9 +7,9 @@ require 'admin/sd-system/config.php';
 use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\Core\OAuth\OAuth2\OAuth2AccessToken;
 $config = QBConfig;
-echo "<br />got this far";
+echo "<p>got this far</p>";
 try {
-echo "<br />set dataservice start";
+echo "<p?>set dataservice start</p>";
 $dataService = DataService::Configure(array(
     'auth_mode' => 'oauth2',
     'ClientID' => $config["client_id"],
@@ -19,7 +19,7 @@ $dataService = DataService::Configure(array(
     'baseUrl' => "production"
 ));
 //print_r($dataService);
-echo "<br />set dataservice end";
+echo "<p>set dataservice end</p>";
 
 $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
 $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
@@ -27,7 +27,7 @@ $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
 // Store the url in PHP Session Object;
 $_SESSION['authUrl'] = $authUrl;
-echo "set session";
+echo "<p>set session</p>";
 } catch (Exception $e)
 {
     print_r($e);
@@ -69,7 +69,7 @@ if (isset($_SESSION['sessionAccessToken'])) {
     );
     if (strtotime("now") > strtotime($accessToken->getAccessTokenExpiresAt()))
     {
-        echo "Token expired";
+        echo "<p>Token expired</p>";
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => $config["client_id"],
@@ -80,22 +80,36 @@ if (isset($_SESSION['sessionAccessToken'])) {
             'refreshTokenKey' => $accessToken->getRefreshToken(),
             'QBORealmID' => $accessToken->getRealmID(),
         ));
-        $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-        $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
-        $dataService->updateOAuth2Token($refreshedAccessTokenObj);
+        try {
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
+            $dataService->updateOAuth2Token($refreshedAccessTokenObj);
 
-        $_SESSION['sessionAccessToken'] = $refreshedAccessTokenObj;
-        $id = $db->insert("INSERT INTO ppSD_QBInvoicePull (lastAccessToken, refreshToken,refreshTokenExpires, expires_in, realmId, update_time)
+            $_SESSION['sessionAccessToken'] = $refreshedAccessTokenObj;
+        
+            $id = $db->insert("INSERT INTO ppSD_QBInvoicePull (lastAccessToken, refreshToken,refreshTokenExpires, expires_in, realmId, update_time)
                     VALUES ('".$refreshedAccessTokenObj->getAccessToken()."','".$refreshedAccessTokenObj->getRefreshToken()."','"
                     .$refreshedAccessTokenObj->getRefreshTokenExpiresAt()."','"
                     .$refreshedAccessTokenObj->getAccessTokenExpiresAt()."','"
                     .$refreshedAccessTokenObj->getRealmID()."',NOW());");
+        } catch (Exception $e)
+        {
+            print_r($e);
+            exit;
+        }
+        catch (Throwable $t)
+        {
+            print_r($t);
+            exit;
+        }
+        echo "<p>Finished getting new token.</p>";
     }
     $dataService->updateOAuth2Token($accessToken);
     $oauthLoginHelper = $dataService -> getOAuth2LoginHelper();
     
     $customers = $db->run_query("SELECT member_id, first_name, last_name, quickbooks_customer_id FROM ppSD_member_data WHERE quickbooks_customer_id IS NOT NULL");
     $arrCustomers = $customers->fetchAll();
+    echo "<p>Retrieved customers</p>";
     //insert invoices
     foreach($arrCustomers as $customer)
     {

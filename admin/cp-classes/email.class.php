@@ -28,7 +28,7 @@ class email extends db
     private $cc;
     private $bcc;
     private $preview;
-    private $return;
+    public  $return;
     private $email_theme;
     private $track_links;
     private $fail_reason;
@@ -245,10 +245,9 @@ class email extends db
 
         // Finalize
         $combine_body = $header . $body . $footer;
-        if ($this->format == '1') {
-            $combine_body = $this->create_inline_css($combine_body); // Create inline CSS
-        }
-
+        //if ($this->format == '1') {
+        //    $combine_body = $this->create_inline_css($combine_body); // Create inline CSS
+        //}
         $this->body = $this->msg_top . $combine_body;
         if (is_null($this->programmatic) && ! empty($this->attachment_content)) {
             $this->body .= PHP_EOL . $this->attachment_content;
@@ -711,6 +710,17 @@ class email extends db
                 }
 
                 $reply = $this->programmaticSend->send();
+                
+                if(!empty($reply)) {
+                   $this->vendorid = $reply['id'];
+
+                   if (! empty($reply['error'])) {
+                       echo "0+++" . $this->programmaticId . ' threw an error: ' . $reply['message'];
+                       exit;
+                       $this->fail = 1;
+                       $this->fail_reason = $reply['code'] . ': ' . $reply['message'];
+                   }
+               }
 
                 $this->vendorid = $reply['id'];
 
@@ -748,8 +758,13 @@ class email extends db
             $this->history();
 
             // Set return
-            $this->return = 'Sent';
-
+            if(!empty($reply)) {
+               $this->return = 'Sent';
+            }
+            else {
+                $this->return = 'Failed';
+            }
+            
             // Update hourly stats
             $this->put_stats('emails_sent');
 
