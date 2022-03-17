@@ -57,7 +57,7 @@ class email extends db
         $email_external = $this->get_option('email_plugin');
         if (! empty($email_external)) {
             $check = PP_PATH . '/custom/plugins/' . $email_external . '/functions/send.php';
-            if (file_exists($check)) {
+           if (file_exists($check)) {
                 $this->programmatic = new plugin($email_external);
                 $this->programmaticSend = $this->programmatic->load('send');
                 $this->programmaticId = $email_external;
@@ -708,7 +708,6 @@ class email extends db
                 } else {
                     $this->programmaticSend->setTextMessage($this->body);
                 }
-
                 $reply = $this->programmaticSend->send();
                 
                 if(!empty($reply)) {

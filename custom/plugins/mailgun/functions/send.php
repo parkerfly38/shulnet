@@ -1,6 +1,11 @@
 <?php
+    require PP_PATH . '/vendor/autoload.php';
+    use Mailgun\Mailgun;
 
 class send extends pluginLoader {
+
+    protected $mg;
+    protected $domain = "<domain>";
 
     protected $plugin;
 
@@ -22,6 +27,7 @@ class send extends pluginLoader {
     public function __construct(plugin $plugin)
     {
         $this->plugin = $plugin;
+        $this->mg = Mailgun::create("<key>");
     }
 
 	/**
@@ -247,15 +253,17 @@ class send extends pluginLoader {
             }
             $method = 3;
         }
-
-        $reply = $this->curl_call(
+        $reply = $this->mg->messages()->send($this->domain, $sending);
+        /*$reply = $this->curl_call(
     		$this->apiUrl . '/' . $this->apiDomain . '/messages',
             $sending,
             $method,
             'api:' . $this->apiSid
-    	);
-
-        $json = json_decode($reply, true);
+    	);*/
+        $json = array(
+            "id" => $reply->getId(),
+            "message" => $reply->getMessage()
+        );
 
         return $this->processReply($json);
 	}
