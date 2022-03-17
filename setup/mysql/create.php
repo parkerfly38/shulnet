@@ -475,7 +475,7 @@ $create[] = "CREATE TABLE `ppSD_criteria_cache` (
   `email_id` varchar(13) NOT NULL,
   `save` tinyint(1) DEFAULT '0',
   `name` varchar(85) NOT NULL,
-  `type` enum('member','contact','rsvp','account','campaign','transaction','subscription','invoice') NOT NULL,
+  `type` enum('yahrzeit','member','contact','rsvp','account','campaign','transaction','subscription','invoice') NOT NULL,
   `act` enum('email','search','print','campaign','export','other') NOT NULL,
   `date` datetime NOT NULL,
   `inclusive` enum('or','and') NOT NULL,

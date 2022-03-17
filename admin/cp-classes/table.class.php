@@ -1077,6 +1077,17 @@ class table extends db
                 $jd = new jewishdates;
                 $hebrewdate = $data["Hebrew_Date_of_Death"]." ".$jd->getCurrentJewishYear(time());
                 list($day, $month, $year) = explode(" ",$hebrewdate);
+                if (strpos($hebrewdate,"Adar I") || strpos($hebrewdate, "Adar II"))
+                {
+                    $day = explode(" ", $hebrewdate)[0];
+                    $month = explode(" ", $hebrewdate)[1] . ' ' . explode(" ", $hebrewdate)[2];
+                    $year = explode(" ", $hebrewdate)[3];
+                } else {
+                    if ($month == "Adar" && $jd->isLeapYear($year))
+                    {
+                        $month = "Adar I";
+                    }
+                }
                 $julianenglishdate = jewishtojd($jd->getJewishMonthNumber($month, $year), $day, $year);
                 $englishdate = jdtogregorian($julianenglishdate);
                 if (strlen($data["MemberData"]) > 0 && $data["MemberData"] !== ',, ,,,,,')

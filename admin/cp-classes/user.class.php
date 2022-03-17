@@ -1830,7 +1830,6 @@ class user extends db
         $changes['code'] = $mid;
         $changes['custom_message'] = (! empty($custom_message)) ? '<p>' . $custom_message . '</p>' : '';
         $email = new email('', $id, 'member', '', $changes, 'reset_password_directions');
-
         // Finalize hooks and stuff.
         $indata = array(
             'member_id' => $id,

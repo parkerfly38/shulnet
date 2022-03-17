@@ -8,7 +8,7 @@ class familymembers extends db
 
     }
 
-    function getFamilyMembersByMemberID($member_id, $page = 1, $limit = 50)
+    function getFamilyMembersByMemberID($member_id, $page = 0, $limit = 50)
     {
         $query = "SELECT * FROM `ppSD_member_family` WHERE `member_id` = '".$member_id."' LIMIT ".$page.",".$limit;
         $familymembers = array();

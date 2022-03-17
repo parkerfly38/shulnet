@@ -1755,6 +1755,19 @@ class admin extends db
                         $jd = new jewishdates;
                         $jewishday = $arrJdComponents[0];
                         $jewishMonth = $arrJdComponents[1];
+                        if ($jewishMonth == 'Adar')
+                        {
+                            if ($arrJdComponents[2] == "I" || $arrJdComponents[2] == "II")
+                            {
+                                $jewishMonth .= " " . $arrJdComponents[2];
+                            } else {
+                                $jewishYear = $jd->getCurrentJewishYear(new DateTime());
+                                if ($jd->isLeapYear($jewishYear))
+                                {
+                                    $jewishMonth = "Adar I";
+                                }
+                            }
+                        }
                         $rowF[$math_field] = $jd->JewishToGregorian($jewishday, $jewishMonth);
                     }
                 } else {

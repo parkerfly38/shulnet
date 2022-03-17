@@ -181,6 +181,10 @@ if ($type == 'edit') {
             $full_link .= PP_URL . '/admin/index.php?l=members';
 
         }
+        else if ($_POST['type'] == 'yahrzeit')
+        {
+            $full_link .= PP_URL . '/admin/index.php?l=yahrzeits';
+        }
         //if ($filters['all'] != '1') {
         //    $full_link .= $admin->build_filter_query_string($filters['filters'],$filters['filter_type'],$filters['filter_tables'],$table);
         //}
