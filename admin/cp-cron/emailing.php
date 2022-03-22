@@ -3,20 +3,24 @@
 // Sample Command (every 15 minutes):
 // */15	*	*	*	*	php /full/server/path/to/members/admin/cp-cron/emailing.php
 require '../../vendor/autoload.php';
+require '../sd-system/config.php';
+
 use Mailgun\Mailgun;
 
-$mg =  Mailgun::create("<mailgun key>");
-$domain = "<mailgun domain>";
+$db = new db;
+$mgkey = $db->get_option('apikey');
+$domain = $db->get_option('domain');
+$mg =  Mailgun::create($mgkey);
 
 //prod conn string
-$pdo = new PDO("mysql:host=<host>;dbname=<db>", "<user>", "<password>");
+$pdo = new PDO("mysql:host=".PP_MYSQL_HOST.";dbname=".PP_MYSQL_DB, PP_MYSQL_USER, PP_MYSQL_PASS);
 $stmt = $pdo->prepare("SELECT * FROM `ppSD_email_scheduled` LIMIT 500");
 $stmt->execute();
 $rows = $stmt->fetchAll();
 foreach ($rows as $row)
 {
     $to = "";
-    $from = "Email Name <email addy>";
+    $from = $db->get_option("company_name") . " <". $db->get_option("company_email") . ">";
     if ($row["user_type"] == 'contact')
     {
         $getUser = $pdo->prepare("SELECT email FROM ppSD_contacts where id = '".$row['user_id']."'");

@@ -5,7 +5,7 @@
 class send extends pluginLoader {
 
     protected $mg;
-    protected $domain = "<domain>";
+    protected $domain; //"<domain>";
 
     protected $plugin;
 
@@ -27,7 +27,8 @@ class send extends pluginLoader {
     public function __construct(plugin $plugin)
     {
         $this->plugin = $plugin;
-        $this->mg = Mailgun::create("<key>");
+        $this->mg = Mailgun::create($this->get_option("apikey"));
+        $this->domain = $this->get_option("domain");
     }
 
 	/**

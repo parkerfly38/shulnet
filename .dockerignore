@@ -1,0 +1,9 @@
+.git
+.vscode
+.gitignore
+docker-compose.yml
+Dockerfile
+LICENSE
+README.md
+robots.txt
+nginx.conf

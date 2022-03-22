@@ -5,8 +5,6 @@ services:
     image: "parkerfly38/shulnet:shulnet-apache"
     ports:
       - "8000:80"
-    volumes:
-      - .:/var/www/html
     environment:
       MYSQL_DATABASE: shulnet
       MYSQL_PASSWORD: "shulnet"
