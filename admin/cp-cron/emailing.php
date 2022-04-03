@@ -1,17 +1,22 @@
 <?php
 
+
 // Sample Command (every 15 minutes):
 // */15	*	*	*	*	php /full/server/path/to/members/admin/cp-cron/emailing.php
 require '../../vendor/autoload.php';
 require '../sd-system/config.php';
-
+print_r("Using Mailgun...<br />");
 use Mailgun\Mailgun;
-
+try {
 $db = new db;
 $mgkey = $db->get_option('apikey');
 $domain = $db->get_option('domain');
 $mg =  Mailgun::create($mgkey);
-
+} catch (Exception $exception)
+{
+    print_r($exception);
+}
+print_r("Domain and key set...<br />");
 //prod conn string
 $pdo = new PDO("mysql:host=".PP_MYSQL_HOST.";dbname=".PP_MYSQL_DB, PP_MYSQL_USER, PP_MYSQL_PASS);
 $stmt = $pdo->prepare("SELECT * FROM `ppSD_email_scheduled` LIMIT 500");
@@ -100,8 +105,9 @@ foreach ($rows as $row)
     $delfromMessageQueue->execute();
 }
 $updateEmailQueue = $pdo->prepare("UPDATE ppSD_options SET `value` = '".date('Y-m-d H:i:s', time())."' WHERE id = 'email_queue_last_sent'");
+print_r("Sending");
 $updateEmailQueue->execute();
-
+print_r($updateEmailQueue);
 
 // Send scheduled queue
 //$connect = new connect();
