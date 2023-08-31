@@ -33,7 +33,7 @@ function is_ssl()
     return false;
 }
 
-function secure_folder($folder)
+function secure_folder($folder, $salt)
 {
     // .htaccess file
     $htfile     = $folder . "/.htaccess";
@@ -49,7 +49,7 @@ function secure_folder($folder)
     fclose($fh);
     // .htpasswd file
     $htfile1 = $folder . "/.htpasswd";
-    $content = md5(uniqid(rand(), true)) . ":" . crypt(md5(uniqid(rand(), true)) . md5(time() . rand(10000, 99999999))) . "\n";
+    $content = md5(uniqid(rand(), true)) . ":" . crypt(md5(uniqid(rand(), true)) . md5(time() . rand(10000, 99999999)), $salt) . "\n";
     $fh      = fopen($htfile1, 'w');
     fwrite($fh, $content);
     fclose($fh);

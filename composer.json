@@ -1,4 +1,12 @@
 {
+    "config": {
+        "platform": {
+            "php": "8.0"
+        },
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
     "require": {
         "quickbooks/v3-php-sdk": "^5.4",
         "guzzlehttp/guzzle": "^7.2",

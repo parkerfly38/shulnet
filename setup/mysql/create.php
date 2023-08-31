@@ -67,7 +67,7 @@ $create[] = "CREATE TABLE `ppSD_activity_methods` (
   `id` varchar(35) NOT NULL DEFAULT '',
   `icon` varchar(35) DEFAULT NULL,
   `link` varchar(35) DEFAULT NULL,
-  `link_type` enum('popup','popup_large','link','slider') DEFAULT NULL,
+  `link_type` enum('popup','popup_large','link','slider','alert') DEFAULT NULL,
   `custom` tinyint(1) DEFAULT '1',
   `text` varchar(75) DEFAULT NULL,
   `in_feed` tinyint(1) DEFAULT '1',
@@ -825,7 +825,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_field_logic` (
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_forms` (
   `id` varchar(25),
   `type` enum('admin_cp','payment_form','register-free','contact','update_account','event','register-paid','campaign','dependency','update'),
-  `criteria` mediumtext  NULL DEFAULT '',
+  `criteria` mediumtext  NULL,
   `act_id` varchar(20) NULL DEFAULT '',
   `name` varchar(50),
   `description` text,
@@ -1317,7 +1317,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_note_labels` (
   `label` varchar(35),
   `color` varchar(6),
   `fontcolor` varchar(6),
-  `static_lookup` VARCHAR(10) NULL,
+  `static_lookup` VARCHAR(25) NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8";
 $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_options` (
@@ -1995,7 +1995,7 @@ $create[] = "CREATE TABLE IF NOT EXISTS `ppSD_widgets` (
   `id` varchar(75),
   `name` varchar(45),
   `type` enum('plugin','menu','html','code','upload_list'),
-  `menu_type` enum('horizontal','vertical'),
+  `menu_type` enum('horizontal','vertical',''),
   `content` longtext,
   `active` tinyint(1) DEFAULT '1',
   `add_class` varchar(50) DEFAULT NULL,

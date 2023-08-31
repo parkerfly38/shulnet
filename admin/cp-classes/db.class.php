@@ -1633,7 +1633,7 @@ class db
         $reg = array();
         $reg['name'] = $theme;
         $reg['url'] = $url_put . "/pp-templates/html/" . $theme;
-        $reg['classes'] = $this->get_theme_classes($theme);
+        //$reg['classes'] = $this->get_theme_classes($theme);
         return $reg;
     }
 

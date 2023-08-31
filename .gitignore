@@ -7,7 +7,4 @@ shulnetv115.zip
 xdebug.log
 composer.lock
 composer.lock
-/vendor/
-/vendor/composer/
-vendor/guzzlehttp/
-vendor/quickbooks/
+/vendor

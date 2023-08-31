@@ -1,11 +1,11 @@
 <?php
 
 // error_reporting(E_ALL);
-if (get_magic_quotes_gpc()) {
+/*if (get_magic_quotes_gpc()) {
     function magicQuotes_awStripslashes(&$value, $key) {$value = stripslashes($value);}
     $gpc = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
     array_walk_recursive($gpc, 'magicQuotes_awStripslashes');
-}
+}*/
 
 ini_set('display_errors', 0);
 error_reporting(0);
@@ -121,7 +121,7 @@ $saltfile .= "define('SALT1','$salt1');\n";
 
 if (is_writable($path . '/admin/sd-system')) {
     $step1 = '';
-    $fh = fopen($path . '/admin/sd-system/salt.php', 'w');
+    $fh = fopen($path . '/admin/sd-system/salt.php', 'w+');
     fwrite($fh, $saltfile);
     fclose($fh);
     define('SALT',$salt);
@@ -200,8 +200,8 @@ if (is_writable($path . '/admin/sd-system')) {
 // ----------------------------
 //   Secure key folders
 
-@secure_folder($path . '/admin/exports');
-@secure_folder($path . '/admin/attachments');
+@secure_folder($path . '/admin/exports', $salt);
+@secure_folder($path . '/admin/attachments', $salt);
 
 // ----------------------------
 //   Delete unwanted files

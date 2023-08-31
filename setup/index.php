@@ -140,15 +140,15 @@ require "assets/header.php";
                 </li>
                 <li class="indent">
                 <?php
-                if (get_magic_quotes_gpc()) {
+                /*if (get_magic_quotes_gpc()) {
                     $class = 'bad';
                     $error = '1';
                     $msg = 'Magic quotes are enabled on your server - contact your web hosting provider to have them turned off. Note that this feature has been removed from PHP since v5.4 and is not required any longer.';
                 } else {
                     $class = 'good';
                     $msg = 'Magic quotes are turned off.';
-                }
-                echo "<span class=$class>$msg [<a href=\"http://php.net/manual/en/security.magicquotes.php\" target=\"_blank\">Info</a>]</span>";
+                }*/
+                //echo "<span class=$class>$msg [<a href=\"http://php.net/manual/en/security.magicquotes.php\" target=\"_blank\">Info</a>]</span>";
                 ?>
                 <li class="indent">
                     <?php
@@ -231,9 +231,9 @@ require "assets/header.php";
             </fieldset>
 
             <fieldset class="red">
-                <legend>Company and Program Basics</legend>
+                <legend>Organization and Program Basics</legend>
 
-                <p class="desc">Please provide some basic information about your company and membership site.</p>
+                <p class="desc">Please provide some basic information about your organization and membership site.</p>
 
                 <?php
                 if (empty($_SERVER['HTTP_HOST'])) {
@@ -245,21 +245,21 @@ require "assets/header.php";
 
                 <ul class="form">
                     <li>
-                        <label>Company Name</label>
+                        <label>Organization Name</label>
                         <input type="text" name="company_name" placeholder="Acme Inc." autocomplete="off" value="<?php echo $name; ?>" style="width:200px;"/>
                     </li>
                     <li>
-                        <label>Company URL</label>
+                        <label>Organization URL</label>
                         <input type="text" name="company_url" placeholder="http://www.yoursite.com/" autocomplete="off" value="http://<?php echo $name; ?>" style="width:200px;"/>
                     </li>
                     <li>
-                        <label>Company E-Mail</label>
+                        <label>Organization E-Mail</label>
                         <input type="text" name="company_email" placeholder="info@yoursite.com" autocomplete="off" value="noreply@<?php echo $name; ?>" style="width:200px;"/>
 
-                        <p class="field_desc">Generic contact e-mail for your company.</p>
+                        <p class="field_desc">Generic contact e-mail for your organization.</p>
                     </li>
                     <li>
-                        <label>Company Logo</label>
+                        <label>Organization Logo</label>
                         <input type="text" name="company_logo" autocomplete="off" placeholder="http://www.yoursite.com/imgs/logo.png" value="" style="width:200px;"/>
 
                         <p class="field_desc">Input as a full URL. Example: http://www.mysite.com/imgs/logo.png</p>
@@ -339,27 +339,6 @@ require "assets/header.php";
 
             </fieldset>
 
-            <fieldset class="">
-            <legend>Subscriptions</legend>
-
-                <p class="desc">Would you like to subscribe to the ShulNET newsletter to stay up-to-date with new updates, features, and news related to the product? You can unsubscribe at any time.</p>
-
-                <ul class="form">
-                    <li>
-                        <input type="checkbox" name="enroll_newsletter" value="1" checked="checked" /> Yes, keep me informed about all things ShulNET!
-                    </li>
-                </ul>
-
-                <p class="desc">In order to better understand how our software is used, we provide our users with the option to "opt in" to our
-                    statistical collection program. This program is <b>completely anonymous</b> and only provides us with information
-                    like total transactions, sales, events, members, and contacts managed.</p>
-
-                <ul class="form">
-                    <li>
-                        <input type="checkbox" name="enroll_stats" value="1" checked="checked" /> Opt-in to the anonymous stat collection program.
-                    </li>
-                </ul>
-            </fieldset>
 
         <?php
         }
