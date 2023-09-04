@@ -2060,7 +2060,10 @@ class db
     function get_option($id)
     {
         $q = $this->get_array("SELECT `value` FROM `ppSD_options` WHERE `id`='" . $this->mysql_clean($id) . "' LIMIT 1");
-        $q['value'] = str_replace('%site%', PP_URL, $q['value']);
+        if ($q !== false)
+        {
+            $q['value'] = str_replace('%site%', PP_URL, $q['value']);
+        }
         if ($id == 'company_contact') {
             if (strlen($q['value']) == strlen(strip_tags($q['value']))) {
                 $q['value'] = nl2br($q['value']);
@@ -2077,8 +2080,10 @@ class db
             $class = new $id;
             $q['value'] = $class->processGet($q['value']);
         }
-
-        return $q['value'];
+        if ($q !== false)
+        {
+            return $q['value'];
+        }
     }
 
 

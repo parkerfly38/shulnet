@@ -37,7 +37,7 @@ class site extends db
             }
         }
         // Standard content page.
-        if (!empty($url_string) && $url_string != 'home') {
+        if (!empty($url_string) && strtolower($url_string) != '/home') {
             $this->string = $url_string;
             $this->break_up_url();
             $this->get_page();
@@ -150,11 +150,11 @@ class site extends db
         if ($this->string == 'home') {
             $get_template = 'homepage';
         } else {
-            if ($this->data['type'] == 'redirect') {
+            if ($this->data !== null && $this->data['type'] == 'redirect') {
                 $this->data['url'] = str_replace('%pp%', PP_URL, $this->data['url']);
                 header('Location: ' . $this->data['url']);
                 exit;
-            } else if ($this->data['type'] == 'page') {
+            } else if ($this->data !== null && $this->data['type'] == 'page') {
                 $get_template = 'content-' . $this->data['id'];
             } else {
                 $changes['details'] = $this->get_error('W004');

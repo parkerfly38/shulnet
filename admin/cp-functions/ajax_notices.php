@@ -5,7 +5,7 @@ $admin        = new admin;
 $employee     = $admin->check_employee('');
 $disable_akax = $db->get_eav_value('employee-' . $employee['id'], 'disable_akax');
 if ($disable_akax != '1') {
-    $last_check = $db->get_eav_value('employee-' . $employee['id'], 'last_ajax_check');
+    $last_check = $db->get_eav_value('employee-' . $employee['id'], 'last_ajax_check') ?? date('Y-m-d H:i:s');
     $history    = new history('', '', '', '', '', '', '');
 
 

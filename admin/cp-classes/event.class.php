@@ -19,11 +19,11 @@ class event extends db
     /**
      * Set up the output for this template.
      */
-    function __construct($year = '', $month = '', $calendar_id = '', $day = '', $tag_filters = '')
+    function __construct($year = null, $month = null, $calendar_id = '', $day = '', $tag_filters = '')
     {
 
-        $this->year = $year;
-        $this->month = $month;
+        $this->year = $year ?? date('y');
+        $this->month = $month ?? date('m');
         $this->calendar_id = $calendar_id;
         $this->day = $day;
         $this->tags = $tag_filters;
@@ -427,8 +427,7 @@ class event extends db
 			FROM `ppSD_events`
 			WHERE
                 `starts` LIKE '" . $this->mysql_cleans($build_date) . "%' AND
-                `calendar_id`='" . $this->mysql_cleans($this->calendar_id) . "' AND
-                ``='1'
+                `calendar_id`='" . $this->mysql_cleans($this->calendar_id) . "'
 			ORDER BY `starts` DESC
 		");
         while ($row = $STH->fetch()) {

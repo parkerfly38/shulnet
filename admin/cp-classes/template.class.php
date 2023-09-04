@@ -90,7 +90,7 @@ class template extends db
                 //$this->user_data = $user_data;
             } else {
                 // Template or page secure?
-                if ($this->data['secure'] == '1' && $this->pre_screened != '1') {
+                if ($this->data !== false && $this->data['secure'] == '1' && $this->pre_screened != '1') {
                     $session->reject('login', 'L027', '');
                     exit;
                 }
@@ -325,7 +325,7 @@ class template extends db
     function get_template()
     {
 
-        if (! empty($this->page_data) || $this->get_array['type'] == '4') {
+        if ($this->get_array !== false && (! empty($this->page_data) || $this->get_array['type'] == '4')) {
             // Template wrapper.
             // Already done for previews.
             if ($this->get_array['type'] == '4') {
@@ -529,9 +529,9 @@ class template extends db
             'pp_company_url' => $this->get_option('company_url'),
             'meta_title' => $this->get_title(),
             'page_title' => $this->get_title(true),
-            'meta_desc' => $this->data['desc'],
+            'meta_desc' => ($this->data !== false) ? $this->data['desc'] : '',
             'pp_breadcrumbs' => $this->get_crumbs(),
-            'template_name' => $this->data['id'],
+            'template_name' => ($this->data !== false) ? $this->data['id'] : '',
             'site_name' => $this->site_name,
             'query' => $query,
             'company_address' => $this->get_option('company_address'),
@@ -591,7 +591,7 @@ class template extends db
                 $crumb .= $this->get_section_url();
             }
         }
-        if (empty($this->changes['title'])) {
+        if ($this->data !== false && empty($this->changes['title'])) {
             $crumb .= " / <a href=\"" . $this->current_url() . "\">" . $this->data['title'] . "</a>";
         }
         return $crumb;
@@ -615,7 +615,7 @@ class template extends db
             return $content->language_title($this->data['id'], $this->lang);
         }
         else {
-            if ($skip_padding) {
+            if ($skip_padding && $this->data !== false) {
                 return $this->data['title'];
             }
 
@@ -629,7 +629,7 @@ class template extends db
             }
 
             $title .= " / ";
-            $title .= $this->data['title'];
+            $title .= ($this->data !== false) ? $this->data['title'] : '';
             $title .= " | " . COMPANY;
 
             return $title;

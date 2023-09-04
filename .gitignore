@@ -8,3 +8,4 @@ xdebug.log
 composer.lock
 composer.lock
 /vendor
+phpinfo.php

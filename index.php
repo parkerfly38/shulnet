@@ -31,10 +31,9 @@ $in = '';
 if (! empty($_GET['in'])) {
 	$in = $_GET['in'];
 }
-if ($in == '')
+if (trim($in) === '')
 {
-	header('Location: http://localhost:8000/news.php');
-	exit;
+	$in = '/Home';
 }
 echo new site($in);
 exit;

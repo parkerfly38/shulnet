@@ -12,6 +12,7 @@ RUN apt-get update && \
 RUN docker-php-ext-install gd
 RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install calendar
 
 # DEBUG ONLY
 RUN yes | pecl install xdebug \
