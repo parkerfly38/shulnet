@@ -766,12 +766,12 @@ function add_time_to_expires($timeframe, $expires_date = '', $threshold_date = '
             $months_with_31 = array('01', '03', '05', '07', '08', '10', '12');
             $months_with_30 = array('04', '06', '09', '11');
             $leap_years     = array('2008', '2012', '2016', '2020', '2024', '2028');
-            $years          = substr($timeframe, 0, 2);
-            $months         = substr($timeframe, 2, 2);
-            $days           = substr($timeframe, 4, 2);
-            $hours          = substr($timeframe, 6, 2);
-            $minutes        = substr($timeframe, 8, 2);
-            $seconds        = substr($timeframe, 10, 2);
+            $years          = intval(substr($timeframe, 0, 2));
+            $months         = intval(substr($timeframe, 2, 2));
+            $days           = intval(substr($timeframe, 4, 2));
+            $hours          = intval(substr($timeframe, 6, 2));
+            $minutes        = intval(substr($timeframe, 8, 2));
+            $seconds        = intval(substr($timeframe, 10, 2));
             $all_together   = $years . $days . $hours . $minutes . $seconds;
             if ($months > 0 && $all_together == "0") {
                 $expires_split = explode(' ', $expires_date);

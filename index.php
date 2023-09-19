@@ -33,7 +33,7 @@ if (! empty($_GET['in'])) {
 }
 if (trim($in) === '')
 {
-	$in = '/Home';
+	$in = 'home';
 }
 echo new site($in);
 exit;

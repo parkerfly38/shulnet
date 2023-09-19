@@ -57,6 +57,18 @@ $create[] = "CREATE TABLE `ppSD_account_data` (
   KEY `company_name` (`company_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ";
+
+$create[] = "CREATE TABLE `ppSD_access_granters` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(35) DEFAULT NULL COMMENT 'ppSD_products ID or ppSD_',
+  `type` enum('content','newsletter') DEFAULT NULL,
+  `grants_to` varchar(25) DEFAULT NULL COMMENT 'ppSD_content ID ppSD_event_timeline ID or ppSD_events ID',
+  `timeframe` varchar(12) DEFAULT NULL COMMENT 'For subscription product, always matches that timeframe.',
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`,`grants_to`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+";
+
 $create[] = "CREATE TABLE `ppSD_account_types` (
   `id` mediumint(4) NOT NULL AUTO_INCREMENT,
   `type` varchar(35) DEFAULT NULL,
@@ -429,12 +441,12 @@ $create[] = "CREATE TABLE `ppSD_contact_data` (
   `linkedin` varchar(100) DEFAULT NULL,
   `dob` date DEFAULT '1920-01-01',
   `occupation` varchar(40) DEFAULT NULL,
-  `sms_optout` tinyint(1) DEFAULT '0',
-  `email_optout` tinyint(1) DEFAULT '0',
-  `deceased` tinyint(1) NOT NULL,
-  `fathers_hebrew_name` varchar(50) NOT NULL,
-  `hebrew_name` varchar(50) NOT NULL,
-  `mothers_hebrew_name` varchar(50) NOT NULL,
+  `sms_optout` tinyint(1) DEFAULT 0,
+  `email_optout` tinyint(1) DEFAULT 0,
+  `deceased` tinyint(1) NOT NULL DEFAULT 0,
+  `fathers_hebrew_name` varchar(50),
+  `hebrew_name` varchar(50),
+  `mothers_hebrew_name` varchar(50),
   PRIMARY KEY (`contact_id`),
   KEY `last_name` (`last_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

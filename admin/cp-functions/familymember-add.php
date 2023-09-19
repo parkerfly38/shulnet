@@ -20,19 +20,19 @@ $familymember_id = $_POST["id"];
 if ($type == "edit")
 {
     $familymember = $familymembers->getFamilyMemberByID($_POST["id"]);
-    $familymember["first_name"] = $_POST["first_name"];
-    $familymember["last_name"] = $_POST["last_name"];
-    $familymember["address_line_1"] = $_POST["address_line_1"];
-    $familymember["address_line_2"] = $_POST["address_line_2"];
-    $familymember["city"] = $_POST["city"];
-    $familymember["state"] = $_POST["state"];
-    $familymember["zip"] = $_POST["zip"];
-    $familymember["country"] = $_POST["country"];
-    $familymember["phone"] = $_POST["phone"];
-    $familymember["email"] = $_POST["email"];
-    $familymember["DOB"] = $_POST["DOB"];
-    $familymember["hebrew_name"] = $_POST["hebrew_name"];
-    $familymember["bnai_mitzvah_date"] = $_POST["bnai_mitzvah_date"];
+    $familymember->first_name = $_POST["first_name"];
+    $familymember->last_name = $_POST["last_name"];
+    $familymember->address_line_1 = $_POST["address_line_1"];
+    $familymember->address_line_2 = $_POST["address_line_2"];
+    $familymember->city = $_POST["city"];
+    $familymember->state = $_POST["state"];
+    $familymember->zip = $_POST["zip"];
+    $familymember->country = $_POST["country"];
+    $familymember->phone = $_POST["phone"];
+    $familymember->email = $_POST["email"];
+    $familymember->DOB = $_POST["DOB"];
+    $familymember->hebrew_name = $_POST["hebrew_name"];
+    $familymember->bnai_mitzvah_date = $_POST["bnai_mitzvah_date"];
     $familymembers->updateFamilyMember($familymember);
 } else {
     $familymember = new familymember(

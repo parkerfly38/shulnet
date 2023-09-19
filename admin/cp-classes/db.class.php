@@ -275,14 +275,19 @@ class db
     /**
      * Gets an array from MySQL.
      */
-    function get_array($query, $skip_bind_clear = '0', $assoc = '0')
+    function get_array($query, $skip_bind_clear = '0', $assoc = '0', $ignorebindings = '0')
     {
         global $DBH;
         //echo "<li>$query";
         //$query = str_replace("'?'", "?", $query);
         $query = $this->prePrepQuery($query);
         $STH = $DBH->prepare($query);
-        $result = $STH->execute($this->binding);
+        if ($ignorebindings === '1')
+        {
+            $result = $STH->execute();
+        } else {
+            $result = $STH->execute($this->binding);
+        }
         if (! $result) {
             $this->error_process($STH, $query);
         }
@@ -2403,9 +2408,9 @@ class db
         $q1 = $this->get_array("
             SELECT `encrypted`
             FROM `ppSD_fields`
-            WHERE `id`='" . $this->mysql_cleans($id) . "'
+            WHERE `id`='$id'
             LIMIT 1
-        ", '1');
+        ", '1','0','1');
         if ($q1['encrypted'] == '1') {
             return true;
         } else {

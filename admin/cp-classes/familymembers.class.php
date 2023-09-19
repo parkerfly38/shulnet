@@ -25,6 +25,10 @@ class familymembers extends db
 
     function getFamilyMemberByID($id)
     {
+        if (empty($id))
+        {
+            $id = 0;
+        }
         $query = "SELECT * FROM `ppSD_member_family` WHERE `id` = ".$id;
         $STH = $this->run_query($query);
         while ($row = $STH->fetch())
@@ -51,9 +55,9 @@ class familymembers extends db
                 '".$fm->country."',
                 '".$fm->phone."',
                 '".$fm->email."',
-                '".$fm->DOB."',
+                ".(empty($fm->DOB) ? "null" : "'".$fm->DOB."'").",
                 '".$fm->hebrew_name."',
-                '".$fm->bnai_mitzvah_date."')";
+                ".(empty($fm->bnai_mitzvah_date) ? "null" : "'".$fm->bnai_mitzvah_date."'").")";
         $insertedid = $this->insert($query);
         return $insertedid;
     }
@@ -61,20 +65,20 @@ class familymembers extends db
     function updateFamilyMember($fm)
     {
         $query = "UPDATE `ppSD_member_family`
-            SET first_name = '".$fm["first_name"]."',
-                last_name = '".$fm["last_name"]."',
-                address_line_1 = '".$fm["address_line_1"]."',
-                address_line_2 = '".$fm["address_line_2"]."',
-                city = '".$fm["city"]."',
-                `state` = '".$fm["state"]."',
-                zip = '".$fm["zip"]."',
-                country = '".$fm["country"]."',
-                phone = '".$fm["phone"]."',
-                email = '".$fm["email"]."',
-                DOB = '".$fm["DOB"]."',
-                hebrew_name = '".$fm["hebrew_name"]."',
-                bnai_mitzvah_date = '".$fm["bnai_mitzvah_date"]."'
-            WHERE id = ".$fm["id"];
+            SET first_name = '".$fm->first_name."',
+                last_name = '".$fm->last_name."',
+                address_line_1 = '".$fm->address_line_1."',
+                address_line_2 = '".$fm->address_line_2."',
+                city = '".$fm->city."',
+                `state` = '".$fm->state."',
+                zip = '".$fm->zip."',
+                country = '".$fm->country."',
+                phone = '".$fm->phone."',
+                email = '".$fm->email."',
+                DOB = ".(empty($fm->DOB) ? "null" : "'".$fm->DOB."'").",
+                hebrew_name = '".$fm->hebrew_name."',
+                bnai_mitzvah_date = ".(empty($fm->bnai_mitzvah_date) ? "null" : "'".$fm->bnai_mitzvah_date."'")."
+            WHERE id = ".$fm->id;
         $this->update($query);
         return "";
     }

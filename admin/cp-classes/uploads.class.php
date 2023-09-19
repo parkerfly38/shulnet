@@ -51,7 +51,7 @@ class uploads extends db
 			SELECT *
 			FROM `ppSD_uploads`
 			WHERE `item_id`='" . $this->mysql_clean($id) . "'
-			ORDER BY `" . $this->mysql_clean($order) . "` " . $this->mysql_clean($dir) . "
+			ORDER BY `" . $order . "` " . $dir . "
 		");
         while ($row = $STH->fetch()) {
             if ($row['label'] == 'profile-picture') {

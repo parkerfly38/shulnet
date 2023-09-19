@@ -37,7 +37,7 @@ class site extends db
             }
         }
         // Standard content page.
-        if (!empty($url_string) && strtolower($url_string) != '/home') {
+        if (!empty($url_string) && strtolower($url_string) != 'home') {
             $this->string = $url_string;
             $this->break_up_url();
             $this->get_page();

@@ -930,7 +930,7 @@ class user extends db
             // Update user
             $q1 = $this->update("
                 UPDATE `ppSD_members`
-                SET `member_type`='" . $this->mysql_clean($new_type) . "'
+                SET `member_type`=" . $new_type . "
                 WHERE `id`='" . $this->mysql_clean($member_id) . "'
                 LIMIT 1
             ");
@@ -1601,7 +1601,7 @@ class user extends db
             $hold_member_type = $data['member']['member_type'];
             unset($primary['member_type']);
         } else {
-            $hold_member_type = '';
+            $hold_member_type = 0;
         }
 
         /*
@@ -1670,10 +1670,10 @@ class user extends db
         $clean = '';
         foreach ($data['member'] as $name => $value) {
             if ($name == 'member_id') continue;
-
             if (!empty($value)) {
                 if (! in_array($name, $primary)) {
                     if (in_array($name, $scope) && ! is_numeric($name)) {
+                        //need to ignore bindinging on this query
                         if ($this->field_encryption($name)) {
                             $value = encode($value);
                         }
