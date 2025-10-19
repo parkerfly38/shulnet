@@ -139,18 +139,6 @@ require "assets/header.php";
                     ?>
                 </li>
                 <li class="indent">
-                <?php
-                if (get_magic_quotes_gpc()) {
-                    $class = 'bad';
-                    $error = '1';
-                    $msg = 'Magic quotes are enabled on your server - contact your web hosting provider to have them turned off. Note that this feature has been removed from PHP since v5.4 and is not required any longer.';
-                } else {
-                    $class = 'good';
-                    $msg = 'Magic quotes are turned off.';
-                }
-                echo "<span class=$class>$msg [<a href=\"http://php.net/manual/en/security.magicquotes.php\" target=\"_blank\">Info</a>]</span>";
-                ?>
-                <li class="indent">
                     <?php
                     if (! function_exists('openssl_encrypt')) {
                         $class = 'bad';
@@ -337,28 +325,6 @@ require "assets/header.php";
                     </li>
                 </ul>
 
-            </fieldset>
-
-            <fieldset class="">
-            <legend>Subscriptions</legend>
-
-                <p class="desc">Would you like to subscribe to the ShulNET newsletter to stay up-to-date with new updates, features, and news related to the product? You can unsubscribe at any time.</p>
-
-                <ul class="form">
-                    <li>
-                        <input type="checkbox" name="enroll_newsletter" value="1" checked="checked" /> Yes, keep me informed about all things ShulNET!
-                    </li>
-                </ul>
-
-                <p class="desc">In order to better understand how our software is used, we provide our users with the option to "opt in" to our
-                    statistical collection program. This program is <b>completely anonymous</b> and only provides us with information
-                    like total transactions, sales, events, members, and contacts managed.</p>
-
-                <ul class="form">
-                    <li>
-                        <input type="checkbox" name="enroll_stats" value="1" checked="checked" /> Opt-in to the anonymous stat collection program.
-                    </li>
-                </ul>
             </fieldset>
 
         <?php

@@ -20,7 +20,8 @@ if (!empty($_POST['id'])) {
         $final_content = $gettemplate->final_content['custom_template'];
     }
     if (empty($final_content)) {
-        $final_content = $db->get_file(PP_PATH . '/pp-templates/html/' . $theme . '/' . $lang . '/' . $cid . '.php');
+        //$final_content = $db->get_file(PP_PATH . '/pp-templates/html/' . $theme . '/' . $lang . '/' . $cid . '.php');
+        $final_content = $db->run_query("SELECT `content` FROM `ppSD_templates` WHERE `id`='" . $db->mysql_cleans($cid) . "' AND `lang` = '" . $db->mysql_cleans($lang) . "' AND `theme` = '" . $db->mysql_cleans($theme) . "' LIMIT 1")->fetchColumn();
     }
     $fcallers .= ',' . $gettemplate->final_content['caller_tags'];
     $callers = explode(',', $fcallers);

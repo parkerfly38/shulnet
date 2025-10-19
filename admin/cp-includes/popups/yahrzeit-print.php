@@ -25,7 +25,7 @@
 <script type="text/javascript">
     function printLetter(name, addr1, addr2, city, state, zip, hebrewDate, englishDate, englishName)
     {
-        let rawHtml = "<div id='printableArea2'><table border='0' width='100%'><tr><td style='text-align:center;'>CONGREGATION BETH ISRAEL<br />1888<br /><img src='imgs/beth-israel.png' border='0' /></td><td style='text-align:right;'><p>BILL SIEMERS, Rabbi</p><p>BRIAN KRESGE, President</p><p>DR. GARY ROSS, Vice President</p><p>KEITH MANAKER, Treasurer</p><p>NANCI MILLER, Secretary</p></td></tr></table>";
+        let rawHtml = "<div id='printableArea2'><table border='0' width='100%'><tr><td style='text-align:center;'>CONGREGATION BETH ISRAEL<br />1888<br /><img src='imgs/beth-israel.png' border='0' /></td><td style='text-align:right;'><p>BILL SIEMERS, Rabbi</p><p>BRIAN KRESGE, President</p><p>ART SCHWARCZ, Vice President</p><p>KEITH MANAKER, Treasurer</p><p>NANCI MILLER, Secretary</p></td></tr></table>";
         rawHtml += "<p>"+addr1+"<br />";
         if (addr2.length > 0)
         {

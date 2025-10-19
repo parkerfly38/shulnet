@@ -32,7 +32,15 @@ class jewishdates extends db
 
     function JewishToGregorian($day, $month)
     {
+
         $year = $this->getCurrentJewishYear(time());
+        if (strpos($month, "Adar") !== false)
+        {
+            if ($this->isLeapYear($year))
+            {
+                $month = "Adar";
+            }
+        }
         $month = $this->getJewishMonthNumber($month, $year);
         $jddate = jewishtojd($month, $day, $year);
         return jdtogregorian($jddate);
@@ -60,6 +68,7 @@ class jewishdates extends db
                 return 5;
                 break;
             case "Adar I":
+            case "Adar":
                 return 6;
                 break;
             case "Adar II":

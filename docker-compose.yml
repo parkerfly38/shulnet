@@ -1,47 +1,38 @@
 version: "3"
 services:
   shulnet:
-    build: .
-    image: "parkerfly38/shulnet:shulnet-apache"
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
-      - "8000:80"
+      - "80:80"
     volumes:
       - .:/var/www/html
-    environment:
-      MYSQL_DATABASE: shulnet
-      MYSQL_PASSWORD: "shulnet"
-      MYSQL_USER: shulnet_user
-      MYSQL_ROOT_PASSWORD: "shulnetroot"
     networks:
-      - shulnet-net
+      - shulnet_network
     depends_on:
       - mysql
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 300M
-      restart_policy:
-        condition: on-failure
+    
   mysql:
-    image: "parkerfly38/shulnet:shulnet-mysql"
-    ports:
-      - "8082:3306"
+    image: mysql:8.0
+    container_name: shulnet_mysql
+    restart: unless-stopped
+    env_file: .env
     environment:
-      MYSQL_DATABASE: shulnet
-      MYSQL_PASSWORD: "shulnet"
-      MYSQL_USER: shulnet_user
-      MYSQL_ROOT_PASSWORD: "shulnetroot"
-    #volumes:
-      #- ./dbinit:/docker-entrypoint-initdb.d
-      # remove the volumes piece if you'd like to use the setup process instead of using this structure, we recommend that...this works if you already
-      # have a backup of data you'd like to use in this
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
-      - shulnet-net
-    command: mysqld --sql_mode=NO_ENGINE_SUBSTITUTION
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+      - shulnet_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./dbinit:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:
+
 networks:
-  shulnet-net:
+  shulnet_network:
+    driver: bridge

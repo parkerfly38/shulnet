@@ -1393,9 +1393,9 @@ class form extends db
     {
         // Check conditions
         // $formdata['conditions']
-        if (!empty($this->formdata{'conditions'})) {
+        if (!empty($this->formdata('conditions'))) {
             $conditions       = new conditions;
-            $check_conditions = $conditions->check_conditions($data, $this->formdata{'conditions'});
+            $check_conditions = $conditions->check_conditions($data, $this->formdata('conditions'));
             foreach ($check_conditions as $met) {
                 if ($met['type'] == 'kill') {
                     $code_changes = array(

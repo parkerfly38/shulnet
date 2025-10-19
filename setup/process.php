@@ -1,14 +1,9 @@
 <?php
 
-// error_reporting(E_ALL);
-if (get_magic_quotes_gpc()) {
-    function magicQuotes_awStripslashes(&$value, $key) {$value = stripslashes($value);}
-    $gpc = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
-    array_walk_recursive($gpc, 'magicQuotes_awStripslashes');
-}
+error_reporting(E_ALL);
 
-ini_set('display_errors', 0);
-error_reporting(0);
+//ini_set('display_errors', 0);
+//error_reporting(0);
 
 /**
  *
@@ -165,6 +160,9 @@ foreach ($inserts as $item) {
         var_dump($e);
     }
 }
+
+require "mysql/update_templates.php";
+require "mysql/update_email_templates.php";
 
 // ----------------------------
 

@@ -220,10 +220,11 @@ class template extends db
     function header()
     {
         // Default
-        $lit = PP_PATH . "/pp-templates/html/" . "/" . $this->theme['name'] . "/" . $this->lang . "/header.php";
+        /*$lit = PP_PATH . "/pp-templates/html/" . "/" . $this->theme['name'] . "/" . $this->lang . "/header.php";
         if (! file_exists($lit)) {
             $lit = PP_PATH . "/pp-templates/html/" . "/" . $this->theme['name'] . "/" . $this->def_lang . "/header.php";
-        }
+        }*/
+        $lit = $this->run_query("SELECT `content` FROM `ppSD_templates` WHERE `id`='header' AND `theme`='" . $this->mysql_clean($this->theme['name']) . "' AND `lang`='" . $this->mysql_clean($this->lang) . "' LIMIT 1")->fetchColumn();
         ob_start();
         include($lit);
         $headcontent = ob_get_contents();
@@ -297,10 +298,11 @@ class template extends db
     function footer()
     {
 
-        $lit = PP_PATH . "/pp-templates/html/" . $this->theme['name'] . "/" . $this->lang . "/footer.php";
+        /*$lit = PP_PATH . "/pp-templates/html/" . $this->theme['name'] . "/" . $this->lang . "/footer.php";
         if (!file_exists($lit)) {
             $lit = PP_PATH . "/pp-templates/html/" . "/" . $this->theme['name'] . "/" . $this->def_lang . "/footer.php";
-        }
+        }*/
+        $lit = $this->run_query("SELECT `content` FROM `ppSD_templates` WHERE `id`='footer' AND `theme`='" . $this->mysql_clean($this->theme['name']) . "' AND `lang`='" . $this->mysql_clean($this->lang) . "' LIMIT 1")->fetchColumn();
         ob_start();
         include($lit);
         $footcontent = ob_get_contents();
@@ -352,18 +354,19 @@ class template extends db
                     $tempcontent = ob_get_contents();
                     ob_end_clean();
                 } else {
-                    $lit = PP_PATH . "/pp-templates/html/" . $this->theme['name'] . "/" . $this->lang . "/" . $this->name . ".php";
+                    $lit = $this->run_query("SELECT `content` FROM `ppSD_templates` WHERE `id`='" . $this->mysql_clean($this->name) . "' AND `theme`='" . $this->mysql_clean($this->theme['name']) . "' AND `lang`='" . $this->mysql_clean($this->lang) . "' LIMIT 1")->fetchColumn();
+                    /*$lit = PP_PATH . "/pp-templates/html/" . $this->theme['name'] . "/" . $this->lang . "/" . $this->name . ".php";
                     if (!file_exists($lit)) {
                         $lit = PP_PATH . "/pp-templates/html/" . "/" . $this->theme['name'] . "/" . $this->def_lang . "/" . $this->name . ".php";
-                    }
-                    if ($this->editing == '1') {
-                        $tempcontent = file_get_contents($lit);
-                    } else {
-                        ob_start();
-                        include($lit);
-                        $tempcontent = ob_get_contents();
-                        ob_end_clean();
-                    }
+                    }*/
+                    //if ($this->editing == '1') {
+                    //    $tempcontent = file_get_contents($lit);
+                    //} else {
+                        //ob_start();
+                        //include($lit);
+                        $tempcontent = $lit; //ob_get_contents();
+                        //ob_end_clean();
+                    //}
                 }
             }
         }

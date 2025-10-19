@@ -7,16 +7,16 @@ if (!empty($_GET['permission'])) {
     $employee = $admin->check_employee($_GET['permission']);
 
 }
-// $allowedExtensions = array('jpg','jpeg','png','gif','zip','pdf','doc','docx','odt','xlsx','csv','xltx','xml','xls','ods','txt','rtf');
+$allowedExtensions = array('jpg','jpeg','png','gif','zip','pdf','doc','docx','odt','xlsx','csv','xltx','xml','xls','ods','txt','rtf');
 // max file size in bytes
-//$sizeLimit = 9437184; // 9 Mb
-$exts = $db->get_option('uploads_exts');
-$size = $db->get_option('uploads_max_size');
-if (empty($size)) {
-    $size = '5242880';
-}
-$allowedExtensions = explode(',', $exts);
-$sizeLimit         = $size; // 5 Mb
+$sizeLimit = 9437184; // 9 Mb
+//$exts = $db->get_option('uploads_exts');
+//$size = $db->get_option('uploads_max_size');
+//if (empty($size)) {
+//    $size = '5242880';
+//}
+//$allowedExtensions = explode(',', $exts);
+//$sizeLimit         = $size; // 5 Mb
 $uploader          = new qqFileUploader($allowedExtensions, $sizeLimit);
 if (! empty($_GET['attachment'])) {
     $result = $uploader->handleUpload(PP_PATH . '/admin/sd-system/attachments');

@@ -52,22 +52,23 @@ if ($type == 'edit') {
     $path      = PP_PATH . '/pp-templates/html/' . $theme . '/' . $lang . '/';
     $file      = $_POST['id'] . '.php';
     $full_path = $path . $file;
-    if (!is_writable($full_path)) {
-        echo "0+++File ($full_path) is not writable. Please set the permissions to 777 using an FTP client and try again.";
-        exit;
-    } else {
+    //if (!is_writable($full_path)) {
+    //    echo "0+++File ($full_path) is not writable. Please set the permissions to 777 using an FTP client and try again.";
+    //    exit;
+    //} else {
         $q1   = $db->update("
             UPDATE `ppSD_templates`
             SET
                 `title`='" . $db->mysql_cleans($_POST['name']) . "',
-                `meta_title`='" . $db->mysql_cleans($_POST['meta_title']) . "'
+                `meta_title`='" . $db->mysql_cleans($_POST['meta_title']) . "',
+                `content`='" . $db->mysql_cleans($_POST['template']) . "'
             WHERE
                 `id`='" . $db->mysql_cleans($_POST['id']) . "'
             LIMIT 1
         ");
-        $temp = str_replace("\r", "", $_POST['template']);
-        $db->write_file($path, $file, $temp);
-    }
+        //$temp = str_replace("\r", "", $_POST['template']);
+        //$db->write_file($path, $file, $temp);
+    //}
 
 } else {
 

@@ -1,6 +1,6 @@
 <div class="zen_pad_topl %class%">
     <?php
-    if (!empty($this->changes{'data'}['cover_photo'])) {
+    if (!empty($this->changes['data']['cover_photo'])) {
         ?>
         <div class="zen_catalog_img"><a href="%data:link%">%data:cover_photo%</a></div>
     <?php

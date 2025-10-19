@@ -1,6 +1,4 @@
-<?php ShulNET
-
-
+<?php
 
 /**
  * Add or edit a package.

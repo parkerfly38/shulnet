@@ -1,35 +1,67 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+set_error_handler("exception_error_handler");
+print_r("<p>Starting...</p>");
 // Sample Command (every 15 minutes):
 // */15	*	*	*	*	php /full/server/path/to/members/admin/cp-cron/emailing.php
+
 require '../../vendor/autoload.php';
+
+
+
+print_r("Using Mailgun...<br />");
 use Mailgun\Mailgun;
 
-$mg =  Mailgun::create("<mailgun key>");
-$domain = "<mailgun domain>";
-
+print_r("Domain and key set...<br />");
 //prod conn string
-$pdo = new PDO("mysql:host=<host>;dbname=<db>", "<user>", "<password>");
+$pdo = new PDO("mysql:host=localhost;dbname=cbisrael_shulnet", "cbisrael_dbuser", "NUgget38!@");
+$delstmt = $pdo->prepare("DELETE FROM ppSD_email_scheduled WHERE user_type = 'contact' AND user_id NOT IN (SELECT id from ppSD_contacts)");
+$delstmt->execute();
 $stmt = $pdo->prepare("SELECT * FROM `ppSD_email_scheduled` LIMIT 500");
 $stmt->execute();
 $rows = $stmt->fetchAll();
+$getMGKey = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'apikey'");
+$getMGKey->execute();
+$mgkey = $getMGKey->fetch()["value"];
+$getMGDomain = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'domain'");
+$getMGDomain->execute();
+$domain = $getMGDomain->fetch()["value"];
+$mg =  Mailgun::create($mgkey);
+$getCompanyName = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'company_name'");
+$getCompanyName->execute();
+$companyName = $getCompanyName->fetch()["value"];
+$getCompanyEmail = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'company_email'");
+$getCompanyEmail->execute();
+$companyEmail = $getCompanyEmail->fetch()["value"];
+$from = $companyName . " <". $companyEmail . ">";
+    
 foreach ($rows as $row)
 {
     $to = "";
-    $from = "Email Name <email addy>";
-    if ($row["user_type"] == 'contact')
-    {
-        $getUser = $pdo->prepare("SELECT email FROM ppSD_contacts where id = '".$row['user_id']."'");
-        $getUser->execute();
-        $todata = $getUser->fetch();
-        $to = $todata["email"];
+    try {
+        if ($row["user_type"] == 'contact')
+        {
+            $getUser = $pdo->prepare("SELECT email FROM ppSD_contacts where id = '".$row['user_id']."'");
+            $getUser->execute();
+            $todata = $getUser->fetch();
+            $to = $todata["email"];
+        }
+        if ($row["user_type"] == 'member')
+        {
+            $getUser = $pdo->prepare("SELECT email FROM ppSD_members WHERE id = '".$row['user_id']."'");
+            $getUser->execute();
+            $todata = $getUser->fetch();
+            $to = $todata["email"];
+        }
     }
-    if ($row["user_type"] == 'member')
+    catch (Exception $exception)
     {
-        $getUser = $pdo->prepare("SELECT email FROM ppSD_members WHERE id = '".$row['user_id']."'");
-        $getUser->execute();
-        $todata = $getUser->fetch();
-        $to = $todata["email"];
+        //do nothing
+        print_r($exception);
     }
     //get message
     $getEmail = $pdo->prepare("SELECT * FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
@@ -79,25 +111,29 @@ foreach ($rows as $row)
     {
         $mailarray['attachment'] = $attachmentarray;
     }
-
+    if (strlen($to) > 0)
+    {
     $mailResponse = $mg->messages()->send($domain, $mailarray);
-    //email trackback setup
-    $insertEmailTrackBack = $pdo->prepare("INSERT INTO `ppSD_email_trackback` (`id`,`email_id`,`date`,`status`,`user_id`,`user_type`,`campaign_id`,`campaign_saved_id`)
-				VALUES ('".$this_trackback_id."','" . $row['email_id'] . "',NOW(),'0','" . $row['user_id']. "','" . $row["user_type"] . "','" . $row['campaign'] . "','')
-			");
-    $insertEmailTrackBack->execute();
-    //delete from queue
-    $insertSavedMail = $pdo->prepare("INSERT INTO ppSD_saved_emails (`id`, `date`, `content`, `subject`, `to`, `from`, `cc`, `bcc`, `format`, `newsletter`, `user_id`, `user_type`, `fail`, `sentvia`, `vendor_id`)
-                                        VALUES ('".$row["email_id"]."',NOW(),'".$message."','".$subject."','".$to."','".$from."','".$cc."','".$bcc."',1,0,'".$row["user_id"]."','".$row["user_type"]."',0,'mailgun','".$mailResponse->getId()."')");
-    $insertSavedMail->execute();
-    //$delSavedMail = $pdo->prepare("DELETE FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
-    //$delSavedMail->execute();
+        //email trackback setup
+        $insertEmailTrackBack = $pdo->prepare("INSERT INTO `ppSD_email_trackback` (`id`,`email_id`,`date`,`status`,`user_id`,`user_type`,`campaign_id`,`campaign_saved_id`)
+                    VALUES ('".$this_trackback_id."','" . $row['email_id'] . "',NOW(),'0','" . $row['user_id']. "','" . $row["user_type"] . "','" . $row['campaign'] . "','')
+                ");
+        $insertEmailTrackBack->execute();
+        //delete from queue
+        $insertSavedMail = $pdo->prepare("INSERT INTO ppSD_saved_emails (`id`, `date`, `content`, `subject`, `to`, `from`, `cc`, `bcc`, `format`, `newsletter`, `user_id`, `user_type`, `fail`, `sentvia`, `vendor_id`)
+                                            VALUES ('".$row["email_id"]."',NOW(),'".$message."','".$subject."','".$to."','".$from."','".$cc."','".$bcc."',1,0,'".$row["user_id"]."','".$row["user_type"]."',0,'mailgun','".$mailResponse->getId()."')");
+        $insertSavedMail->execute();
+        //$delSavedMail = $pdo->prepare("DELETE FROM ppSD_saved_email_content WHERE id = '".$row["email_id"]."'");
+        //$delSavedMail->execute();
+    }
     $delfromMessageQueue = $pdo->prepare("DELETE FROM ppSD_email_scheduled WHERE email_id = '".$row["email_id"]."' and user_id = '".$row["user_id"]."'");
     $delfromMessageQueue->execute();
+    
 }
 $updateEmailQueue = $pdo->prepare("UPDATE ppSD_options SET `value` = '".date('Y-m-d H:i:s', time())."' WHERE id = 'email_queue_last_sent'");
+print_r("Sending");
 $updateEmailQueue->execute();
-
+print_r($updateEmailQueue);
 
 // Send scheduled queue
 //$connect = new connect();

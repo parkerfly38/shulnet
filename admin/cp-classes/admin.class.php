@@ -1755,11 +1755,17 @@ class admin extends db
                         $jd = new jewishdates;
                         $jewishday = $arrJdComponents[0];
                         $jewishMonth = $arrJdComponents[1];
-                        if ($jewishMonth == 'Adar')
+                        if (strpos($$rowF["Hebrew_Date_of_Death"], 'Adar') !== false)
                         {
                             if ($arrJdComponents[2] == "I" || $arrJdComponents[2] == "II")
                             {
-                                $jewishMonth .= " " . $arrJdComponents[2];
+                                $jewishYear = $jd->getCurrentJewishYear(time());
+                                if ($jd->isLeapYear($jewishYear))
+                                {
+                                    $jewishMonth = "Adar " . $arrJdComponents[2];
+                                } else {
+                                    $jewishMonth = "Adar";
+                                }
                             } else {
                                 $jewishYear = $jd->getCurrentJewishYear(new DateTime());
                                 if ($jd->isLeapYear($jewishYear))

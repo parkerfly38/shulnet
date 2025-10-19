@@ -117,6 +117,8 @@ foreach ($inserts as $item) {
     $STH->execute();
 }
 
+require "mysql/update_templates.php";
+require "mysql/update_email_templates.php";
 // ----------------------------
 
 $use_url = $url;
