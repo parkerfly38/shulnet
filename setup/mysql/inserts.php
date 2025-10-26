@@ -743,7 +743,7 @@ $inserts[] = "
 	('date_format', 'Date Format', 'm/d/Y', 'What date format would you like to use throughout the program&#63; Uses <a href=\"http://documentation.ShulNET.com/Options/Date-Formatting\" target=\"_blank\">PHP Date</a> standards.', 'text', 0, '', 'general', 0, ''),
 	('phone_format', 'Phone Separator', '.', 'What should separate numbers in a phone number? Only works for 10 digit numbers.', 'text', '50', '', 'general', '1', ''),
 	('time_change', 'Time Adjust', '-1', 'Would you like to adjust your system time&#63;', 'select', 80, '-11|-10|-9|-8|-7|-6|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11', 'general', 0, ''),
-	('current_version', '', '115', '', 'text', 0, '', 'system', 0, ''),
+	('current_version', '', '1.20', '', 'text', 0, '', 'system', 0, ''),
 	('currency', 'Currency', 'USD', '', 'select', 80, 'USD|EUR|GBP|AUD|CAD|INR|ZAR|NZD|JPY|SGD|CNY|MYR|CHF|THB|IDR|AED|HKD|PHP|SEK|HUF|MXN|RUB', 'cart', 0, ''),
 	('member_id_format', 'Member ID Format', 'LLLL-nnnnn-nnnnn', 'Customize the format of member IDs. Recommended: 15-20 characters. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 150, '', 'members', 20, ''),
 	('use_email_as_username', 'Use E-Mail As Username?', '0', 'Would you like to use an email as username?', 'radio', 0, '', 'members', 0, ''),

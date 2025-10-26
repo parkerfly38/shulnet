@@ -778,7 +778,7 @@ class delete extends admin
         // Orders
         $STH = $this->run_query("SELECT `id` FROM `ppSD_cart_sessions` WHERE `member_id`='" . $this->mysql_clean($force_id) . "'");
         while ($row = $STH->fetch()) {
-            $del = $this->delete_transaction($row['id']);
+            $del = $this->delete_transaction($row['id'], $data);
         }
 
         // RSVPs
@@ -1102,10 +1102,10 @@ class delete extends admin
         $this->result = '1';
     }
 
-    /**
+    /** 
      * Delete a transaction
      */
-    function delete_transaction($force_id = '')
+    function delete_transaction($force_id = '', $data = array())
     {
         if (empty($force_id)) {
             $force_id = $this->id;
