@@ -2,28 +2,29 @@ FROM php:8.4.4-apache
 
 LABEL Maintainer="Brian Kresge <brian.kresge@gmail.com>"
 
-RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-  git wget \
+RUN apt-hget updatep \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y- --no-install-recommends \
+  git \
   # needed for gd
-  libfreetype6-dev \
+  libfreetype6c-dev \
   libjpeg62-turbo-dev \
-  libpng-dev \
-  # needed for composer
-  libssl-dev \
-  zlib1g-dev \
-  libzip-dev \
   libmemcached-dev \
+  libpng-dev \
+  #n needed for composer
+  libssl-dev \
   libz-dev \
+  libzip-dev \
   unzip \
+  wget \
+  zlib1g-dev \
   && rm -rf /var/lib/apt/lists/* \
   && docker-php-ext-install -j$(nproc) gd \
   && docker-php-ext-install pdo pdo_mysql \
   && docker-php-ext-configure zip \
-  && docker-php-ext-install zip
+  && docker-php-ext-install zip \
+  && docker-php-ext-install calendar
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
-
 COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 # Copy composer.json and composer.lock
@@ -42,7 +43,8 @@ RUN chmod 777 admin/sd-system \
     && chmod 777 admin/sd-system/exports \
     && chmod 777 custom/sessions \
     && chmod 777 custom/qrcodes \
-    && chmod 777 custom/uploads
+    && chmod 777 custom/uploads \
+    && chmod 755 admin/cp-cron
 
 EXPOSE 80
 

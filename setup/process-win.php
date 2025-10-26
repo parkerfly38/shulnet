@@ -106,6 +106,7 @@ $emp_last_name = $_POST['admin']['last_name'];
 
 // ----------------------------
 
+$use_url = $url;
 require "mysql/create.php";
 require "mysql/inserts.php";
 foreach ($create as $item) {
@@ -121,7 +122,6 @@ require "mysql/update_templates.php";
 require "mysql/update_email_templates.php";
 // ----------------------------
 
-$use_url = $url;
 //$use_url = str_replace('http://','//',$url);
 //$use_url = str_replace('https://','//',$use_url);
 

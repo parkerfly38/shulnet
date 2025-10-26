@@ -33,7 +33,7 @@ if (! empty($_GET['in'])) {
 }
 if ($in == '')
 {
-	header('Location: http://localhost:8000/news.php');
+	header('Location: '.PP_URL.'/news.php');
 	exit;
 }
 echo new site($in);

@@ -2217,19 +2217,16 @@ class admin extends db
         $masterlog    = time();
 
 
-        $domain = ($_SERVER['HTTP_HOST'] != 'localhost:8888' && $_SERVER['HTTP_HOST'] != 'localhost:8000') ? $_SERVER['HTTP_HOST'] : false; 
+        $domain = (!str_starts_with($_SERVER['HTTP_HOST'], 'localhost') && !str_starts_with($_SERVER['HTTP_HOST'], '127.0.0.1')) ? $_SERVER['HTTP_HOST'] : false; 
 
         if ($remember == '1') {
             $expires = $masterlog + 604800;
-            //$this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires);
-            setcookie("zen_admin_ses", $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires, "/", $domain);
+            $this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires, $domain);
+            //setcookie("zen_admin_ses", $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires, "/", $domain);
         } else {
-            //$this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)));
+            $expires = $masterlog + 86400;
+            $this->create_cookie('zen_admin_ses', $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)), $expires, $domain);
 
-            setcookie("zen_admin_ses", $id_rand . "-" . md5(sha1($username)) . "-" . md5(sha1($session_salt)),0,"/", $domain);
-            $sestime = $this->get_option('session_admin_inactivity');
-            if (empty($sestime) || $sestime <= 0) { $sestime = '3600'; }
-            $expires = $masterlog + $sestime;
         }
 
         $q1          = $this->insert("
@@ -2249,7 +2246,7 @@ class admin extends db
                 '" . current_date() . "',
                 '" . date('Y-m-d H:i:s', $expires) . "',
                 '" . $this->mysql_clean(get_ip()) . "',
-                '" . $this->mysql_clean($remember) . "'
+                " . $remember . "
 			)
 		");
 

@@ -32,7 +32,7 @@ $inserts[] = "
 	('member_access_lost', 'icon-access_lost.png', 'member-view', 'slider', 'Access to content %act% expired.', 1, 0),
 	('sms', 'icon-text.png', 'member-view', 'slider', 'SMS sent to %act%.', 1, 0),
 	('dependency_submit', 'icon-dependency.png', 'member-view', 'slider', 'Dependency form submitted by %act%.', '1', 0),
-	('member_type', 'icon-member_type.png', 'member-view', 'slider', '', 'Member type changed for %act%.', '1'),
+	('member_type', 'icon-member_type.png', 'member-view', 'slider', 'Member type changed for %act%.', '1', 0),
 	('update', 'icon-update.png', 'member-view', 'slider', '%act% updated his/her account', 1, 0),
 	('member_update', 'icon-edit-on.png', 'member-view', 'slider', '%act% updated his/her account', 1, 0),
 	('purchase', 'icon-sales.png', 'transaction-view', 'slider', 'Transaction ID %act%', 1, 0),
@@ -40,9 +40,9 @@ $inserts[] = "
 	('subscription_renew', 'icon-saved.png', 'subscription-view', 'slider', 'Subscription No. %act% renewed.', 1, 0),
 	('subscription_cancel', 'icon-warning.png', 'subscription-view', 'slider', 'Subscription No. %act% Canceled.', 1, 0),
 	('subscription_failed', 'icon-sub-failed.png', 'subscription-view', 'slider', 'Subscription No. %act% failed to renew.', 1, 0),
-	('subscription_changed', 'icon-subscriptions.png', 'subscription-view', 'slider', 'Subscription No. %act% plan changed.', '1', ''),
-	('subscription_downgrade', 'icon-subscriptions-upgrade.png', 'subscription-view', 'slider', 'Subscription No. %act% downgraded.', '1', ''),
-	('subscription_upgrade', 'icon-subscriptions-downgrade.png', 'subscription-view', 'slider', 'Subscription No. %act% upgraded.', '1', ''),
+	('subscription_changed', 'icon-subscriptions.png', 'subscription-view', 'slider', 'Subscription No. %act% plan changed.', '1', 0),
+	('subscription_downgrade', 'icon-subscriptions-upgrade.png', 'subscription-view', 'slider', 'Subscription No. %act% downgraded.', '1', 0),
+	('subscription_upgrade', 'icon-subscriptions-downgrade.png', 'subscription-view', 'slider', 'Subscription No. %act% upgraded.', '1', 0),
 	('read_email', 'icon-email-read.png', 'email-view', 'popup_large', 'E-Mail opened by %act%.', 1, 0),
 	('link_clicked', 'icon-click.png', 'email-view', 'popup_large', 'E-Mail link clicked by %act%.', 1, 0),
 	('event_rsvp', 'icon-calendar.png', 'rsvp_view', 'popup', 'Registration for %act%', 1, 0),
@@ -50,7 +50,7 @@ $inserts[] = "
 	('invoice_payment', 'icon-sales.png', 'invoice-view', 'slider', 'Payment made on Invoice No. %act%.', 1, 0),
 	('invoice_requested', 'icon-invoices.png', 'invoice-view', 'slider', 'Invoice No. %act% created.', 1, 0),
 	('invoice_created', 'icon-invoices.png', 'invoice-view', 'slider', 'Invoice No. %act% created.', 1, 0),
-	('content_access_lost', 'icon-access_lost.png', 'member-view', 'slider', 'Access to content %act% expired.', '1', ''),
+	('content_access_lost', 'icon-access_lost.png', 'member-view', 'slider', 'Access to content %act% expired.', '1', 0),
 	('note', 'icon-note.png', 'note-add', 'popup_large', 'Note posted for %act%.', 0, 0),
 	('extended_next_action', 'icon-delay.png', 'contact-view', 'slider', 'Next required action date extended for %act%.', '1', 0),
 	('member_staff_update', 'icon-edit-on.png', 'member-view', 'slider', 'Member %act% updated by staff.', 0, 0),
@@ -339,14 +339,132 @@ $inserts[] = "
 	('Z005', 'Failed: %reason%');
 ";
 $inserts[] = "
-INSERT INTO ppSD_fields(id,display_name,type,special_type,logic,logic_dependent,`desc`,label_position,`options`,styling,default_value,encrypted,`sensitive`,maxlength,settings,permissions_group,`primary`,static,data_type,min_len,scope_member,scope_contact,scope_rsvp,scope_account,osk_language) 
-VALUES('account_type','Type','select','',0,0,'','left','416e616c7973740d0a436f6d70657469746f720d0a437573746f6d65720d0a496e7465677261746f720d0a496e766573746f720d0a506172746e65720d0a50726573730d0a50726f73706563740d0a526573656c6c65720d0a4f74686572','','',0,0,0,'',0,0,1,0,0,0,0,0,1,NULL)
-,('accttype','Account Type','select','',0,0,'576861742074797065206f66206163636f756e7420697320746869733f','left','506572736f6e616c20436865636b696e670d0a427573696e65737320436865636b696e670d0a536176696e6773','','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL)
-,('address_line_1','Address Line 1','text','',0,0,'','left','','77696474683a2032353070783b','',0,0,80,'',0,0,1,0,0,1,1,1,1,NULL),('address_line_2','Address Line 2','text','',0,0,'','left','','77696474683a2032353070783b','',0,0,30,'',0,0,1,0,0,1,1,1,1,NULL),('aliyah','Aliyah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('alt_email1','Alternate Email No. 1','text','email',0,0,'','left','','','',0,0,110,'',0,0,1,0,0,0,1,1,0,NULL),('alt_email2','Alternate E-Mail No. 2','text','email',0,0,'','left','','','',0,0,110,'',0,0,1,0,0,0,0,0,0,NULL),('alt_email3','Alternate E-Mail No. 3','text','email',0,0,'','left','','','',0,0,110,'',0,0,1,0,0,0,0,0,0,NULL),('alt_phone','Alternate Phone','text','phone',0,0,'','left','','','',0,0,20,'',0,0,1,0,0,1,1,0,1,NULL),('bank_account_name','Account Name','text','',0,0,'496e7075742061206e616d6520666f722074686973206163636f756e742e','left','','77696474683a32353070783b','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('bank_account_number','Account Number','text','',0,0,'496e70757420746865206163636f756e74206e756d6265722e20546869732061707065617273206f6e2074686520636865636b2062656c6f7720746865206d656d6f206c696e652c20746f20746865207269676874206f662074686520726f7574696e67206e756d6265722e','left','','77696474683a32353070783b','',0,0,25,'',0,1,1,3,0,0,0,0,0,NULL),('bank_name','Bank Name','text','',0,0,'496e70757420746865206e616d65206f66207468652062616e6b20746f2077686963682074686973206163636f756e742062656c6f6e67732e','','77696474683a32353070783b','','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('bank_routing','Routing Number','text','',0,0,'496e707574207468652062616e6b2773206e696e6520646967697420726f7574696e67206e756d6265722e20546869732061707065617273206f6e2074686520636865636b2062656c6f7720746865206d656d6f206c696e652e','left','','77696474683a32353070783b','',0,0,9,'',0,1,1,3,9,0,0,0,0,NULL),('bnai_mitzvah_date','Bnai Mitzvah Date','date','',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,0,NULL),('card_exp','Expiration','text','cc_expiration',0,0,'456e746572206173204d4d2f5959','left','','77696474683a363070783b','',0,0,2,'',0,1,1,3,2,0,0,0,0,NULL),('cc_number','Number','text','cc',0,0,'456e74657220776974686f757420616e7920737061636573206f72206461736865732e','left','','77696474683a32353070783b','',0,0,16,'',0,1,1,3,15,0,0,0,0,NULL),('cell','Cell Phone','text','phone',0,0,'','left','','','',0,0,20,'',0,0,1,0,0,1,1,1,0,NULL),('cell_carrier','Cell Carrier','select','cell_carriers',0,0,'','left','','','',0,0,25,'',0,0,1,0,0,1,1,1,0,NULL),('chazanut','Chazanut','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('check_no','Check Number','text','',0,0,'','left','','77696474683a31303070783b','',0,0,10,'',0,1,1,3,0,0,0,0,0,NULL),('city','City','text','',0,0,'','left','','','',0,0,40,'',0,0,1,0,0,1,1,1,1,NULL),('cohenleviisrael','Cohen/Levi/Israel','select','',0,0,NULL,'left','49737261656c0d0a436f68656e0d0a4c657669','77696474683a32303070783b',NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('company_name','Company Name','text','',0,0,'','left','','','',0,0,50,'',0,0,1,0,0,0,1,0,1,NULL),('country','Country','select','country',0,0,'','left','','','',0,0,35,'',0,0,1,0,0,1,1,1,1,NULL),('cvv','CVV Code','text','',0,0,'41207468726565206f7220666f757220646967697420766572696669636174696f6e20636f6465207072696e746564206469726563746c79206f6e20796f75722063726564697420636172642e','left','','77696474683a363070783b','',0,0,4,'',0,1,1,3,3,0,0,0,0,NULL),('deceased','Deceased','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,1,0,0,NULL),('dob','Date of Birth','date','date',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,0,1,0,0,NULL),('driver_license_no','Driver\'s License Number','text','',0,0,'','left','','77696474683a32353070783b','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('driver_license_state','Driver\'s License State','select','state',0,0,'','left','','77696474683a383070783b','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('dvar_torah','D\'var Torah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('email','E-Mail','text','email',0,0,'','left','','77696474683a32353070783b','',0,0,110,'',0,1,1,0,0,0,0,0,0,NULL),('email_optout','E-Mail Opt Out','checkbox','',0,0,'436865636b2074686520626f7820746f206f70742d6f7574206f6620652d6d61696c732e','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,1,NULL),('facebook','Facebook Profile','text','url',0,0,'456e74657220796f75722066756c6c2046616365626f6f6b2050726f66696c652055524c3a3c6272202f3e687474703a2f2f7777772e66616365626f6f6b2e636f6d2f3c623e757365726e616d653c2f623e','left','','','',0,0,100,'',0,0,1,0,0,1,1,0,1,NULL),('fathers_hebrew_name','Father\'s Hebrew Name','text','',0,0,'','left','','77696474683a32353070783b','',0,0,0,'',0,1,1,0,0,1,1,0,0,NULL),('fax','Fax','text','phone',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,1,NULL),('first_name','First Name','text','',0,0,'','left','','77696474683a2032323570783b','',0,0,40,'',0,0,1,0,0,1,1,1,1,NULL),('gender','Gender','select','',0,0,'','left','4d616c650a46656d616c650a4f74686572','77696474683a2031303070783b','',0,0,10,'',0,0,1,0,0,1,1,1,1,NULL),('haftarah','Haftarah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('hebrew_name','Hebrew Name','text','',0,0,'','left','','77696474683a32353070783b','',0,0,0,'',0,1,1,0,0,1,1,0,0,NULL),('industry','Industry','select','',0,0,'','left','4170706172656c0d0a42616e6b696e670d0a42696f746563686e6f6c6f67790d0a4368656d6963616c730d0a436f6d6d756e69636174696f6e0d0a436f6e737472756374696f6e0d0a436f6e73756c74696e670d0a456475636174696f6e0d0a456c656374726f6e6963730d0a456e657267790d0a456e67696e656572696e670d0a456e7465727461696e6d656e740d0a456e7669726f6e6d656e74616c0d0a46696e616e63650d0a476f7665726e6d656e740d0a4865616c7468636172650d0a486f73706974616c6974790d0a496e737572616e63650d0a4d616368696e6572790d0a4d616e75666163747572696e670d0a4d656469610d0a4e6f6e2d50726f6669740d0a52656372656174696f6e0d0a52657461696c0d0a5368697070696e670d0a546563686e6f6c6f67790d0a54656c65636f6d6d756e69636174696f6e730d0a5472616e73706f72746174696f6e0d0a5574696c69746965730d0a4f74686572','','',0,0,0,'',0,0,1,0,0,0,0,0,1,NULL),('invoice_memo','Memo','textarea','',0,0,'416e79207370656369616c207265717565737473206f7220646972656374696f6e732e','top','','77696474683a20313030253b0d0a6865696768743a2031323570783b','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('kria_batorah','Kria Ba\'Torah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('last_name','Last Name','text','',0,0,'','left','','77696474683a2032323570783b','',0,0,40,'',0,0,1,0,0,1,1,1,1,NULL),('linkedin','Linked In Profile','text','url',0,0,'456e74657220796f75722066756c6c204c696e6b6564496e2050726f66696c652055524c3a3c6272202f3e687474703a2f2f7777772e6c696e6b6564696e2e636f6d2f7075622f3c623e50726f66696c653c2f623e','left','','','',0,0,100,'',0,0,1,0,0,1,1,0,1,NULL),('maftir','Maftir','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('middle_name','Middle Name','text','',0,0,'','left','','77696474683a2032323570783b','',0,0,40,'',0,0,1,0,0,1,1,1,1,NULL),('mothers_hebrew_name','Mother\'s Hebrew Name','text','',0,0,'','left','','77696474683a32353070783b','',0,0,0,'',0,1,1,0,0,1,1,0,0,NULL),('name_on_card','Name on Card','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('occupation','Occupation','text','',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,0,1,0,0,NULL),('office_phone','Office Phone','text','phone',0,0,'','left','','','',0,0,20,'',0,0,1,0,0,1,1,0,1,NULL),('password','Password','text','password',0,0,'','left','','','',0,1,50,'',0,1,1,0,0,0,0,0,0,NULL),('phone','Primary Phone','text','phone',0,0,'','left','','77696474683a31373570783b','',0,0,20,'',0,0,1,0,0,1,1,1,1,NULL),('quickbooks_customer_id','Quickbooks Customer ID','text',NULL,0,0,NULL,'left',NULL,'77696474683a32353070783b',NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0,NULL),('repeat_pwd','Repeat Password','text','password',0,0,'','left','','','',0,1,50,'',0,1,1,0,0,0,0,0,0,NULL),('ship_directions','Special Directions','textarea','',0,0,'','left','','77696474683a313030253b6865696768743a353070783b','',0,0,0,'',0,1,1,0,0,0,0,0,0,NULL),('sms_optout','SMS Optout','checkbox','',0,0,'436865636b2074686520626f7820746f206f70742d6f7574206f6620534d532074657874206d657373616765732e','left','','','',0,0,0,'',0,0,1,0,0,1,1,1,0,NULL),('state','State','select','state',0,0,'','left','','','',0,0,3,'',0,0,1,0,0,1,1,1,1,NULL),('title','Title','select','',0,0,'','left','4d720a4d72730a4d6973730a4d730a4d780a4a720a53720a4d61737465720a486f6e0a5369720a44616d650a44720a50726f66','77696474683a2031303070783b','',0,0,10,'',0,0,1,0,0,1,1,1,1,NULL),('twitter','Twitter Profile','text','url',0,0,'456e74657220796f75722066756c6c20547769747465722050726f66696c652055524c3a3c6272202f3e687474703a2f2f7777772e747769747465722e636f6d2f3c623e757365726e616d653c2f623e','left','','','',0,0,80,'',0,0,1,0,0,1,1,0,1,NULL),('url','Website','text','url',0,0,'','left','','','',0,0,100,'',0,0,1,0,0,0,1,0,1,NULL),('username','Username','text','',0,0,'','left','','','',0,0,100,'',0,1,1,0,0,0,0,0,0,NULL),('wedding_anniversary_date','Wedding Anniversary Date','date','',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,0,NULL),('zip','Zip/Postal','text','',0,0,'','left','','','',0,0,10,'',0,0,1,0,0,1,1,1,1,NULL);
-";
+INSERT INTO `ppSD_fields` (`id`, `display_name`, `type`, `special_type`, `logic`, `logic_dependent`, `desc`, `label_position`, `options`, `styling`, `default_value`, `encrypted`, `sensitive`, `maxlength`, `settings`, `permissions_group`, `primary`, `static`, `data_type`, `min_len`, `scope_member`, `scope_contact`, `scope_rsvp`, `scope_account`) VALUES
+	('title', 'Title', 'select', '', 0, 0, '', 'left', 'Mr
+Mrs
+Miss
+Ms
+Mx
+Jr
+Sr
+Master
+Rabbi
+Chazan
+Cantor
+Rev
+Hon
+Sir
+Dame
+Dr
+Prof', 'width: 100px;', '', 0, 0, 10, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('first_name', 'First Name', 'text', '', 0, 0, '', 'left', '', 'width: 225px;', '', 0, 0, 40, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('middle_name', 'Middle Name', 'text', '', 0, 0, '', 'left', '', 'width: 225px;', '', 0, 0, 40, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('last_name', 'Last Name', 'text', '', 0, 0, '', 'left', '', 'width: 225px;', '', 0, 0, 40, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('address_line_1', 'Address Line 1', 'text', '', 0, 0, '', 'left', '', 'width: 250px;', '', 0, 0, 80, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('address_line_2', 'Address Line 2', 'text', '', 0, 0, '', 'left', '', 'width: 250px;', '', 0, 0, 30, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('city', 'City', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 40, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('state', 'State', 'select', 'state', 0, 0, '', 'left', '', '', '', 0, 0, 3, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('zip', 'Zip/Postal', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 10, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('country', 'Country', 'select', 'country', 0, 0, '', 'left', '', '', '', 0, 0, 35, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('phone', 'Primary Phone', 'text', 'phone', 0, 0, '', 'left', '', 'width:175px;', '', 0, 0, 20, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('cell', 'Cell Phone', 'text', 'phone', 0, 0, '', 'left', '', '', '', 0, 0, 20, '', 0, 0, 1, 0, 0, 1, 1, 1, 0),
+	('office_phone', 'Office Phone', 'text', 'phone', 0, 0, '', 'left', '', '', '', 0, 0, 20, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('alt_phone', 'Alternate Phone', 'text', 'phone', 0, 0, '', 'left', '', '', '', 0, 0, 20, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('cell_carrier', 'Cell Carrier', 'select', 'cell_carriers', 0, 0, '', 'left', '', '', '', 0, 0, 25, '', 0, 0, 1, 0, 0, 1, 1, 1, 0),
+	('gender', 'Gender', 'select', '', 0, 0, '', 'left', 'Male
+Female
+Other', 'width: 100px;', '', 0, 0, 10, '', 0, 0, 1, 0, 0, 1, 1, 1, 1),
+	('username', 'Username', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 100, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('password', 'Password', 'text', 'password', 0, 0, '', 'left', '', '', '', 0, 1, 50, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('repeat_pwd', 'Repeat Password', 'text', 'password', 0, 0, '', 'left', '', '', '', 0, 1, 50, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('email', 'E-Mail', 'text', 'email', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 110, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('alt_email1', 'Alternate Email No. 1', 'text', 'email', 0, 0, '', 'left', '', '', '', 0, 0, 110, '', 0, 0, 1, 0, 0, 0, 1, 1, 0),
+	('alt_email2', 'Alternate E-Mail No. 2', 'text', 'email', 0, 0, '', 'left', '', '', '', 0, 0, 110, '', 0, 0, 1, 0, 0, 0, 0, 0, 0),
+	('alt_email3', 'Alternate E-Mail No. 3', 'text', 'email', 0, 0, '', 'left', '', '', '', 0, 0, 110, '', 0, 0, 1, 0, 0, 0, 0, 0, 0),
+	('company_name', 'Company Name', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 50, '', 0, 0, 1, 0, 0, 0, 1, 0, 1),
+	('url', 'Website', 'text', 'url', 0, 0, '', 'left', '', '', '', 0, 0, 100, '', 0, 0, 1, 0, 0, 0, 1, 0, 1),
+	('facebook', 'Facebook Profile', 'text', 'url', 0, 0, 'Enter your full Facebook Profile URL:<br />http://www.facebook.com/<b>username</b>', 'left', '', '', '', 0, 0, 100, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('twitter', 'Twitter Profile', 'text', 'url', 0, 0, 'Enter your full Twitter Profile URL:<br />http://www.twitter.com/<b>username</b>', 'left', '', '', '', 0, 0, 80, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('email_optout', 'E-Mail Opt Out', 'checkbox', '', 0, 0, 'Check the box to opt-out of e-mails.', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('linkedin', 'Linked In Profile', 'text', 'url', 0, 0, 'Enter your full LinkedIn Profile URL:<br />http://www.linkedin.com/pub/<b>Profile</b>', 'left', '', '', '', 0, 0, 100, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('dob', 'Date of Birth', 'date', 'date', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1, 0, 0),
+	('occupation', 'Occupation', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1, 0, 0),
+	('industry', 'Industry', 'select', '', 0, 0, '', 'left', 'Apparel
+Banking
+Biotechnology
+Chemicals
+Communication
+Construction
+Consulting
+Education
+Electronics
+Energy
+Engineering
+Entertainment
+Environmental
+Finance
+Government
+Healthcare
+Hospitality
+Insurance
+Machinery
+Manufacturing
+Media
+Non-Profit
+Recreation
+Retail
+Shipping
+Technology
+Telecommunications
+Transportation
+Utilities
+Other', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 0, 0, 1),
+	('account_type', 'Type', 'select', '', 0, 0, '', 'left', 'Analyst
+Competitor
+Customer
+Integrator
+Investor
+Partner
+Press
+Prospect
+Reseller
+Other', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 0, 0, 1),
+	('fax', 'Fax', 'text', 'phone', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 1, 1, 0, 1),
+	('sms_optout', 'SMS Optout', 'checkbox', '', 0, 0, 'Check the box to opt-out of SMS text messages.', 'left', '', '', '', 0, 0, 0, '', 0, 0, 1, 0, 0, 1, 1, 1, 0),
+	('cc_number', 'Number', 'text', 'cc', 0, 0, 'Enter without any spaces or dashes.', 'left', '', 'width:250px;', '', 0, 0, 16, '', 0, 1, 1, 3, 15, 0, 0, 0, 0),
+	('card_exp', 'Expiration', 'text', 'cc_expiration', 0, 0, 'Enter as MM/YY', 'left', '', 'width:60px;', '', 0, 0, 2, '', 0, 1, 1, 3, 2, 0, 0, 0, 0),
+	('cvv', 'CVV Code', 'text', '', 0, 0, 'A three or four digit verification code printed directly on your credit card.', 'left', '', 'width:60px;', '', 0, 0, 4, '', 0, 1, 1, 3, 3, 0, 0, 0, 0),
+	('name_on_card', 'Name on Card', 'text', '', 0, 0, '', 'left', '', '', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('accttype', 'Account Type', 'select', '', 0, 0, 'What type of account is this?', 'left', 'Personal Checking
+Business Checking
+Savings', '', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('bank_name', 'Bank Name', 'text', '', 0, 0, 'Input the name of the bank to which this account belongs.', '', 'width:250px;', '', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('bank_routing', 'Routing Number', 'text', '', 0, 0, 'Input the bank''s nine digit routing number. This appears on the check below the memo line.', 'left', '', 'width:250px;', '', 0, 0, 9, '', 0, 1, 1, 3, 9, 0, 0, 0, 0),
+	('bank_account_name', 'Account Name', 'text', '', 0, 0, 'Input a name for this account.', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('bank_account_number', 'Account Number', 'text', '', 0, 0, 'Input the account number. This appears on the check below the memo line, to the right of the routing number.', 'left', '', 'width:250px;', '', 0, 0, 25, '', 0, 1, 1, 3, 0, 0, 0, 0, 0),
+	('invoice_memo', 'Memo', 'textarea', '', 0, 0, 'Any special requests or directions.', 'top', '', 'width: 100%;
+height: 125px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('driver_license_state', 'Driver''s License State', 'select', 'state', 0, 0, '', 'left', '', 'width:80px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('driver_license_no', 'Driver''s License Number', 'text', '', 0, 0, '', 'left', '', 'width:250px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0),
+	('check_no', 'Check Number', 'text', '', 0, 0, '', 'left', '', 'width:100px;', '', 0, 0, 10, '', 0, 1, 1, 3, 0, 0, 0, 0, 0),
+	('ship_directions', 'Special Directions', 'textarea', '', 0, 0, '', 'left', '', 'width:100%;height:50px;', '', 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 0, 0)
+,('aliyah','Aliyah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('bnai_mitzvah_date','Bnai Mitzvah Date','date','',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,0)
+,('chazanut','Chazanut','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('cohenleviisrael','Cohen/Levi/Israel','select','',0,0,NULL,'left','','','',0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('deceased','Deceased','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,1,0,0)
+,('dvar_torah','D\'var Torah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('fathers_hebrew_name','Father\'s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,1,1,0,0)
+,('haftarah','Haftarah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('hebrew_name','Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,1,1,0,0)
+,('kria_batorah','Kria Ba\'Torah','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('maftir','Maftir','checkbox','',0,0,NULL,'left',NULL,NULL,NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('mothers_hebrew_name','Mother\'s Hebrew Name','text','',0,0,'','left','','','',0,0,0,'',0,1,1,0,0,1,1,0,0)
+,('quickbooks_customer_id','Quickbooks Customer ID','text',NULL,0,0,NULL,'left',NULL,'',NULL,0,0,255,NULL,0,0,0,0,NULL,1,0,0,0)
+,('wedding_anniversary_date','Wedding Anniversary Date','date','',0,0,'','left','','','',0,0,0,'',0,0,1,0,0,1,1,0,0);";
 
 $inserts[] = "INSERT INTO ppSD_fieldsets(id,name,`desc`,`order`,`columns`,logic_dependent,static,`owner`,billing) 
-VALUES(1,'Contact Information','',1,1,0,1,0,0),(2,'Phones','',2,1,0,1,0,0),(3,'Company Details','',3,1,0,1,0,0),(4,'Social Media and Integrations','3c703e496e707574696e67207468697320646174612077696c6c20616374697661746520736f6369616c206d6564696120666561747572657320666f72207468697320757365722e3c2f703e',2,1,0,1,0,0),(5,'Account Overview','',1,1,0,1,0,0),(6,'Account Specifics','',2,1,0,1,0,0),(7,'Cell Phone','496620612063656c6c2070686f6e6520616e642063656c6c2063617272696572206172652070726f76696465642c20534d532066656174757265732077696c6c206265636f6d6520617661696c61626c652e',4,1,0,1,0,0),(8,'Registration Basics','',1,1,0,0,0,0),(9,'Credit Card Details','',1,1,0,1,0,1),(11,'Billing Information','',1,1,0,1,0,1),(12,'Check Details','',1,1,0,1,0,1),(13,'Invoice Details','',1,1,0,1,0,1),(14,'Shipping Information','',1,1,0,1,0,0),(15,'Password','',1,1,0,1,0,0),(17,'Username Selection','506c656173652073656c656374206120757365726e616d6520616e642070617373776f726420666f7220796f7572206163636f756e742e',1,1,0,1,0,0),(18,'Miscellaneous Member Fields','',999,1,0,1,0,0),(19,'Miscellaneous Contact Fields','',999,1,0,1,0,0),(20,'Miscellaneous Account Fields','',999,1,0,1,0,0),(21,'Miscellaneous RSVP Fields','',999,1,0,1,0,0),(22,'Password Update','576f756c6420796f75206c696b6520746f2075706461746520796f75722070617373776f72643f',1,1,0,1,0,0),(23,'Aliyot and Kibbudim','',NULL,0,0,2,2,0),(51,'Your Information',NULL,1,1,0,0,NULL,0),(52,'Your Information',NULL,1,1,0,0,NULL,0),(53,'Your Information',NULL,1,1,0,0,NULL,0),(54,'Your Information',NULL,1,1,0,0,NULL,0),(55,'Your Information',NULL,1,1,0,0,NULL,0);
+VALUES(1,'Contact Information','',1,1,0,1,0,0),(2,'Phones','',2,1,0,1,0,0),(3,'Company Details','',3,1,0,1,0,0),(4,'Social Media and Integrations','',2,1,0,1,0,0),(5,'Account Overview','',1,1,0,1,0,0),(6,'Account Specifics','',2,1,0,1,0,0),(7,'Cell Phone','496620612063656c6c2070686f6e6520616e642063656c6c2063617272696572206172652070726f76696465642c20534d532066656174757265732077696c6c206265636f6d6520617661696c61626c652e',4,1,0,1,0,0),(8,'Registration Basics','',1,1,0,0,0,0),(9,'Credit Card Details','',1,1,0,1,0,1),(11,'Billing Information','',1,1,0,1,0,1),(12,'Check Details','',1,1,0,1,0,1),(13,'Invoice Details','',1,1,0,1,0,1),(14,'Shipping Information','',1,1,0,1,0,0),(15,'Password','',1,1,0,1,0,0),(17,'Username Selection','506c656173652073656c656374206120757365726e616d6520616e642070617373776f726420666f7220796f7572206163636f756e742e',1,1,0,1,0,0),(18,'Miscellaneous Member Fields','',999,1,0,1,0,0),(19,'Miscellaneous Contact Fields','',999,1,0,1,0,0),(20,'Miscellaneous Account Fields','',999,1,0,1,0,0),(21,'Miscellaneous RSVP Fields','',999,1,0,1,0,0),(22,'Password Update','576f756c6420796f75206c696b6520746f2075706461746520796f75722070617373776f72643f',1,1,0,1,0,0),(23,'Aliyot and Kibbudim','',NULL,0,0,2,2,0),(51,'Your Information',NULL,1,1,0,0,NULL,0),(52,'Your Information',NULL,1,1,0,0,NULL,0),(53,'Your Information',NULL,1,1,0,0,NULL,0),(54,'Your Information',NULL,1,1,0,0,NULL,0),(55,'Your Information',NULL,1,1,0,0,NULL,0);
 ";
 
 $inserts[] = "
@@ -532,7 +650,7 @@ $inserts[] = "
 	('employee-add', 'admin_cp', '', '', 'Add Employee', '', 0, '$date', 1, 1, '', 0, 0, '', '', '', '', '', 0, 1, 0, 0, 0, 0),
 	('employee-edit', 'admin_cp', '', '', 'Edit Employee', '', 0, '$date', 1, 1, '', 0, 0, '', '', '', '', '', 0, 1, 0, 0, 0, 0),
 	('update-account', 'update_account', '', '', 'Basic Account Update', '', 0, '$date', 1, 1, '', 1, 0, '', '', '', '', '', 0, 1, 0, 0, 0, 0),
-    ('billing_form',  'admin_cp',  '',  '',  'Billing Form',  '',  '',  '',  '1',  '0',  '',  '',  '',  '',  '',  '',  '',  '',  '',  '',  '1',  '',  '',  '');
+    ('billing_form',  'admin_cp',  '',  '',  'Billing Form',  '',  0,  '$date',  1, 1, '', 0, 0, '', '', '', '', '', 0, 1, 0, 0, 0, 0);
 ";
 $inserts[] = "
 	INSERT INTO `ppSD_homepage_widgets` (`id`, `options`, `title`, `perms`, `static`, `employee`, `add_fields`, `hide`) VALUES
@@ -621,53 +739,46 @@ $inserts[] = "
  */
 $inserts[] = "
 	INSERT INTO `ppSD_options` (`id`, `display`, `value`, `description`, `type`, `width`, `options`, `section`, `maxlength`, `class`) VALUES
-	('sms_from', 'From Line', 'noreply@$domain', 'What address should SMS messages arrive from. This should be an email address.', 'text', 0, '', 'sms', 0, ''),
+	('sms_from', 'From Line', 'noreply@localhost', 'What address should SMS messages arrive from. This should be an email address.', 'text', 0, '', 'sms', 0, ''),
 	('date_format', 'Date Format', 'm/d/Y', 'What date format would you like to use throughout the program&#63; Uses <a href=\"http://documentation.ShulNET.com/Options/Date-Formatting\" target=\"_blank\">PHP Date</a> standards.', 'text', 0, '', 'general', 0, ''),
 	('phone_format', 'Phone Separator', '.', 'What should separate numbers in a phone number? Only works for 10 digit numbers.', 'text', '50', '', 'general', '1', ''),
 	('time_change', 'Time Adjust', '-1', 'Would you like to adjust your system time&#63;', 'select', 80, '-11|-10|-9|-8|-7|-6|-5|-4|-3|-2|-1|0|1|2|3|4|5|6|7|8|9|10|11', 'general', 0, ''),
-	('current_version', '', '$version', '', 'text', 0, '', 'system', 0, ''),
+	('current_version', '', '115', '', 'text', 0, '', 'system', 0, ''),
 	('currency', 'Currency', 'USD', '', 'select', 80, 'USD|EUR|GBP|AUD|CAD|INR|ZAR|NZD|JPY|SGD|CNY|MYR|CHF|THB|IDR|AED|HKD|PHP|SEK|HUF|MXN|RUB', 'cart', 0, ''),
 	('member_id_format', 'Member ID Format', 'LLLL-nnnnn-nnnnn', 'Customize the format of member IDs. Recommended: 15-20 characters. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 150, '', 'members', 20, ''),
-
-	('use_email_as_username', 'Use E-Mail As Username?', '0', 'Would you like to use an email as username?', 'radio', 0, '', 'members', '', ''),
-
+	('use_email_as_username', 'Use E-Mail As Username?', '0', 'Would you like to use an email as username?', 'radio', 0, '', 'members', 0, ''),
 	('startpage', 'Default Start Page?', 'home', 'What should the homepage of your site be? Common pages are home, catalog, calendar, or login.', 'text', '200', '', 'site', '85', ''),
 	('welcome_guide', '', '0', '', '', '0', '', 'system', '0', ''),
 	('sub_id_format', 'Subscription ID Format', 'LnnnnnnnnnnnLLLnnnn', 'Customize the format of subscription IDs. Recommended: 15-22 characters. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 150, '', 'subscriptions', 22, ''),
-	('remove_content_cancel_sub', 'Remove Content Upon Cancel?', '1', 'Would you like to instantly remove access to content granted by a subscription when it expires (YES) or let the content expire naturally on the scheduled expiration date (NO)?', 'radio', '', '', 'subscriptions', '', ''),
+	('remove_content_cancel_sub', 'Remove Content Upon Cancel?', '1', 'Would you like to instantly remove access to content granted by a subscription when it expires (YES) or let the content expire naturally on the scheduled expiration date (NO)?', 'radio', 0, '', 'subscriptions', 0, ''),
 	('account_headings', '', 'name,city,state,phone,created', 'Default table sorting headings. Employees can override.', 'text', 0, '', 'system', 0, ''),
-	('concurrent_use_system', 'Allow Concurrent Logins?', '0', 'Would you like to allow concurrent logins to the same membership?', 'radio', '0', '', 'members', '', ''),
+	('concurrent_use_system', 'Allow Concurrent Logins?', '0', 'Would you like to allow concurrent logins to the same membership?', 'radio', '0', '', 'members', 0, ''),
 	('concurrent_logins_suspend', 'Concurrent Login Suspension', '3', 'How many concurrent logins must be detected before a member is suspended?', 'text', '80', '', 'members', '3', ''),
 	('member_headings', '', 'username,joined,last_name,first_name,email', 'Default table sorting headings. Employees can override.', 'text', 0, '', 'system', 0, ''),
 	('contact_headings', '', 'last_name,first_name,next_action,account,expected_value', 'Default table sorting headings. Employees can override.', 'text', 0, '', 'system', 0, ''),
-	('site_name', 'Site Name', '$site_name', 'As displayed throughout the templates.', 'text', 0, '', 'site', 0, ''),
-	('company_url', 'Company URL', '$company_url', 'What is your company URL&#63;', 'text', 0, '', 'general', 0, ''),
-	('company_email', 'Company E-Mail', '" . $company_email . "', 'A generic company email, often used on outgoing templates.', 'text', '250', '', 'general', '', ''),
-	('google_analytics', 'Google Analytics ID', '', 'If you want to track your website with Google Analytics, input your Id below.', 'text', '250', '', 'general', '', ''),
-	('google_maps_api', 'Google Maps API Key', '', 'If you want to integrate this with Google Maps, input your API Key below.', 'text', '250', '', 'general', '', ''),
-	('load_jquery', 'Load jQuery?', '1', 'Would you like to automatically load jQuery and jQuery UI on all templates?', 'radio', '', '', 'general', '', ''),
+	('site_name', 'Site Name', 'localhost:8002 Members', 'As displayed throughout the templates.', 'text', 0, '', 'site', 0, ''),
+	('company_url', 'Company URL', 'http://localhost:8002', 'What is your company URL&#63;', 'text', 0, '', 'general', 0, ''),
+	('company_email', 'Company E-Mail', 'noreply@localhost:8002', 'A generic company email, often used on outgoing templates.', 'text', '250', '', 'general', 0, ''),
+	('google_analytics', 'Google Analytics ID', '', 'If you want to track your website with Google Analytics, input your Id below.', 'text', '250', '', 'general', 0, ''),
+	('google_maps_api', 'Google Maps API Key', '', 'If you want to integrate this with Google Maps, input your API Key below.', 'text', '250', '', 'general', 0, ''),
+	('load_jquery', 'Load jQuery?', '1', 'Would you like to automatically load jQuery and jQuery UI on all templates?', 'radio', '0', '', 'general', 0, ''),
 	('session_inactivity_expiration', 'Session Length', '3600', 'How long, in seconds, before a user\'s session expires due to inactivity&#63;', 'text', 100, '', 'members', 6, 'zen_num'),
 	('session_admin_inactivity', 'Session Expiration', '7200', '', 'special', 0, '', 'admin', 0, 'zen_num'),
-
     ('additional_search_contacts', '', 'phone,fax', 'Make additional custom fields searchable in the quick ajax search.', 'text', 0, '', 'system', 0, ''),
     ('additional_search_members', '', 'phone,fax', 'Make additional custom fields searchable in the quick ajax search.', 'text', 0, '', 'system', 0, ''),
-
     ('cc_expiring_notify', 'Notify Expiring Credit Cards?', '1', 'If set to yes, users will be notified of upcoming expiring credit cards one month before they expire.', 'radio', '0', '', 'cart', '0', ''),
-
 	('price_format', 'Price Format', '1', 'What format should prices be displayed in&#63;', 'select', 150, '1:1,000.00|2:1 000,00|3:1000.00|4:1000', 'cart', 0, ''),
-
-	('language', 'Language', 'en', 'Default language for the program?', 'select', '200', 'ar:Arabic|bn:Bengali|zh:Chinese|de:Deutsch|en:English|es:Espanol|fr:Francais|hi:Hindi|ja:Japanese|pt:Portuguese|pa:Punjabi|ru:Russian', 'general', '', ''),
-
+	('language', 'Language', 'en', 'Default language for the program?', 'select', '200', 'ar:Arabic|bn:Bengali|zh:Chinese|de:Deutsch|en:English|es:Espanol|fr:Francais|hi:Hindi|ja:Japanese|pt:Portuguese|pa:Punjabi|ru:Russian', 'general', '0', ''),
 	('homepage', 'Homepage Location', '/index.php', 'Where should the \"homepage\" link redirect to&#63;', 'text', 0, '', 'site', 0, ''),
 	('order_id_format', 'Order Number Format', 'LLL-nnnnnnnnnn', 'L = Upper case letter, l = lower case letter, n = Number', 'text', 200, '', 'cart', 20, ''),
 	('extend_type', 'Renewal Extension Type', 'today', 'Should renewals be based on today\'s date or the date the subscription expired?', 'radio', 0, 'today:Today|expires:Previous Next Renewal Date', 'subscriptions', 0, ''),
 	('rsvp_ticket_format', 'Confirmation Number Format', 'LLn-nnnnn-nnnnn-nnnnn', 'Customize the format of event registration confirmation numbers. Recommended: between 15 and 21 characters. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 0, '', 'events', 21, ''),
 	('use_qcodes', 'Use QR Codes?', '1', 'Would you like to use QCodes throughout the program, like on event registrations&#63;', 'radio', 0, '', 'general', 0, ''),
-	('note_headings_admin', '', 'date,name,label,public,deadline,for', '', '', '', '', 'hide', '', ''),
+	('note_headings_admin', '', 'date,name,label,public,deadline,for', '', '', '0', '', 'hide', '0', ''),
 	('cron_alerts', '', '0', '', '', '0', '', 'system', '0', ''),
 	('theme', '', 'zoid', '', 'text', 0, '', 'system', 0, ''),
-    ('sms_plugin',  'SMS Plugin',  '', 'Enter the plugin ID you want to use for SMS sending.',  'text',  '150',  '', 'sms',  '',  ''),
-	('email_plugin',  'E-Mail Plugin',  '', 'Enter the plugin ID you want to use for SMS sending.',  'text',  '150',  '', 'email',  '',  ''),
+    ('sms_plugin',  'SMS Plugin',  '', 'Enter the plugin ID you want to use for SMS sending.',  'text',  '150',  '', 'sms',  '0',  ''),
+	('email_plugin',  'E-Mail Plugin',  '', 'Enter the plugin ID you want to use for SMS sending.',  'text',  '150',  '', 'email',  '0',  ''),
 	('theme_emails', '', 'threefiveten', '', 'text', 0, '', 'system', 0, ''),
 	('max_failed_logins', 'Failed Logins Before CAPTCHA?', '5', 'How many failed logins before the user must submit a CAPTCHA?', 'text', '80', '', 'members', '4', ''),
 	('paypal_return_text', '', 'CLICK HERE TO COMPLETE YOUR ORDER', '', 'text', 0, '', 'system', 0, ''),
@@ -675,7 +786,7 @@ $inserts[] = "
 	('cart_req_terms', '', '1', 'DEPRECATED', 'radio', 0, '', 'system', 0, ''),
 	('subscription_retries', 'Maximum Failed Retries', '3', 'How many failed retries would you like to allow before canceling a subscription&#63;', 'text', 80, '', 'subscriptions', 2, ''),
 	('subscription_retry_spacing', 'Retry Spacing', '000002000000', 'How far apart should retries be for failed subscriptions&#63;', 'timeframe', 0, '', 'subscriptions', 0, ''),
-	('subscription_advanced_notice',  'Upcoming Renewal Reminder',  '7', 'How many days before a subscription renews should users be reminded of the upcoming subscription? Set to \"999\" for never!',  'text',  '80',  '', 'subscriptions',  '',  ''),
+	('subscription_advanced_notice',  'Upcoming Renewal Reminder',  '7', 'How many days before a subscription renews should users be reminded of the upcoming subscription? Set to \"999\" for never!',  'text',  '80',  '', 'subscriptions',  '0',  ''),
 	('curl_proxy', 'cURL Proxy', '', 'If you would like to use a cURL proxy, please input the proxy above.', 'text', 0, '', 'general', 0, ''),
 	('append_contact', 'Append Existing Contacts?', 'create', 'When a contact form is submitted with an email address that matches a contact already in the database, would you like to append the submission to the existing contact or create a new record?', 'select', '200', 'append:Append To Existing|create:Create New Record', 'contacts', 0, ''),
 	('allow_invoicing', 'Allow Invoicing&#63;', '0', 'Would you like to allow users to request an invoice the shopping cart&#63;', 'radio', 0, '', 'invoices', 0, ''),
@@ -684,12 +795,11 @@ $inserts[] = "
 	('new_contact_form_type', 'New Contact Type (Forms)', 'Lead', 'What type of contact should be created when a user submits a contact form?', 'select', '200', 'Contact:General Contact|Lead:Lead|Opportunity:Opportunity|Customer:Customer', 'contacts', 0, ''),
 	('opportunity_timeframe', 'Opportunity Contact Frequency', '000004000000', 'Contacts marked as Opportunities have increased contact frequencies. How often should opportunities be contacted? Set to 9 years to not user this feature and instead rely on the account contact frequency settings.', 'timeframe', 0, '', 'contacts', 0, ''),
 	('catalog_img_size', 'Image Size', '133', 'How wide, in pixels, should images be in the shop&#63;', 'text', 120, '', 'cart', 4, 'zen_num'),
-	('sub_no_card_action',  'Action For Cardless Renewals',  'invoice',  'What would you like to do in the event that a subscription doesn''t have a credit card associated with it&#63;',  'select',  '200', 'invoice:Invoice the user|email:E-Mail card update request.',  'subscriptions',  '',  ''),
+	('sub_no_card_action',  'Action For Cardless Renewals',  'invoice',  'What would you like to do in the event that a subscription doesn''t have a credit card associated with it&#63;',  'select',  '200', 'invoice:Invoice the user|email:E-Mail card update request.',  'subscriptions',  '0',  ''),
 	('catalog_cate_cols', 'Shop Columns', '2', 'How many columns should products be displayed in throughout the shop&#63;', 'text', 80, '', 'cart', 1, 'zen_num'),
 	('catalog_img_size_lg', 'Shop Large Image Size', '250', 'How large should the bigger version of a catalog item be when viewing a product&#63;', 'text', 0, '', 'cart', 0, 'zen_num'),
 	('catalog_img_size_tb', 'Thumbnail Size', '50', 'Width of small thumbnails on the view product page, in pixels.', 'text', 80, '', 'cart', 3, 'zen_num'),
-
-	('update_subs_card_update', 'Update subscription card?', '1', 'Would you like to update all subscriptions for a user when a credit card is updated or added?', 'radio', '', '', 'cart', '', ''),
+	('update_subs_card_update', 'Update subscription card?', '1', 'Would you like to update all subscriptions for a user when a credit card is updated or added?', 'radio', '0', '', 'cart', '0', ''),
 	('nonmember_cart_buy_acct', '', 'NON_MEMBER', 'Matches ID in ppSD_sources', 'text', 0, '', 'system', 0, ''),
 	('max_failed_login_attempts', 'Max Failed Login Attempts', '6', 'Maximum number of failed login attempts before a member is locked for 10 minutes.', 'text', 80, '', 'members', 2, ''),
 	('user_update_time', 'Recommended Update Time', '000300000000', 'How often would you like to request that a user update their membership details&#63;', 'timeframe', 0, '', 'members', 0, ''),
@@ -706,16 +816,16 @@ $inserts[] = "
 	('sales_headings', '', 'id,date_completed,payment_gateway,total,status', '', 'text', 0, '', 'hide', 0, ''),
 	('event_id_format', 'Event ID Format', 'LLLnnnnnn', 'Customize the format of event IDs. Recommended: 9 characters. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 150, '', 'events', 9, ''),
 	('departments', '', 'Administration,Sales,Technical', '', 'text', 0, '', 'system', 0, ''),
-	('account_inactive_time', 'Time Until Inactive', '000600000000', 'After how long of inactivity should a member be marked as inactive&#63;', 'timeframe', '', '', 'members', '', ''),
-	('account_inactive_email', 'E-Mail Inactive Accounts&#63;', '1', 'Would you like to email users when their membership is marked as inactive&#63;', 'radio', '', '', 'members', '', ''),
+	('account_inactive_time', 'Time Until Inactive', '000600000000', 'After how long of inactivity should a member be marked as inactive&#63;', 'timeframe', '0', '', 'members', '0', ''),
+	('account_inactive_email', 'E-Mail Inactive Accounts&#63;', '1', 'Would you like to email users when their membership is marked as inactive&#63;', 'radio', '0', '', 'members', '0', ''),
 	('product_id_format', 'Product ID Format', 'random', 'Default format for a product ID. L = Upper case letter. l = Lower case letter. n = Number. random = Random Format', 'text', 0, '', 'cart', 35, ''),
 	('invoice_hourly', 'Hourly Rate', '100', 'What you would like your default hourly rate to be for invoices&#63;', 'text', 80, '', 'invoices', 8, 'zen_money'),
 	('invoice_due_date', 'Invoice Due', '000014000000', 'How long after an invoice is created before it should be marked as overdue&#63;', 'timeframe', 0, '', 'invoices', 0, ''),
 	('invoice_round_up', 'Round Up Hourly Work&#63;', '0', 'Would you like to round up hourly components of invoices&#63; So 15 minutes of work becomes 1 hour&#63;', 'radio', 0, '', 'invoices', 0, ''),
-	('company_address', 'Company Address', '$company_address', 'Used on invoices and various other emails and templates.', 'textarea', 0, '', 'general', 0, ''),
-	('company_logo', 'Company Logo', '$company_logo', 'Input a URL to your company logo.', 'text', 0, '', 'general', 0, ''),
-	('company_name', 'Company Name', '$company_name', 'What is your company''s name&#63;', 'text', 250, '', 'general', 0, ''),
-	('company_contact', 'Company Contact Details', '$company_contact', 'For use on various templates and emails, these are your desired contact details for your company.', 'textarea', 0, '', 'general', 0, ''),
+	('company_address', 'Company Address', '', 'Used on invoices and various other emails and templates.', 'textarea', 0, '', 'general', 0, ''),
+	('company_logo', 'Company Logo', '', 'Input a URL to your company logo.', 'text', 0, '', 'general', 0, ''),
+	('company_name', 'Company Name', 'localhost:8002', 'What is your company''s name&#63;', 'text', 250, '', 'general', 0, ''),
+	('company_contact', 'Company Contact Details', '', 'For use on various templates and emails, these are your desired contact details for your company.', 'textarea', 0, '', 'general', 0, ''),
 	('invoice_allow_partial', 'Allow Partial Payments&#63;', '1', 'Would you like to allow partial payments on invoices&#63;', 'radio', 0, '', 'invoices', 0, ''),
 	('invoice_reminder_pre', 'Reminder No. 1', '000005000000', 'How long before an invoice is due would you like to send a friendly reminder out to the client&#63;', 'timeframe', 0, '', 'invoices', 0, ''),
 	('invoice_max_reminders', 'Maximum Reminders', '5', 'Maximum number of reminders after an invoice is past due. If an invoice is still overdue after the last reminder, it will be marked as \"Dead\".', 'text', 80, '', 'invoices', 2, ''),
@@ -728,16 +838,13 @@ $inserts[] = "
 	('member_filters', 'Additional Member Filters', '', 'Display additional member filters for all employees? Input as a CSV of field IDs.', 'text', 250, '', 'members', 20, ''),
     ('contact_filters', 'Additional Contact Filters', '', 'Display additional contact filters for all employees? Input as a CSV of field IDs.', 'text', 250, '', 'contacts', 20, ''),
     ('account_filters', 'Additional Account Filters', '', 'Display additional account filters for all employees? Input as a CSV of field IDs.', 'text', 250, '', 'accounts', 20, ''),
-
-
-	('bounced_email_inbox', 'Bounced E-Mail Inbox', '', 'If you have set up an inbox to detect bounced emails, input the email (IE: bounced@yoursite.com) above as well as your SMTP credentials below.', 'text', '250', '', 'email', '', ''),
-	('bounced_smtp_server', 'Bounced SMTP Mail Server', '', 'Mail server for the bounced email account.', 'text', '250', '', 'email', '', ''),
-	('bounced_smtp_username', 'Bounced SMTP Username', '', 'Username to connect to the bounced email account.', 'text', '250', '', 'email', '', ''),
-	('bounced_smtp_password', 'Bounced SMTP Password', '', 'Password to connect to the bounced email account.', 'text', '250', '', 'email', '', ''),
-	('bounced_smpt_port', 'Bounced SMTP Port', '', 'Port to connect to the bounced email account.', 'text', '250', '', 'email', '', ''),
-    ('stat_opt_in',  'Anonymous Stat Opt-in',  '$stat_opt_in',  'Allow Castlamp to anonymously collect statistical information on your program?',  'radio',  '',  '',  'general',  '',  ''),
-
-	('cron_time',  'Cron Execution Time',  '',  '',  '',  '',  '',  'system',  '',  ''),
+	('bounced_email_inbox', 'Bounced E-Mail Inbox', '', 'If you have set up an inbox to detect bounced emails, input the email (IE: bounced@yoursite.com) above as well as your SMTP credentials below.', 'text', '250', '', 'email', '0', ''),
+	('bounced_smtp_server', 'Bounced SMTP Mail Server', '', 'Mail server for the bounced email account.', 'text', '250', '', 'email', '0', ''),
+	('bounced_smtp_username', 'Bounced SMTP Username', '', 'Username to connect to the bounced email account.', 'text', '250', '', 'email', '0', ''),
+	('bounced_smtp_password', 'Bounced SMTP Password', '', 'Password to connect to the bounced email account.', 'text', '250', '', 'email', '0', ''),
+	('bounced_smpt_port', 'Bounced SMTP Port', '', 'Port to connect to the bounced email account.', 'text', '250', '', 'email', '0', ''),
+    ('stat_opt_in',  'Anonymous Stat Opt-in',  '0',  'Allow Castlamp to anonymously collect statistical information on your program?',  'radio',  '0',  '',  'general',  '0',  ''),
+	('cron_time',  'Cron Execution Time',  '',  '',  '',  '0',  '',  'system',  '0',  ''),
 	('preview_contacts', '', 'last_name,first_name,email', '', '', 0, '', '', 0, ''),
 	('preview_members', '', 'username,email,last_name,first_name', '', '', 0, '', '', 0, ''),
 	('preview_account', '', 'company_name', '', '', 0, '', '', 0, ''),
@@ -745,7 +852,7 @@ $inserts[] = "
 	('emails_per_hour', 'E-Mail Throttling', '500', 'How many emails would you like to limit the system to per hour&#63;', 'text', 100, '', 'email', 6, 'zen_num'),
 	('product_sale_points',  'Popularity Points Per Sale',  '20',  'How many popularity points should be assigned to a product for a sale&#63;',  'text',  '60',  '',  'cart',  '4',  ''),
 	('product_view_points',  'View Points Per Sale',  '0.25',  'How many popularity points should be assigned to a product for a view&#63;',  'text',  '60',  '',  'cart',  '4',  ''),
-	('event_headings', '', 'name,id,starts,ends,max_rsvps,location_name', 'Default table headings for events', 'text', '', '', 'hide', '', ''),
+	('event_headings', '', 'name,id,starts,ends,max_rsvps,location_name', 'Default table headings for events', 'text', '255', '', 'hide', '0', ''),
 	('contact_headings_admin', '', 'last_name,first_name,next_action,account,expected_value,owner', '', '', 0, '', 'hide', 0, ''),
 	('member_headings_admin', '', 'username,joined,last_name,first_name,email', '', '', 0, '', 'hide', 0, ''),
 	('account_headings_admin', '', 'name,city,state,phone,created', '', '', 0, '', 'hide', 0, ''),
@@ -753,27 +860,27 @@ $inserts[] = "
 	('new_contact_public', 'Make New Contacts Public&#63;', '1', 'Make new contacts public to employees&#63;', 'radio', 0, '', 'contacts', 0, ''),
 	('contact_assign_type', 'Assignment Type', 'unassigned', 'How would you like to assign new contacts&#63;', 'select', 250, 'random:Random Assignment|next_employee:Next Employee|unassigned:Unassigned', 'contacts', 0, ''),
 	('contact_last_assign', '', '', 'Who was the last contact assigned to&#63;', '', 0, '', 'system', 0, ''),
-	('site_mode',  'Site Mode',  'live',  'Establish the <a href=\"http://documentation.ShulNET.com/Integration/Test-Mode\" target=\"_blank\">mode</a> you wish to operate the program under.',  'select',  '', 'live:Live Mode|test:Test Mode',  'general',  '',  ''),
+	('site_mode',  'Site Mode',  'live',  'Establish the <a href=\"http://documentation.ShulNET.com/Integration/Test-Mode\" target=\"_blank\">mode</a> you wish to operate the program under.',  'select',  '0', 'live:Live Mode|test:Test Mode',  'general',  '0',  ''),
 	('email_queue_last_sent', '', '', '', '', 0, '', 'system', 0, ''),
 	('cron_last_run', '', '', '', '', 0, '', 'system', 0, ''),
 	('db-backup', '', '', '', '', 0, '', 'system', 0, ''),
 	('theme-html-backup', '', '', '', '', 0, '', 'system', 0, ''),
 	('theme-email-backup', '', '', '', '', 0, '', 'system', 0, ''),
 	('theme-mobile-backup', '', '', '', '', 0, '', 'system', 0, ''),
-	('update_info', '', '$update_array', '', '', '', '', 'hide', '', ''),
-	('last_rotation', '', '$date', '', '', '', '', 'hide', '', ''),
-	('twitter_handle', 'Twitter Handle', '', 'Input your twitter handle without the @ symbol.', 'text', '250', '', 'social_media', '', ''),
-	('twitter_consumer_key', 'Twitter Consumer Key', '', '', 'text', '250', '', 'social_media', '', ''),
-	('twitter_secret', 'Twitter Consumer Secret', '', '', 'text', '250', '', 'social_media', '', ''),
-	('twitter_oauth_token', 'Twitter Access token', '', '', 'text', '250', '', 'social_media', '', ''),
-	('twitter_oauth_secret', 'Twitter Access token secret', '', '', 'text', '250', '', 'social_media', '', ''),
+	('update_info', '', '', '', '', '0', '', 'hide', '0', ''),
+	('last_rotation', '', '2025-10-25 15:57:42', '', '', '0', '', 'hide', '0', ''),
+	('twitter_handle', 'Twitter Handle', '', 'Input your twitter handle without the @ symbol.', 'text', '250', '', 'social_media', '0', ''),
+	('twitter_consumer_key', 'Twitter Consumer Key', '', '', 'text', '250', '', 'social_media', '0', ''),
+	('twitter_secret', 'Twitter Consumer Secret', '', '', 'text', '250', '', 'social_media', '0', ''),
+	('twitter_oauth_token', 'Twitter Access token', '', '', 'text', '250', '', 'social_media', '0', ''),
+	('twitter_oauth_secret', 'Twitter Access token secret', '', '', 'text', '250', '', 'social_media', 0, ''),
 	('wg_featured_product_display',  'Display',  '1',  'How many product to display?',  'text',  '80',  '',  'widgets',  '3',  ''),
-	('wg_featured_product_featured',  'Featured Products Only?',  '1',  'Display featured product only or all products?',  'radio',  '',  '1:Featured|0:Any',  'widgets',  '',  ''),
-	('wg_featured_product_category',  'Category',  '',  'Select products from specific category?',  'special',  '200',  'list:cart_categories',  'widgets',  '',  ''),
+	('wg_featured_product_featured',  'Featured Products Only?',  '1',  'Display featured product only or all products?',  'radio',  '0',  '1:Featured|0:Any',  'widgets',  '0',  ''),
+	('wg_featured_product_category',  'Category',  '',  'Select products from specific category?',  'special',  '200',  'list:cart_categories',  'widgets',  '0',  ''),
 	('wg_upcoming_events_display',  'Display',  '5',  'How many events to display?',  'text',  '80',  '',  'widgets',  '3',  ''),
-	('wg_upcoming_events_timeframe',  'Range?',  '1',  'Display featured product only or all products?',  'timeframe',  '',  '000300000000',  'widgets',  '',  ''),
-	('wg_upcoming_events_calendar',  'Calendar',  '',  'Select events from specific calendar?',  'special',  '200',  'list:calendars',  'widgets',  '',  ''),
-	('wg_custom_files_label',  'Label',  'custom_files',  'Only display files with a specific label.',  'special',  '200',  'list:labels',  'widgets',  '',  ''),
+	('wg_upcoming_events_timeframe',  'Range?',  '1',  'Display featured product only or all products?',  'timeframe',  '0',  '000300000000',  'widgets',  '0',  ''),
+	('wg_upcoming_events_calendar',  'Calendar',  '',  'Select events from specific calendar?',  'special',  '200',  'list:calendars',  'widgets',  '0',  ''),
+	('wg_custom_files_label',  'Label',  'custom_files',  'Only display files with a specific label.',  'special',  '200',  'list:labels',  'widgets',  '0',  ''),
 	('wg_user_uploads_allow_uploads', 'Allow Uploading?', 'No', 'Would you like to allow users to upload files to this list?', 'radio', 0, 'Yes|No', 'widgets', 0, ''),
 	('wg_user_uploads_label', 'Label', '', 'Only display files with a specific label?', 'special', 200, 'list:labels', 'widgets', 0, ''),
 	('wg_user_uploads_account_files', 'Include Account Files?', 'No', 'If set to yes, public files uploaded to the account will appear on the list. Otherwise only files uploaded to a specific member will appear in the list.', 'radio', 0, 'Yes|No', 'widgets', 0, ''),
@@ -900,11 +1007,19 @@ $inserts[] = "
 $inserts[] = "
 	INSERT INTO `ppSD_content` ( `id`, `name`, `permalink`, `permalink_clean`, `url`,  `section`, `type`) VALUES
 	('1', 'Home', 'Home', 'Home', 'index.php', '', 'section'),
+	('2', 'Event Calendar', 'Calendar', 'Calendar', 'calendar.php', '', 'section'),
+	('3', 'Events', 'Events', 'Events', 'event.php', '1', 'section'),
+	('4', 'Shopping Cart', 'Cart', 'Cart', 'cart.php', '', 'section'),
+	('5', 'Login', 'Login', 'Login', 'login.php', '', 'section'),
+	('6', 'Member Dashboard', 'Member Dashboard', 'Account_Management', 'manage/index.php', '', 'section'),
+	('7', 'Shop', 'Catalog', 'Catalog', 'catalog.php', '', 'section'),
+	('8', 'Membership', 'Register', 'Register', 'register.php', '', 'section'),
+	('9', 'Invoice', 'Invoice', 'Invoice', 'invoice.php', '', 'section');
 ";
 
-$inserts[] = "
+/*$inserts[] = "
 	INSERT INTO `ppSD_content` (`permalink`, `permalink_clean`, `name`, `type`, `path`, `url`, `additional_update_fieldsets`, `display_on_usercp`, `owner`, `section`, `secure`, `section_homepage`) VALUES ('Home', 'Home', 'Home', 'section', '', '', '', '', '2', '', '0', '');
-";
+";*/
 
 
 $inserts[] = "
@@ -1173,50 +1288,52 @@ $inserts[] = "
 // staff:1,john@doe.com
 $inserts[] = "
 	INSERT INTO `ppSD_templates_email` (`template`, `title`, `desc`, `subject`, `to`, `from`, `cc`, `bcc`, `content`, `format`, `status`, `save`, `track`, `track_links`, `caller_tags`, `custom`, `owner`, `public`, `created`, `header_id`, `footer_id`, `static`, `default_for`, `theme`, `type`) VALUES
-	('html_header', 'Default HTML Header', '', '', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 2, 0, '" . $date . "', '0', '0', 1, 0, 'threefiveten', 'header'),
-	('text_header', 'Default Text Header', '', '', '', '', '', '', 'HEADER!\r\n--------------------------', 0, 0, 0, 0, 0, '', 0, 2, 0, '" . $date . "', '0', '0', 1, 0, 'threefiveten', 'header'),
-	('html_footer', 'Default HTML Footer', '', '', '', '', '', '', '', 1, 0, 0, 0, 0, '', 0, 2, 0, '" . $date . "', '0', '0', 1, 0, 'threefiveten', 'footer'),
-	('event_rsvp', 'Event Registration (Primary)', '', 'Registration confirmation for %event:name%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('text_footer', 'Default Text Footer', '', '', '', '', '', '', '--------------------------\r\nFOOTER!', 0, 0, 0, 0, 0, '', 0, 2, 0, '" . $date . "', '0', '0', 1, 0, 'threefiveten', 'footer'),
+	('html_header', 'Default HTML Header', '', '', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '0', '0', 1, 0, 'threefiveten', 'header'),
+	('text_header', 'Default Text Header', '', '', '', '', '', '', 'HEADER!
+--------------------------', 0, 0, 0, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '0', '0', 1, 0, 'threefiveten', 'header'),
+	('html_footer', 'Default HTML Footer', '', '', '', '', '', '', '', 1, 0, 0, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '0', '0', 1, 0, 'threefiveten', 'footer'),
+	('event_rsvp', 'Event Registration (Primary)', '', 'Registration confirmation for %event:name%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('text_footer', 'Default Text Footer', '', '', '', '', '', '', '--------------------------
+FOOTER!', 0, 0, 0, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '0', '0', 1, 0, 'threefiveten', 'footer'),
 
-	('event_rsvp_guest', 'Event Registration (Guest)', '', 'Registration confirmation for %event:name%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('event_reminder',  'Default Event Reminder',  '',  'Event reminder: %event:name% on %event:starts%',  '',  '',  '',  '',  '',  '1',  '1',  '1',  '1',  '0',  '',  '0',  '2',  '0', '" . $date . "',  '',  '',  '1',  '',  'threefiveten',  'template'),
-	('event_followup',  'Default Event Followup',  '',  'Thank you for attending \"%event:name%\"!',  '',  '',  '',  '',  '',  '1',  '1',  '0',  '0',  '0',  '',  '',  '2',  '0',  '" . $date . "',  '',  '',  '1',  '',  'threefiveten',  'template'),
-	('event_canceled',  'Event Canceled',  '',  'Event \"%event:name%\" Has Been Canceled',  '',  '',  '',  '',  '',  '1',  '1',  '0',  '0',  '0',  '',  '',  '2',  '0',  '" . $date . "',  '',  '',  '1',  '',  'threefiveten',  'template'),
+	('event_rsvp_guest', 'Event Registration (Guest)', '', 'Registration confirmation for %event:name%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('event_reminder',  'Default Event Reminder',  '',  'Event reminder: %event:name% on %event:starts%',  '',  '',  '',  '',  '',  '1',  '1',  '1',  '1',  '0',  '',  '0',  '2',  '0', '2025-10-25 16:38:28',  '',  '',  '1',  '0',  'threefiveten',  'template'),
+	('event_followup',  'Default Event Followup',  '',  'Thank you for attending \"%event:name%\"!',  '',  '',  '',  '',  '',  '1',  '1',  '0',  '0',  '0',  '',  '0',  '2',  '0',  '2025-10-25 16:38:28',  '',  '',  '1',  '0',  'threefiveten',  'template'),
+	('event_canceled',  'Event Canceled',  '',  'Event \"%event:name%\" Has Been Canceled',  '',  '',  '',  '',  '',  '1',  '1',  '0',  '0',  '0',  '',  '0',  '2',  '0',  '2025-10-25 16:38:28',  '',  '',  '1',  '0',  'threefiveten',  'template'),
 
-    ('cart_credit_card_expiring', 'Credit Card Expiring', 'Credit card is expiring soon.', 'Your credit card is expiring soon!', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_receipt', 'Cart Receipt', 'Sent for a successful cart purchase.', 'Receipt for Order No. %order:id%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_subscription_canceled', 'Subscription Canceled', '', 'Subscription No. %subscription:id% Canceled', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_subscription_failed', 'Subscription renewal failure notice', '', 'Subscription Renewal Has Failed', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('email_activation_code', 'E-Mail Confirmation Required', '', 'E-mail confirmation required', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('form_request', 'Form Request', 'Request a form be completed by a member or contact.', 'Information request from %pp_company%', '', '', '', '', '', '1', '1', '0', '1', '0', '', '0', '2', '1', '" . $date . "', '', '', '1', '', 'threefiveten', 'template'),
-	('account_activated', 'Account Activated', '', 'Your account has been activated', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_subscription_created', 'Subscription Created', '', 'Subscription Created', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_subscription_renewed', 'Subscription Renewed', '', 'Your subscription has renewed!', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('cart_subscription_no_card',  'Cart Subscription: No Card Notice',  '',  'Your subscription could not be renewed',  '',  '',  '',  '',  '',  '1',  '1',  '1',  '1',  '1',  '',  '',  '2',  '0', '" . $date . "',  '',  '',  '',  '',  'threefiveten',  'template'),
-	('cart_subscription_changed', 'Subscription Plan Change', '', 'Subscription No. %subscription:id% Plan Changed', '', '', '', '', '', '1', '1', '1', '0', '0', '', '0', '2', '1', '" . $date . "', '', '', '1', '', 'threefiveten', 'template'),
+    ('cart_credit_card_expiring', 'Credit Card Expiring', 'Credit card is expiring soon.', 'Your credit card is expiring soon!', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_receipt', 'Cart Receipt', 'Sent for a successful cart purchase.', 'Receipt for Order No. %order:id%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_subscription_canceled', 'Subscription Canceled', '', 'Subscription No. %subscription:id% Canceled', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_subscription_failed', 'Subscription renewal failure notice', '', 'Subscription Renewal Has Failed', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('email_activation_code', 'E-Mail Confirmation Required', '', 'E-mail confirmation required', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('form_request', 'Form Request', 'Request a form be completed by a member or contact.', 'Information request from %pp_company%', '', '', '', '', '', '1', '1', '0', '1', '0', '', '0', '2', '1', '2025-10-25 16:38:28', '', '', '1', '0', 'threefiveten', 'template'),
+	('account_activated', 'Account Activated', '', 'Your account has been activated', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_subscription_created', 'Subscription Created', '', 'Subscription Created', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_subscription_renewed', 'Subscription Renewed', '', 'Your subscription has renewed!', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('cart_subscription_no_card',  'Cart Subscription: No Card Notice',  '',  'Your subscription could not be renewed',  '',  '',  '',  '',  '',  '1',  '1',  '1',  '1',  '1',  '',  '0',  '2',  '0', '2025-10-25 16:38:28',  '',  '',  '1',  '0',  'threefiveten',  'template'),
+	('cart_subscription_changed', 'Subscription Plan Change', '', 'Subscription No. %subscription:id% Plan Changed', '', '', '', '', '', '1', '1', '1', '0', '0', '', '0', '2', '1', '2025-10-25 16:38:28', '', '', '1', '0', 'threefiveten', 'template'),
     ('cart_subscription_options_changed', 'Subscription Options Changed', '', 'You subscription options have changed!', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '1920-01-01 00:01:01', '', '', 1, 0, 'threefiveten', 'template'),
 	('cart_subscription_advanced_notice', 'Subscription: Upcoming Renewal Notice', '', 'Your subscription will renew within %days_until_renewal% days.', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '1920-01-01 00:01:01', '', '', 1, 0, 'threefiveten', 'template'),
 
-	('email_reg_complete', 'Registration Complete', '', 'Registration Complete', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('email_await_activation', 'Application Awaiting Activation', '', 'Your application has been received', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('reset_password_directions', 'Password Reset Instructions', '', 'Password reset instructions', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('email_membership_created', 'Membership Created (From Admin)', '', 'Membership details at %pp_company%', '', '', '', '', '', '1', '1', '1', '0', '0', '', '', '2', '1', '2013-03-01 00:00:00', '', '', '', '', 'threefiveten', 'template'),
-	('order_shipped', 'Order Shipment Notification', 'Sent when an order is marked as shipped.', 'Your order has shipped!', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('refund_issued', 'Refund Issued', 'Refund has been issued on an order.', 'Refund issued for order no. %order:id%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('invoice', 'Invoice', '', '%pp_company% Invoice No. %invoice:id%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('invoice_updated', 'Invoice Updated', 'Sent when an invoice is updated.', 'Your invoice has been updated.', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('invoice_due', 'Invoice payment reminder', '', 'Your invoice is due in %invoice:time_to_due_date%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('invoice_overdue', 'Overdue invoice notice', '', 'Overdue invoice notice', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
+	('email_reg_complete', 'Registration Complete', '', 'Registration Complete', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('email_await_activation', 'Application Awaiting Activation', '', 'Your application has been received', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('reset_password_directions', 'Password Reset Instructions', '', 'Password reset instructions', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('email_membership_created', 'Membership Created (From Admin)', '', 'Membership details at %pp_company%', '', '', '', '', '', '1', '1', '1', '0', '0', '', '0', '2', '1', '2013-03-01 00:00:00', '', '', '1', '0', 'threefiveten', 'template'),
+	('order_shipped', 'Order Shipment Notification', 'Sent when an order is marked as shipped.', 'Your order has shipped!', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('refund_issued', 'Refund Issued', 'Refund has been issued on an order.', 'Refund issued for order no. %order:id%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('invoice', 'Invoice', '', '%pp_company% Invoice No. %invoice:id%', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('invoice_updated', 'Invoice Updated', 'Sent when an invoice is updated.', 'Your invoice has been updated.', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('invoice_due', 'Invoice payment reminder', '', 'Your invoice is due in %invoice:time_to_due_date%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('invoice_overdue', 'Overdue invoice notice', '', 'Overdue invoice notice', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
 	('employee_note_tagged', 'Employee Tagged In Note', '', '%by:first_name% has tagged you in a note.', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 1, 1, '1920-01-01 00:01:01', 'html_header', 'html_footer', 0, 0, '', 'template'),
-	('invoice_closed', 'Invoice Settled', '', 'Your Invoice has Been Settled', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('campaign_subscription', 'Campaign Subscription Confirmed', '', 'Subscription to %campaign:name% has been confirmed.', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 0, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('campaign_double_optin', 'Campaign Double Opt-In Request', '', 'Please confirm your subscription to %campaign:name%', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 0, 0, '" . $date . "', '', '', 0, 0, 'threefiveten', 'template'),
-	('campaign_unsubscribed', 'Campaign Unsubscription', '', 'You''ve been unsubscribed from %campaign:name%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '" . $date . "', '', '', 0, 0, 'threefiveten', 'template'),
-	('reg_code', 'Registration Code', '', 'You are invited to register!', '', '', '', '', '', 1, 1, 0, 1, 1, '', 0, 2, 1, '" . $date . "', '', '', 0, 0, 'threefiveten', 'template'),
-	('contact_thankyou', 'Contact Form Received', '', 'Thank you for contacting us!', '', '', '', '', '', '1', '1', '0', '0', '0', '', '', '2', '1', '" . $date . "', '', '', '1', '', 'threefiveten', 'template'),
-	('member_status_changed', 'Member Status Changed', '', 'Membership status change', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 0, 0, '" . $date . "', '', '', 1, 0, 'threefiveten', 'template'),
-	('def_email', 'Default E-Mail Template', '', '', '', '', '', '', '<center><font face=\"Arial\" size=\"2\">%logo%</font></center>\r\n\r\n<div style=\"margin: 24px auto 24px auto;width: 600px;font-family:arial;font-size:12px;color:#333;\">\r\n<p><font face=\"Arial\" size=\"2\">%first_name%,</font></p><p><font face=\"Arial\" size=\"2\"><br></font></p>\r\n\r\n\r\n<p><font face=\"Arial\" size=\"2\">%signature%</font></p>\r\n</div>', 1, 1, 0, 0, 0, '', 1, 2, 0, '" . $date . "', '', '', 0, 1, '', 'template');
+	('invoice_closed', 'Invoice Settled', '', 'Your Invoice has Been Settled', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('campaign_subscription', 'Campaign Subscription Confirmed', '', 'Subscription to %campaign:name% has been confirmed.', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 0, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('campaign_double_optin', 'Campaign Double Opt-In Request', '', 'Please confirm your subscription to %campaign:name%', '', '', '', '', '', 1, 1, 0, 0, 0, '', 0, 0, 0, '2025-10-25 16:38:28', '', '', 0, 0, 'threefiveten', 'template'),
+	('campaign_unsubscribed', 'Campaign Unsubscription', '', 'You''ve been unsubscribed from %campaign:name%', '', '', '', '', '', 1, 1, 1, 0, 0, '', 0, 2, 0, '2025-10-25 16:38:28', '', '', 0, 0, 'threefiveten', 'template'),
+	('reg_code', 'Registration Code', '', 'You are invited to register!', '', '', '', '', '', 1, 1, 0, 1, 1, '', 0, 2, 1, '2025-10-25 16:38:28', '', '', 0, 0, 'threefiveten', 'template'),
+	('contact_thankyou', 'Contact Form Received', '', 'Thank you for contacting us!', '', '', '', '', '', '1', '1', '0', '0', '0', '', '0', '2', '1', '2025-10-25 16:38:28', '', '', '1', '0', 'threefiveten', 'template'),
+	('member_status_changed', 'Member Status Changed', '', 'Membership status change', '', '', '', '', '', 1, 1, 1, 1, 0, '', 0, 0, 0, '2025-10-25 16:38:28', '', '', 1, 0, 'threefiveten', 'template'),
+	('def_email', 'Default E-Mail Template', '', '', '', '', '', '', '<center><font face=\"Arial\" size=\"2\">%logo%</font></center><div style=\"margin: 24px auto 24px auto;width: 600px;font-family:arial;font-size:12px;color:#333;\"><p><font face=\"Arial\" size=\"2\">%first_name%,</font></p><p><font face=\"Arial\" size=\"2\"><br></font></p><p><font face=\"Arial\" size=\"2\">%signature%</font></p></div>', 1, 1, 0, 0, 0, '', 1, 2, 0, '2025-10-25 16:38:28', '', '', 0, 1, '', 'template');
 ";
 $inserts[] = "
 	INSERT INTO `ppSD_themes` (`id`, `name`, `description`, `author`, `author_url`, `img_1`, `img_2`, `active`, `type`) VALUES
@@ -1242,7 +1359,7 @@ $inserts[] = "
 $inserts[] = "
     INSERT INTO `ppSD_departments` (`name`, `head_employee`) VALUES
     ('Administration', '1'),
-    ('Employees', '');
+    ('Employees', '2');
 ";
 $inserts[] = "
     INSERT INTO `ppSD_subscription_reattempts` (`fail_attempt`, `timeframe`, `penalty_percent`, `penalty_fixed`, `cancel`) VALUES
@@ -1272,7 +1389,7 @@ $inserts[] = "
 	('site_topbar', 0, 'Shop','" . $use_url . "/catalog.php', 2, 'same', 4),
 	('site_topbar', 0, 'Cart','" . $use_url . "/cart.php', 2, 'same', 5),
 	('site_topbar_logged_in', 0, 'Welcome %username%', 'manage', 2, 'same', 1),
-	('site_topbar_logged_in', 0, 'News', 'manage', 2, '" . $use_url . "/news.php', 2),
+	('site_topbar_logged_in', 0, 'News', '" . $use_url . "/news.php', 2, 'same', 2),
 	('site_topbar_logged_in', 0, 'Events','" . $use_url . "/calendar.php', 2, 'same', 3),
 	('site_topbar_logged_in', 0, 'Shop','" . $use_url . "/catalog.php', 2, 'same', 4),
 	('site_topbar_logged_in', 0, 'Cart','" . $use_url . "/cart.php', 2, 'same', 5),

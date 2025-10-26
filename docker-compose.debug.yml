@@ -1,0 +1,43 @@
+version: "3"
+services:
+  shulnet:
+    build:
+      dockerfile: Dockerfile.debug
+      context: .
+    ports:
+      - "80:80"
+      - "8002:443"
+    expose:
+      - "9003"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - shulnet_network
+    depends_on:
+      - mysql
+    
+  mysql:
+    image: mysql:8.0
+    container_name: shulnet_mysql
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - shulnet_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:
+  app_data:
+
+networks:
+  shulnet_network:
+    driver: bridge

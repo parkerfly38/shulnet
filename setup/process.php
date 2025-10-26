@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 //ini_set('display_errors', 0);
 //error_reporting(0);
@@ -135,6 +135,7 @@ $emp_last_name = $_POST['admin']['last_name'];
 
 // ----------------------------
 
+$use_url = $url;
 $queries = '';
 require "mysql/create.php";
 require "mysql/inserts.php";
@@ -166,7 +167,6 @@ require "mysql/update_email_templates.php";
 
 // ----------------------------
 
-$use_url = $url;
 
 $config = "<?php\n";
 $config .= "define('PP_BASE_PATH','" . $base_path . "');\n";

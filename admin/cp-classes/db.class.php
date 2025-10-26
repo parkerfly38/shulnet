@@ -75,7 +75,7 @@ class db
             $result = $STH->execute($this->binding);
             $last_id = $DBH->lastInsertId();
         } catch (Exception $e) {
-            $this->addError($e->getMessage());
+            //$this->addError($e->getMessage());
         }
 
         $this->binding = array();
@@ -1449,31 +1449,16 @@ class db
      */
     function create_cookie($name, $value, $time = "", $domain = "")
     {
-        if (! empty($domain)) {
-            $dom = array(
-                '.' . $domain,
-                '.www.' . $domain,
-            );
-        } else {
-            $dom = $this->get_base_domain();
-        }
 
         if ($time == "none") {
-            setcookie($name, $value, NULL, "/", $dom['0']);
-            if ($dom['0'] != $dom['1']) {
-                setcookie($name, $value, NULL, "/", $dom['1']);
-            }
+            setcookie($name, $value, NULL, "/", $domain);
         } else {
             if (empty($time)) {
                 $time = 86400;
             }
             $date = time() + $time;
 
-            setcookie($name, $value, $date, "/", $dom['0']);
-
-            if ($dom['0'] != $dom['1']) {
-                setcookie($name, $value, $date, "/", $dom['1']);
-            }
+            setcookie($name, $value, $date, "/", $domain);
         }
     }
 
@@ -1633,26 +1618,8 @@ class db
         $reg = array();
         $reg['name'] = $theme;
         $reg['url'] = $url_put . "/pp-templates/html/" . $theme;
-        $reg['classes'] = $this->get_theme_classes($theme);
         return $reg;
     }
-
-    /**
-     * Get theme classes for templating
-     */
-    function get_theme_classes($theme)
-    {
-        $reg = array();
-        $q1 = $this->run_query("
-                SELECT `id`, `value`
-                FROM `ppSD_themes_classes`
-                WHERE `theme` = '".$this->mysql_clean($theme)."'");
-        while ($row = $q1->fetch()) {
-            $reg[$row['id']] = $row['value'];
-        }
-        return $reg;
-    }
-
 
     /**
      * Find an XML value
@@ -2060,6 +2027,9 @@ class db
     function get_option($id)
     {
         $q = $this->get_array("SELECT `value` FROM `ppSD_options` WHERE `id`='" . $this->mysql_clean($id) . "' LIMIT 1");
+        if ($q == false) {
+            return '';
+        }
         $q['value'] = str_replace('%site%', PP_URL, $q['value']);
         if ($id == 'company_contact') {
             if (strlen($q['value']) == strlen(strip_tags($q['value']))) {
@@ -2306,6 +2276,7 @@ class db
      */
     function get_unique_code($format = "random", $length = "27", $table = "ppSD_members", $field_check = "reg_temp_code")
     {
+        global $STH;
         $random = substr(generate_id($format), 0, $length);
         $unique = 0;
         while ($unique == 0) {

@@ -7,5 +7,4 @@ $jewishdate = new jewishdates();
 $datetoConvert = strtotime($_POST["englishDate"]);
 $dateToShow = $jewishdate->getHebrewFromGregorian($datetoConvert);
 
-echo $dateToShow["Hebrew Date English"];
-?>
+echo substr($dateToShow["Hebrew Date English"], 0, -5);

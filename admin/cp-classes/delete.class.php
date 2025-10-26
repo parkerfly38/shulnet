@@ -1077,7 +1077,8 @@ class delete extends admin
      */
     function delete_yahrzeit()
     {
-        if (explode(",",$this->id) > 1)
+        $isArray = explode(",",$this->id);
+        if (count($isArray) > 1)
         {
             $arrValues = explode(",",$this->id);
             $q1           = $this->delete("

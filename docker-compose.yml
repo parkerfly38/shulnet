@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .:/var/www/html
+      - app_data:/var/www/html
     networks:
       - shulnet_network
     depends_on:
@@ -32,6 +32,7 @@ services:
 
 volumes:
   mysql_data:
+  app_data:
 
 networks:
   shulnet_network:

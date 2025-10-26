@@ -34,7 +34,7 @@ $(document).ready(function () {
         },
         mouseleave: function () {
             var src = $(this).attr('src');
-            var news = src.replace("-on.png", ".png")
+            var news = src.replace("-on.png", ".pn000g")
             $(this).attr('src', news);
         }
 

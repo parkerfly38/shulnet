@@ -1,6 +1,6 @@
 <?php
 
-
+error_reporting(E_ALL);
 /* -- Load Functions -- */
 require "sd-system/config.php";
 $admin = new admin;
