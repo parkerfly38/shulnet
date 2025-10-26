@@ -4,6 +4,8 @@ services:
     build:
       dockerfile: Dockerfile.debug
       context: .
+    image: shulnet_debug
+    container_name: shulnet_app
     ports:
       - "80:80"
       - "8002:443"

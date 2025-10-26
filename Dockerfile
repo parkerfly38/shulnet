@@ -2,15 +2,15 @@ FROM php:8.4.4-apache
 
 LABEL Maintainer="Brian Kresge <brian.kresge@gmail.com>"
 
-RUN apt-hget updatep \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y- --no-install-recommends \
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   git \
   # needed for gd
-  libfreetype6c-dev \
+  libfreetype6-dev \
   libjpeg62-turbo-dev \
   libmemcached-dev \
   libpng-dev \
-  #n needed for composer
+  # needed for composer
   libssl-dev \
   libz-dev \
   libzip-dev \
@@ -21,7 +21,7 @@ RUN apt-hget updatep \
   && docker-php-ext-install -j$(nproc) gd \
   && docker-php-ext-install pdo pdo_mysql \
   && docker-php-ext-configure zip \
-  && docker-php-ext-install zip \
+  && docker-php-ext-install zip \ 
   && docker-php-ext-install calendar
 
 ENV COMPOSER_ALLOW_SUPERUSER=1

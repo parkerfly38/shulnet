@@ -4,6 +4,8 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    image: shulnet
+    container_name: shulnet_app
     ports:
       - "80:80"
     volumes:
@@ -27,7 +29,6 @@ services:
       - shulnet_network
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./dbinit:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=mysql_native_password
 
 volumes:
