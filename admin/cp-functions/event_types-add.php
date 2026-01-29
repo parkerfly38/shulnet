@@ -51,23 +51,17 @@ foreach ($_POST['event_type'] as $aType) {
         $aType['color'] = ltrim($aType['color'], '#');
         if ($aType['id'] == 'new') {
             $q2 = $db->insert("
-
-				INSERT INTO `ppSD_event_types` (`name`,`color`)
-
-				VALUES ('" . $db->mysql_clean($aType['name']) . "','" . $db->mysql_clean($aType['color']) . "')
-
-			");
+                INSERT INTO `ppSD_event_types` (`name`,`color`)
+                VALUES (?, ?)
+            ", array($aType['name'], $aType['color']));
 
         } else {
             $q1 = $db->update("
-
-				UPDATE `ppSD_event_types`
-
-				SET `name`='" . $db->mysql_clean($aType['name']) . "',`color`='" . $db->mysql_clean($aType['color']) . "'
-
-				WHERE `id`='" . $db->mysql_clean($aType['id']) . "'
-
-				LIMIT 1
+                UPDATE `ppSD_event_types`
+                SET `name` = ?, `color` = ?
+                WHERE `id` = ?
+                LIMIT 1
+            ", array($aType['name'], $aType['color'], $aType['id']));
 
 			");
 

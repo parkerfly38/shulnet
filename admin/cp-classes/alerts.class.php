@@ -45,10 +45,10 @@ class alerts extends db
             FROM
                 `ppSD_reminders`
             WHERE
-                `for` = '" . $this->mysql_clean($this->employee) . "' AND
-                `remind_on` = '" . $this->mysql_clean(date('Y-m-d')) . "' AND
+                `for` = ? AND
+                `remind_on` = ? AND
                 `seen` != '1'
-        ");
+        ", [$this->employee, date('Y-m-d')]);
 
         while ($row = $query->fetch()) {
             $rows[] = $row;
@@ -65,9 +65,9 @@ class alerts extends db
         return $this->get_array("
             SELECT *
             FROM ppSD_reminders
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$id]);
     }
 
 
@@ -83,11 +83,11 @@ class alerts extends db
                 `ppSD_reminders`
             SET
                 `seen` = '1',
-                `seen_on` = '" . current_date() . "'
+                `seen_on` = ?
             WHERE
-                `id` = '" . $this->mysql_clean($id) . "'
+                `id` = ?
             LIMIT 1
-        ");
+        ", [current_date(), $id]);
     }
 
 
@@ -104,11 +104,11 @@ class alerts extends db
             UPDATE
                 `ppSD_reminders`
             SET
-                `remind_on`='" . $oneDay . "'
+                `remind_on`=?
             WHERE
-                `id` = '" . $this->mysql_clean($id) . "'
+                `id` = ?
             LIMIT 1
-        ");
+        ", [$oneDay, $id]);
 
         return $oneDay;
     }
@@ -126,15 +126,23 @@ class alerts extends db
                 `title`,
                 `message`
             ) VALUES (
-                '" . $this->mysql_clean($this->employee) . "',
-                '" . current_date() . "',
-                '" . $this->mysql_clean($data['remind_on']) . "',
-                '" . $this->mysql_clean($data['user_id']) . "',
-                '" . $this->mysql_clean($data['user_type']) . "',
-                '" . $this->mysql_clean($data['title']) . "',
-                '" . $this->mysql_clean($data['message']) . "'
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
             )
-        ");
+        ", [
+            $this->employee,
+            current_date(),
+            $data['remind_on'],
+            $data['user_id'],
+            $data['user_type'],
+            $data['title'],
+            $data['message']
+        ]);
     }
 
 }

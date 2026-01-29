@@ -58,31 +58,71 @@ if ($type == 'edit') {
     // Update the contact
     //$update_set1 = substr($query_form['u1'],1);
 
-    $update_set1 = $query_form['u1'];
-    $update_set2 = substr($query_form['u2'], 1);
-
+    // Convert to parameter binding
+    $set_clauses = array(
+        '`contact_frequency` = ?',
+        '`last_updated` = ?',
+        '`start_page` = ?',
+        '`last_updated_by` = ?'
+    );
+    $params = array($timeframe, current_date(), $_POST['start_page'], $employee['id']);
+    
+    // Process update fields from query_form
+    if (!empty($query_form['u1'])) {
+        $update_pairs = explode(',', $query_form['u1']);
+        foreach ($update_pairs as $pair) {
+            if (!empty(trim($pair)) && preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+    
+    // Add WHERE parameter
+    $params[] = $_POST['id'];
+    
+    $set_clause = implode(', ', $set_clauses);
     $q = $db->update("
-		UPDATE
-		    `ppSD_accounts`
-		SET
-            `contact_frequency`='" . $db->mysql_cleans($timeframe) . "',
-            `last_updated`='" . current_date() . "',
-            `start_page`='" . $db->mysql_cleans($_POST['start_page']) . "',
-            `last_updated_by`=" . $employee['id'] . "$update_set1
-		WHERE
-		    `id`='" . $db->mysql_cleans($_POST['id']) . "'
-		LIMIT 1
-	");
+        UPDATE
+            `ppSD_accounts`
+        SET
+            {$set_clause}
+        WHERE
+            `id` = ?
+        LIMIT 1
+    ", $params);
 
-    $q = $db->update("
-		UPDATE
-		    `ppSD_account_data`
-		SET
-            $update_set2
-		WHERE
-		    `account_id`='" . $db->mysql_cleans($_POST['id']) . "'
-		LIMIT 1
-	");
+    // Convert account data update to parameter binding
+    if (!empty($query_form['u2'])) {
+        $set_clauses = array();
+        $params = array();
+        
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            if (preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+        
+        // Add WHERE parameter
+        $params[] = $_POST['id'];
+        
+        $set_clause = implode(', ', $set_clauses);
+        $q = $db->update("
+            UPDATE
+                `ppSD_account_data`
+            SET
+                {$set_clause}
+            WHERE
+                `account_id` = ?
+            LIMIT 1
+        ", $params);
+    }
 
     $add = $db->add_history('account_updated', $employee['id'], $_POST['id'], '3', $_POST['id']);
 
@@ -100,26 +140,60 @@ if ($type == 'edit') {
     $insert_values2 = $query_form['iv2'];
     // Create the contact
     $last_id = $db->insert("
-		INSERT INTO `$table` (
-            `id`,
-            `last_updated`,
-            `last_updated_by`,
-            `contact_frequency`
-            $insert_fields1
-		)
-		VALUES (
-            '" . $db->mysql_cleans($_POST['id']) . "',
-            '" . current_date() . "',
-            '" . $employee['id'] . "',
-            '" . $db->mysql_cleans($timeframe) . "'
-            $insert_values1
-		)
-
-	");
-    $next    = $db->insert("
-		INSERT INTO `ppSD_account_data` (`account_id`$insert_fields2)
-		VALUES ('" . $db->mysql_cleans($_POST['id']) . "'$insert_values2)
-	");
+        INSERT INTO `{$table}` ({$fields_str})
+        VALUES ({$placeholders})
+    ", $params);
+    
+    // Convert account data INSERT to parameter binding
+    $data_fields = array('`account_id`');
+    $data_params = array($_POST['id']);
+    
+    if (!empty($query_form['if2'])) {
+        $insert_fields = explode(',', $query_form['if2']);
+        $insert_values = explode(',', $query_form['iv2']);
+        
+        foreach ($insert_fields as $i => $field) {
+            $data_fields[] = trim($field);
+            $value = trim($insert_values[$i]);
+            if (preg_match('/\'([^\']*)\'/', $value, $matches)) {
+                $data_params[] = $matches[1];
+            } else {
+                $data_params[] = $value;
+            }
+        }
+    }
+    
+    $data_fields_str = implode(', ', $data_fields);
+    $data_placeholders = str_repeat('?, ', count($data_params) - 1) . '?';
+    
+    $next = $db->insert("
+        INSERT INTO `ppSD_account_data` ({$data_fields_str})
+        VALUES ({$data_placeholders})
+    ", $data_params);
+    $data_params = array($_POST['id']);
+    
+    if (!empty($query_form['if2'])) {
+        $insert_fields = explode(',', $query_form['if2']);
+        $insert_values = explode(',', $query_form['iv2']);
+        
+        foreach ($insert_fields as $i => $field) {
+            $data_fields[] = trim($field);
+            $value = trim($insert_values[$i]);
+            if (preg_match('/\'([^\']*)\'/', $value, $matches)) {
+                $data_params[] = $matches[1];
+            } else {
+                $data_params[] = $value;
+            }
+        }
+    }
+    
+    $data_fields_str = implode(', ', $data_fields);
+    $data_placeholders = str_repeat('?, ', count($data_params) - 1) . '?';
+    
+    $next = $db->insert("
+        INSERT INTO `ppSD_account_data` ({$data_fields_str})
+        VALUES ({$data_placeholders})
+    ", $data_params);
     $add     = $db->add_history('account_created', $employee['id'], $_POST['id'], '3', $_POST['id']);
 
 }

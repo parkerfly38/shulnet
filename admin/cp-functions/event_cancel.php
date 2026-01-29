@@ -59,10 +59,10 @@ if ($_POST['inform_attendees'] == '1') {
 
 $q = $db->update("
     UPDATE `ppSD_events`
-    SET `status`='2'
-    WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+    SET `status` = '2'
+    WHERE `id` = ?
     LIMIT 1
-");
+", array($_POST['id']));
 
 $task = $db->end_task($task_id, '1');
 

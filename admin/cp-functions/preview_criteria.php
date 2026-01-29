@@ -46,7 +46,7 @@ if ($_POST['criteria'] == '1') {
 }
 
 $criteria = new criteria();
-$id       = $criteria->create($filters, $_POST['name'], $_POST['save'], $_POST['inclusive'], $_POST['type'], $_POST['act']);
+$id       = $criteria->create($filters, $_POST['name'], $_POST['save'] ?? 1, $_POST['inclusive'], $_POST['type'], $_POST['act']);
 
 if ($criteria->errorResults) {
     $preview = '<div id="crit_preview">No results found.</div>';

@@ -49,23 +49,58 @@ if ($type == 'edit') {
     }
 
     // Update the contact
-    //$update_set1 = substr($query_form['u1'],1);
-    $update_set1 = $query_form['u1'];
-    $update_set2 = substr($query_form['u2'], 1);
-    $date        = current_date('contact_edit');
-    $q           = $db->update("
-		UPDATE `ppSD_contacts`
-		SET `last_updated`='" . $date . "',`last_updated_by`='" . $employee['id'] . "'$update_set1
-		WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
-		LIMIT 1
-	");
-    if (!empty($update_set2)) {
+    // Process update fields and convert to parameter binding
+    $set_clauses = array('`last_updated` = ?', '`last_updated_by` = ?');
+    $params = array($date, $employee['id']);
+    
+    // Process update fields from query_form
+    if (!empty($query_form['u1'])) {
+        $update_pairs = explode(',', $query_form['u1']);
+        foreach ($update_pairs as $pair) {
+            if (!empty(trim($pair)) && preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+    
+    // Add WHERE parameter
+    $params[] = $_POST['id'];
+    
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
+        UPDATE `ppSD_contacts`
+        SET {$set_clause}
+        WHERE `id` = ?
+        LIMIT 1
+    ", $params);
+    if (!empty($query_form['u2'])) {
+        // Convert contact data update to parameter binding
+        $set_clauses = array();
+        $params = array();
+        
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            if (preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+        
+        // Add WHERE parameter
+        $params[] = $_POST['id'];
+        
+        $set_clause = implode(', ', $set_clauses);
         $q1 = $db->update("
-			UPDATE `ppSD_contact_data`
-			SET $update_set2
-			WHERE `contact_id`='" . $db->mysql_clean($_POST['id']) . "'
-			LIMIT 1
-		");
+            UPDATE `ppSD_contact_data`
+            SET {$set_clause}
+            WHERE `contact_id` = ?
+            LIMIT 1
+        ", $params);
     }
     $id  = $_POST['id'];
     $add = $db->add_history('contact_staff_update', $employee['id'], $_POST['id'], '2', $_POST['id']);

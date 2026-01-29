@@ -49,30 +49,65 @@ $primary    = array();
 $ignore     = array('id', 'edit');
 $query_form = $admin->query_from_fields($_POST, $type, $ignore, $primary);
 if ($type == 'edit') {
-    $update_set2 = substr($query_form['u2'], 1);
-    $q           = $db->update("
-
-		UPDATE `ppSD_cart_terms`
-
-		SET $update_set2
-
-		WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
-
-		LIMIT 1
-
-	");
-    $qin         = $_POST['id'];
+    // Extract field updates from query_form and convert to parameter binding
+    $set_clauses = array();
+    $params = array();
+    
+    // Process the update fields from query_form
+    if (!empty($query_form['u2'])) {
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            // Match field=value pattern, handling escaped quotes
+            if (preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+    
+    // Add the WHERE parameter
+    $params[] = $_POST['id'];
+    
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
+        UPDATE `ppSD_cart_terms`
+        SET {$set_clause}
+        WHERE `id` = ?
+        LIMIT 1
+    ", $params);
+    $qin = $_POST['id'];
 
 } else {
-    $insert_fields2 = $query_form['if2'];
-    $insert_values2 = $query_form['iv2'];
-    $qin            = $db->insert("
-
-		INSERT INTO `ppSD_cart_terms` (`created`$insert_fields2)
-
-		VALUES ('" . current_date() . "'$insert_values2)
-
-	");
+    // Extract fields and values from query_form and convert to parameter binding
+    $fields = array('`created`');
+    $params = array(current_date());
+    
+    // Process the insert fields from query_form
+    if (!empty($query_form['if2'])) {
+        $insert_fields = explode(',', substr($query_form['if2'], 1));
+        $insert_values = explode(',', substr($query_form['iv2'], 1));
+        
+        foreach ($insert_fields as $i => $field) {
+            $fields[] = trim($field);
+            // Extract value from quoted string
+            $value = trim($insert_values[$i]);
+            if (preg_match('/\'([^\']*)\'/', $value, $matches)) {
+                $params[] = $matches[1];
+            } else {
+                $params[] = $value;
+            }
+        }
+    }
+    
+    $fields_str = implode(',', $fields);
+    $placeholders = str_repeat('?,', count($params) - 1) . '?';
+    
+    $qin = $db->insert("
+        INSERT INTO `ppSD_cart_terms` ({$fields_str})
+        VALUES ({$placeholders})
+    ", $params);
 
 }
 $table                 = 'ppSD_cart_terms';

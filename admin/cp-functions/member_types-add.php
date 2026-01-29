@@ -46,28 +46,25 @@ foreach ($_POST['type'] as $aType) {
         if ($aType['id'] == 'new') {
 
             $q2 = $db->insert("
-				INSERT INTO `ppSD_member_types` (
+                INSERT INTO `ppSD_member_types` (
                     `name`,
                     `order`
-				)
-				VALUES (
-                    '" . $db->mysql_clean($aType['name']) . "',
-                    '$order'
-				)
-			");
+                )
+                VALUES (?, ?)
+            ", array($aType['name'], $order));
 
         } else {
 
             $q1 = $db->update("
-				UPDATE
-				    `ppSD_member_types`
-				SET
-				    `name`='" . $db->mysql_clean($aType['name']) . "',
-				    `order`='$order'
-				WHERE
-				    `id`='" . $db->mysql_cleans($aType['id']) . "'
-				LIMIT 1
-			");
+                UPDATE
+                    `ppSD_member_types`
+                SET
+                    `name` = ?,
+                    `order` = ?
+                WHERE
+                    `id` = ?
+                LIMIT 1
+            ", array($aType['name'], $order, $aType['id']));
 
         }
 

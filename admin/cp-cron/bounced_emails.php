@@ -14,10 +14,10 @@ if (!empty($bounced_inbox) && !empty($bounced_server) && !empty($bounced_usernam
             // Update bounced
             $q1 = $db->update("
             UPDATE `ppSD_saved_emails`
-            SET `fail`='2',`fail_reason`='Bounced'
-            WHERE `id`='" . $db->mysql_clean($email_id) . "'
+            SET `fail` = '2', `fail_reason` = 'Bounced'
+            WHERE `id` = ?
             LIMIT 1
-        ");
+        ", array($email_id));
             // Determine if it is from a campaign
             // and unsubscribe the user if it is
             $data = new history($email_id, '', '', '', '', '', 'ppSD_saved_emails');

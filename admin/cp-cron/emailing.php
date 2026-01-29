@@ -30,6 +30,7 @@ $mgkey = $getMGKey->fetch()["value"];
 $getMGDomain = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'domain'");
 $getMGDomain->execute();
 $domain = $getMGDomain->fetch()["value"];
+print(@"Mailgun key and domain retrieved...{$mgkey}, {$domain}<br />");
 $mg =  Mailgun::create($mgkey);
 $getCompanyName = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'company_name'");
 $getCompanyName->execute();
@@ -38,7 +39,7 @@ $getCompanyEmail = $pdo->prepare("SELECT value FROM ppSD_options WHERE id = 'com
 $getCompanyEmail->execute();
 $companyEmail = $getCompanyEmail->fetch()["value"];
 $from = $companyName . " <". $companyEmail . ">";
-    
+print_r("Doing attachments...<br />");
 foreach ($rows as $row)
 {
     $to = "";

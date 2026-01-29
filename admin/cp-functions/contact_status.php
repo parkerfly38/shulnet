@@ -35,13 +35,13 @@ if (! empty($_POST['id'])) {
 
         UPDATE `ppSD_contacts`
 
-        SET `status`='3'
+        SET `status`=?
 
-        WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+        WHERE `id`=?
 
         LIMIT 1
 
-    ");
+    ", ['3', $_POST['id']]);
         $add = $db->add_history('contact_dead', $employee['id'], $_POST['id'], '2', $_POST['id']);
 
     } else {
@@ -49,13 +49,13 @@ if (! empty($_POST['id'])) {
 
         UPDATE `ppSD_contacts`
 
-        SET `status`='1'
+        SET `status`=?
 
-        WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+        WHERE `id`=?
 
         LIMIT 1
 
-    ");
+    ", ['1', $_POST['id']]);
         $add = $db->add_history('contact_reopen', $employee['id'], $_POST['id'], '2', $_POST['id']);
 
     }
@@ -106,10 +106,10 @@ else {
             } else {
                 $q1 = $db->update("
                     UPDATE `ppSD_contacts`
-                    SET `status`='3'
-                    WHERE `id`='" . $db->mysql_clean($name) . "'
+                    SET `status` = '3'
+                    WHERE `id` = ?
                     LIMIT 1
-                ");
+                ", array($name));
 
                 $return['add_classes']['td-cell-' . $name] = 'dead';
 

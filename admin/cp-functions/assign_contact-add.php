@@ -25,28 +25,17 @@ if ($data['data']['owner'] != $employee['id'] && $employee['permissions']['admin
 }
 // Assign Contact
 $q1 = $db->update("
-
     UPDATE
-
         `ppSD_contacts`
-
     SET
-
-        `source`='" . $db->mysql_clean($_POST['source']) . "',
-
-        `account`='" . $db->mysql_clean($_POST['account']) . "',
-
-        `expected_value`='" . $db->mysql_clean($_POST['expected_value']) . "',
-
-        `public`='" . $db->mysql_clean($_POST['public']) . "'
-
+        `source` = ?,
+        `account` = ?,
+        `expected_value` = ?,
+        `public` = ?
     WHERE
-
-        `id`='" . $db->mysql_clean($_POST['id']) . "'
-
+        `id` = ?
     LIMIT 1
-
-");
+", array($_POST['source'], $_POST['account'], $_POST['expected_value'], $_POST['public'], $_POST['id']));
 // Email Employee or push it
 // to his/her homepage.
 $contact->assign($_POST['id'], $_POST['owner']);

@@ -44,12 +44,12 @@ while ($cur < 5) {
         UPDATE
             `ppSD_subscription_reattempts`
         SET
-            `penalty_percent`='" . $db->mysql_clean($_POST[$attempt]['penalty_percent']) . "',
-            `penalty_fixed`='" . $db->mysql_clean($_POST[$attempt]['penalty_fixed']) . "'
+            `penalty_percent` = ?,
+            `penalty_fixed` = ?
         WHERE
-            `fail_attempt`='" . $cur . "'
+            `fail_attempt` = ?
         LIMIT 1
-    ");
+    ", array($_POST[$attempt]['penalty_percent'], $_POST[$attempt]['penalty_fixed'], $cur));
 }
 
 $task                  = $db->end_task($task_id, '1');

@@ -63,16 +63,16 @@ $headings = $db->get_option($opt_name);
 if (!empty($headings)) {
     $up = $db->update("
         UPDATE `ppSD_options`
-        SET `value`='" . $db->mysql_clean($list) . "'
-        WHERE `id`='" . $db->mysql_clean($opt_name) . "'
+        SET `value` = ?
+        WHERE `id` = ?
         LIMIT 1
-    ");
+    ", array($list, $opt_name));
 
 } else {
     $up = $db->insert("
         INSERT INTO `ppSD_options` (`id`,`value`)
-        VALUES ('" . $db->mysql_clean($opt_name) . "','" . $db->mysql_clean($list) . "')
-    ");
+        VALUES (?, ?)
+    ", array($opt_name, $list));
 }
 $task                  = $db->end_task($task_id, '1');
 $return                = array();

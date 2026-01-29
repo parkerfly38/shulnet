@@ -25,10 +25,10 @@ if ($ownership->result != '1') {
 // Update
 $q1 = $db->update("
     UPDATE `ppSD_uploads`
-    SET `label`='" . $db->mysql_clean($_POST['label_dud']) . "'
-    WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+    SET `label` = ?
+    WHERE `id` = ?
     LIMIT 1
-");
+", array($_POST['label_dud'], $_POST['id']));
 
 // Reply
 $task                  = $db->end_task($task_id, '1');

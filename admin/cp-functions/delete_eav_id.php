@@ -27,21 +27,14 @@ if ($ownership->result != '1') {
 
 } else {
     $del  = $db->delete("
-
         DELETE FROM `ppSD_data_eav`
-
-        WHERE `item_id`='" . $db->mysql_clean($_POST['id']) . "'
-
-    ");
+        WHERE `item_id` = ?
+    ", array($_POST['id']));
     $del1 = $db->delete("
-
         DELETE FROM `ppSD_form_submit`
-
-        WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
-
+        WHERE `id` = ?
         LIMIT 1
-
-    ");
+    ", array($_POST['id']));
     // li-fs[ID]
     // fs[ID]
     $return['remove_cells'] = array(

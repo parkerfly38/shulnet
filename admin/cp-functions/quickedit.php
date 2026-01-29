@@ -42,37 +42,36 @@ $employee = $admin->check_employee();
 $task_id  = $db->start_task('quickedit', 'staff', $_POST['search_for'], $employee['username']);
 // First get thing to check owner
 $get = $db->get_array("
-
-	SELECT `owner`
-
-	FROM `" . $db->mysql_cleans($_POST['table']) . "`
-
-	WHERE `" . $db->mysql_clean($_POST['search_col']) . "`='" . $db->mysql_clean($_POST['search_for']) . "'
-
-	LIMIT 1
-
-");
+    SELECT `owner`
+    FROM `" . $db->mysql_cleans($_POST['table']) . "`
+    WHERE `" . $db->mysql_clean($_POST['search_col']) . "` = ?
+    LIMIT 1
+", array($_POST['search_for']));
 if ($get['owner'] == $employee['id'] || $employee['permissions']['admin'] == '1') {
-    $update  = '';
-    $explode = explode(',', $_POST['changes']);
-    foreach ($explode as $name => $value) {
-        $expitem = explode('=', $value);
-        $update .= ",`" . $db->mysql_cleans($expitem['0']) . "`='" . $db->mysql_clean($expitem['1']) . "'";
-
-    }
-    if (!empty($update)) {
-        $update = substr($update, 1);
-        $up     = $db->update("
-
-			UPDATE `" . $db->mysql_cleans($_POST['table']) . "`
-
-			SET $update
-
-			WHERE `" . $db->mysql_clean($_POST['search_col']) . "`='" . $db->mysql_clean($_POST['search_for']) . "'
-
-			LIMIT 1
-
-		");
+    if (!empty($_POST['changes'])) {
+        // Build parameter binding for dynamic UPDATE
+        $set_clauses = array();
+        $params = array();
+        $explode = explode(',', $_POST['changes']);
+        
+        foreach ($explode as $name => $value) {
+            $expitem = explode('=', $value);
+            if (count($expitem) == 2) {
+                $set_clauses[] = "`" . $db->mysql_cleans($expitem[0]) . "` = ?";
+                $params[] = $expitem[1];
+            }
+        }
+        
+        // Add WHERE parameter
+        $params[] = $_POST['search_for'];
+        
+        $set_clause = implode(', ', $set_clauses);
+        $up = $db->update("
+            UPDATE `" . $db->mysql_cleans($_POST['table']) . "`
+            SET {$set_clause}
+            WHERE `" . $db->mysql_clean($_POST['search_col']) . "` = ?
+            LIMIT 1
+        ", $params);
 
     }
     $task = $db->end_task($task_id, '0', 'No permissions.');

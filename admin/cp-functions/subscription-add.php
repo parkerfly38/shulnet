@@ -190,15 +190,33 @@ if ($type == 'edit') {
     }
 
     // Update the contact
-    $update_set1 = substr($query_form['u1'], 1);
-    $update_set2 = substr($query_form['u2'], 1);
+    // Convert to parameter binding
+    $set_clauses = array();
+    $params = array();
 
-    $q           = $db->update("
-		UPDATE `ppSD_subscriptions`
-		SET $update_set2
-		WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
-		LIMIT 1
-	");
+    // Process the update fields from query_form
+    if (!empty($query_form['u2'])) {
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            if (preg_match('/`([^`]+)`=\'(.*)\'/', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+
+    // Add WHERE parameter
+    $params[] = $_POST['id'];
+
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
+        UPDATE `ppSD_subscriptions`
+        SET {$set_clause}
+        WHERE `id` = ?
+        LIMIT 1
+    ", $params);
 
     $added       = $_POST['id'];
 

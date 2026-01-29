@@ -59,13 +59,13 @@ if ($type == 'edit') {
         $q1   = $db->update("
             UPDATE `ppSD_templates`
             SET
-                `title`='" . $db->mysql_cleans($_POST['name']) . "',
-                `meta_title`='" . $db->mysql_cleans($_POST['meta_title']) . "',
-                `content`='" . $db->mysql_cleans($_POST['template']) . "'
+                `title` = ?,
+                `meta_title` = ?,
+                `content` = ?
             WHERE
-                `id`='" . $db->mysql_cleans($_POST['id']) . "'
+                `id` = ?
             LIMIT 1
-        ");
+        ", array($_POST['name'], $_POST['meta_title'], $_POST['template'], $_POST['id']));
         //$temp = str_replace("\r", "", $_POST['template']);
         //$db->write_file($path, $file, $temp);
     //}

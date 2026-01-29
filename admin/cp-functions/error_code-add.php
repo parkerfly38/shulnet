@@ -41,18 +41,34 @@ $task_id  = $db->start_task($task, 'staff', $_POST['id'], $employee['username'])
 $primary               = array();
 $ignore                = array('id', 'edit');
 $query_form            = $admin->query_from_fields($_POST, 'edit', $ignore, $primary);
-$update_set2           = substr($query_form['u2'], 1);
-$q                     = $db->update("
 
-	UPDATE `ppSD_error_codes`
+// Convert to parameter binding
+$set_clauses = array();
+$params = array();
 
-	SET $update_set2
+// Process the update fields from query_form
+if (!empty($query_form['u2'])) {
+    $update_pairs = explode(',', substr($query_form['u2'], 1));
+    foreach ($update_pairs as $pair) {
+        if (preg_match('/`([^`]+)`=\'(.*)\'/', trim($pair), $matches)) {
+            $field_name = $matches[1];
+            $field_value = $matches[2];
+            $set_clauses[] = "`{$field_name}` = ?";
+            $params[] = $field_value;
+        }
+    }
+}
 
-	WHERE `code`='" . $db->mysql_clean($_POST['id']) . "'
+// Add WHERE parameter
+$params[] = $_POST['id'];
 
-	LIMIT 1
-
-");
+$set_clause = implode(', ', $set_clauses);
+$q = $db->update("
+    UPDATE `ppSD_error_codes`
+    SET {$set_clause}
+    WHERE `code` = ?
+    LIMIT 1
+", $params);
 $error_id              = $db->get_error_id($_POST['id']);
 $history               = new history($error_id, '', '', '', '', '', 'ppSD_error_codes');
 $content               = $history->final_content;

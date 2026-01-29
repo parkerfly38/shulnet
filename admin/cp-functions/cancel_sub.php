@@ -37,10 +37,10 @@ if ($user_data['data']['owner'] != $employee['id'] && $user_data['data']['public
     } else {
         $q1 = $db->update("
             UPDATE `ppSD_subscriptions`
-            SET `status`='1',`cancel_date`=''
-            WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+            SET `status` = '1', `cancel_date` = ''
+            WHERE `id` = ?
             LIMIT 1
-        ");
+        ", array($_POST['id']));
 
     }
 

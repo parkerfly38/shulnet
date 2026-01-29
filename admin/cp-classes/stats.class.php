@@ -108,13 +108,13 @@ class stats extends db
             $this->get();
         }
         else if ($this->action == 'add') {
-            $this->update('add');
+            $this->update_stat('add');
         }
         else if ($this->action == 'subtract') {
-            $this->update('subtract');
+            $this->update_stat('subtract');
         }
         else if ($this->action == 'update') {
-            $this->update();
+            $this->update_stat();
         }
     }
 
@@ -127,9 +127,9 @@ class stats extends db
         $q1 = $this->get_array("
             SELECT `value`
             FROM `ppSD_stats`
-            WHERE `key`='" . $this->mysql_clean($this->key) . "'
+            WHERE `key`=?
             LIMIT 1
-        ");
+        ", [$this->key]);
         if (empty($q1['value'])) {
             $this->final = '0';
         } else {
@@ -146,7 +146,7 @@ class stats extends db
      * Update
 
      */
-    function update($type = '')
+    function update_stat($type = '')
     {
         if ($type == 'add') {
             if (empty($this->value)) {
@@ -156,17 +156,11 @@ class stats extends db
 
                 INSERT INTO `ppSD_stats` (`key`,`value`)
 
-                VALUES (
+                VALUES (?,?)
 
-                '" . $this->mysql_clean($this->key) . "',
+                ON DUPLICATE KEY UPDATE `value`=(`value`+?)
 
-                '" . $this->mysql_clean($this->value) . "'
-
-                )
-
-                ON DUPLICATE KEY UPDATE `value`=(`value`+" . $this->mysql_cleans($this->value) . ");
-
-            ");
+            ", [$this->key, $this->value, $this->value]);
 
         }
         else if ($type == 'subtract') {
@@ -178,28 +172,19 @@ class stats extends db
 
                 INSERT INTO `ppSD_stats` (`key`,`value`)
 
-                VALUES (
+                VALUES (?,?)
 
-                '" . $this->mysql_clean($this->key) . "',
+                ON DUPLICATE KEY UPDATE `value`=(`value`-?)
 
-                '" . $this->mysql_clean($inval) . "'
-
-                )
-
-                ON DUPLICATE KEY UPDATE `value`=(`value`-" . $this->mysql_cleans($this->value) . ");
-
-            ");
+            ", [$this->key, $inval, $this->value]);
 
         }
         else {
             $q1 = $this->insert("
                 INSERT INTO `ppSD_stats` (`key`,`value`)
-                VALUES (
-                '" . $this->mysql_clean($this->key) . "',
-                '" . $this->mysql_clean($this->value) . "'
-                )
-                ON DUPLICATE KEY UPDATE `value`='" . $this->mysql_clean($this->value) . "';
-            ");
+                VALUES (?,?)
+                ON DUPLICATE KEY UPDATE `value`=?
+            ", [$this->key, $this->value, $this->value]);
         }
         $this->final = 'Updated';
 

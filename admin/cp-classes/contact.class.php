@@ -441,20 +441,23 @@ class contact extends db
         // Primary update
         $date = current_date('contact_edit');
         if (!empty($update_set1)) {
+            $params = [$date, $employee['id'], $id];
+            $bounce_sql = '';
             if (!empty($data['email'])) {
-                $update_set1 .= ",`bounce_notice`='1920-01-01 00:01:01'";
+                $update_set1 .= ",`bounce_notice`=?";
+                $params[] = '1920-01-01 00:01:01';
             }
             $q = $this->update("
                 UPDATE
                     `ppSD_contacts`
                 SET
-                    `last_updated`='" . $date . "',
-                    `last_updated_by`='" . $employee['id'] . "'
+                    `last_updated`=?,
+                    `last_updated_by`=?
                     $update_set1
                 WHERE
-                    `id`='" . $this->mysql_clean($id) . "'
+                    `id`=?
                 LIMIT 1
-            ");
+            ", $params);
         }
         $update_set2 = '';
         $q = $this->run_query("DESCRIBE `ppSD_contact_data`");
@@ -472,15 +475,31 @@ class contact extends db
         }
         // Secondary update
         if (!empty($update_set2)) {
-            $q1 = $this->update("
-                UPDATE
-                    `ppSD_contact_data`
-                SET
-                    " . ltrim($update_set2, ',') . "
-                WHERE
-                    `contact_id`='" . $this->mysql_clean($id) . "'
-                LIMIT 1
-		    ");
+            // Build parameters for contact_data update  
+            $contact_data_params = [];
+            $update_fields = [];
+            $trimmed_set = ltrim($update_set2, ',');
+            // Parse the update_set2 to extract field names and add parameters
+            foreach ($data as $name => $value) {
+                if (in_array($name, $table_fields)) {
+                    $update_fields[] = "`{$name}`=?";
+                    $contact_data_params[] = $value;
+                    $changes[$name] = $value;
+                }
+            }
+            if (!empty($update_fields)) {
+                $contact_data_params[] = $id;
+                
+                $q1 = $this->update("
+                    UPDATE
+                        `ppSD_contact_data`
+                    SET
+                        " . implode(', ', $update_fields) . "
+                    WHERE
+                        `contact_id`=?
+                    LIMIT 1
+    		    ", $contact_data_params);
+            }
         }
         //foreach ($eav as $name => $value) {
         //    $this->update_eav($id,$name,$value);
@@ -591,40 +610,59 @@ class contact extends db
         } else {
             $percent_change = '0';
         }
+        // Build parameters for lead conversion insert
+        $conversion_params = [$contact_id];
+        $placeholders = '?';
+        $options = array('owner', 'user_id', 'date', 'began', 'actual_value', 'estimated_value');
+        foreach ($options as $item) {
+            if (array_key_exists($item, $data)) {
+                if ($item == 'began') {
+                    $conversion_params[] = $data['created'];
+                } else {
+                    $conversion_params[] = $data[$item];
+                }
+                $placeholders .= ',?';
+            }
+        }
+        if (!empty($percent_change)) {
+            $conversion_params[] = $percent_change;
+            $placeholders .= ',?';
+        }
+        
         $q1 = $this->insert("
             INSERT INTO `ppSD_lead_conversion` (`contact_id`" . $keys . ")
-            VALUES ('" . $this->mysql_cleans($contact_id) . "'" . $values . ")
-        ");
+            VALUES (" . $placeholders . ")
+        ", $conversion_params);
         $convert_id = $q1;
         $q1 = $this->update("
             UPDATE
                 `ppSD_contacts`
             SET
-                `status`='2',
-                `actual_dollars`='" . $this->mysql_clean($data['actual_value']) . "',
-                `converted_id`='" . $this->mysql_clean($q1) . "'
+                `status`=?,
+                `actual_dollars`=?,
+                `converted_id`=?
             WHERE
-                `id`='" . $this->mysql_clean($contact_id) . "'
+                `id`=?
             LIMIT 1
-        ");
+        ", ['2', $data['actual_value'], $q1, $contact_id]);
         if (!empty($data['user_id'])) {
             $member_id = $data['user_id'];
             $q1 = $this->update("
                 UPDATE
                     `ppSD_members`
                 SET
-                    `converted_id`='" . $this->mysql_clean($q1) . "'
+                    `converted_id`=?
                 WHERE
-                    `id`='" . $this->mysql_clean($data['user_id']) . "'
+                    `id`=?
                 LIMIT 1
-            ");
+            ", [$q1, $data['user_id']]);
             // Transfer notes to member
             $qe3 = $this->update("
                 UPDATE `ppSD_notes`
-                SET `user_id`='" . $this->mysql_clean($data['user_id']) . "'
-                WHERE `user_id`='" . $this->mysql_clean($contact_id) . "'
+                SET `user_id`=?
+                WHERE `user_id`=?
                 LIMIT 1
-            ");
+            ", [$data['user_id'], $contact_id]);
         } else {
             $member_id = '';
         }
@@ -759,75 +797,75 @@ class contact extends db
                 // Update the database.
                 $q = $this->update("
                     UPDATE ppSD_cart_billing
-                    SET member_id='" . $this->mysql_clean($id) . "'
-                    WHERE member_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET member_id=?
+                    WHERE member_id=?
+                ", [$id, $other_id]);
 
                 $q2 = $this->update("
                     UPDATE ppSD_cart_sessions
-                    SET member_id='" . $this->mysql_clean($id) . "'
-                    WHERE member_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET member_id=?
+                    WHERE member_id=?
+                ", [$id, $other_id]);
 
                 $q3 = $this->update("
                     UPDATE ppSD_data_eav
-                    SET item_id='" . $this->mysql_clean($id) . "'
-                    WHERE item_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET item_id=?
+                    WHERE item_id=?
+                ", [$id, $other_id]);
 
                 $q4 = $this->update("
                     UPDATE ppSD_form_sessions
-                    SET member_id='" . $this->mysql_clean($id) . "'
-                    WHERE member_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET member_id=?
+                    WHERE member_id=?
+                ", [$id, $other_id]);
 
                 $q5 = $this->update("
                     UPDATE ppSD_form_submit
-                    SET user_id='" . $this->mysql_clean($id) . "'
-                    WHERE user_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET user_id=?
+                    WHERE user_id=?
+                ", [$id, $other_id]);
 
                 $q6 = $this->update("
                     UPDATE ppSD_history
-                    SET user_id='" . $this->mysql_clean($id) . "'
-                    WHERE user_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET user_id=?
+                    WHERE user_id=?
+                ", [$id, $other_id]);
 
                 $q7 = $this->update("
                     UPDATE ppSD_invoices
-                    SET member_id='" . $this->mysql_clean($id) . "'
-                    WHERE member_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET member_id=?
+                    WHERE member_id=?
+                ", [$id, $other_id]);
 
                 $q8 = $this->update("
                     UPDATE ppSD_newsletters_subscribers
-                    SET user_id='" . $this->mysql_clean($id) . "'
-                    WHERE user_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET user_id=?
+                    WHERE user_id=?
+                ", [$id, $other_id]);
 
                 $q9 = $this->update("
                     UPDATE ppSD_notes
-                    SET user_id='" . $this->mysql_clean($id) . "'
-                    WHERE user_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET user_id=?
+                    WHERE user_id=?
+                ", [$id, $other_id]);
 
                 $q10 = $this->update("
                     UPDATE ppSD_saved_emails
-                    SET user_id='" . $this->mysql_clean($id) . "'
-                    WHERE user_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET user_id=?
+                    WHERE user_id=?
+                ", [$id, $other_id]);
 
                 $q11 = $this->update("
                     UPDATE ppSD_subscriptions
-                    SET member_id='" . $this->mysql_clean($id) . "'
-                    WHERE member_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET member_id=?
+                    WHERE member_id=?
+                ", [$id, $other_id]);
 
                 $q12 = $this->update("
                     UPDATE ppSD_uploads
-                    SET item_id='" . $this->mysql_clean($id) . "'
-                    WHERE item_id='" . $this->mysql_clean($other_id) . "'
-                ");
+                    SET item_id=?
+                    WHERE item_id=?
+                ", [$id, $other_id]);
 
                 // Delete the old one.
                 $delete = new delete($other_id, 'ppSD_contacts');

@@ -64,7 +64,7 @@ class admin extends db
 			FROM `ppSD_products`
 			$where
 			ORDER BY `name` ASC
-		");
+		",[]);
         $list = '';
         if (empty($selected)) {
             $list .= "<option value=\"\" selected=\"selected\">----</option>";
@@ -87,7 +87,7 @@ class admin extends db
             FROM `ppSD_widgets`
             WHERE `type`='plugin'
             ORDER BY `name` ASC
-        ");
+        ", []);
         $list  = '';
         $found = 0;
         while ($row = $q1->fetch()) {
@@ -104,9 +104,9 @@ class admin extends db
         $q1    = $this->run_query("
             SELECT `id`
             FROM `ppSD_favorites`
-            WHERE `owner`='" . $this->mysql_clean($employee) . "'
+            WHERE `owner`=?
             ORDER BY `date` DESC
-        ");
+        ", [$employee]);
         $list  = '';
         $found = 0;
         while ($row = $q1->fetch()) {
@@ -124,7 +124,7 @@ class admin extends db
             SELECT `id`,`name`
             FROM `ppSD_member_types`
             ORDER BY `order` ASC
-        ");
+        ", []);
 
         if ($type == 'array') {
             $list = array();
@@ -160,10 +160,10 @@ class admin extends db
             SELECT COUNT(*)
             FROM `ppSD_favorites`
             WHERE
-                `owner`='" . $this->mysql_clean($employee) . "' AND
-                `user_type`='" . $this->mysql_clean($type) . "' AND
-                `user_id`='" . $this->mysql_clean($id) . "'
-        ");
+                `owner`=? AND
+                `user_type`=? AND
+                `user_id`=?
+        ", [$employee, $type, $id]);
         return $find['0'];
     }
     function render_favorite($id)
@@ -191,9 +191,9 @@ class admin extends db
         $q1 = $this->get_array("
             SELECT *
             FROM `ppSD_favorites`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$id]);
         return $q1;
     }
     function employee_notes($page = '1', $display = '10', $label = '')
@@ -209,11 +209,11 @@ class admin extends db
             WHERE
                 `complete`!='1' AND
                 `deadline`!='1920-01-01 00:01:01' AND
-                `deadline`<='" . date('Y-m-d', $seven_days) . "' AND
-                (`public`='2' OR `for`='" . $this->mysql_clean($employee['id']) . "' OR `added_by`='" . $this->mysql_clean($employee['id']) . "')
+                `deadline`<=? AND
+                (`public`='2' OR `for`=? OR `added_by`=?)
             ORDER BY `deadline` ASC
             LIMIT $low,$display
-        ");
+        ", [date('Y-m-d', $seven_days), $employee['id'], $employee['id']]);
         // `deadline`>='" . $today . "' AND
         $list = '';
         while ($row = $q1->fetch()) {
@@ -303,9 +303,9 @@ class admin extends db
         $q12   = $this->run_query("
             SELECT `name`,`filename`
             FROM `ppSD_uploads`
-            WHERE `note_id`='" . $this->mysql_clean($id) . "'
+            WHERE `note_id`=?
             ORDER BY `name` DESC
-        ");
+        ", [$id]);
         $list  = '';
         $total = 0;
         while ($row = $q12->fetch()) {
@@ -623,12 +623,12 @@ class admin extends db
                 $q1 = $this->insert("
                     INSERT INTO `ppSD_access_granters` (`item_id`,`type`,`grants_to`,`timeframe`)
                     VALUES (
-                      '" . $this->mysql_cleans($product_id) . "',
+                      ?,
                       'content',
-                      '" . $this->mysql_cleans($anItem['id']) . "',
-                      '" . $this->construct_timeframe($anItem['time']['number'], $anItem['time']['unit']) . "'
+                      ?,
+                      ?
                     )
-                ");
+                ", [$product_id, $anItem['id'], $this->construct_timeframe($anItem['time']['number'], $anItem['time']['unit'])]);
             }
         }
     }
@@ -652,12 +652,12 @@ class admin extends db
                         `order`
                     )
                     VALUES (
-                      '" . $this->mysql_clean($product_id) . "',
-                      '" . $this->mysql_clean($anItem['id']) . "',
-                      '" . $this->mysql_clean($anItem['type']) . "',
-                      '" . $product_next . "'
+                      ?,
+                      ?,
+                      ?,
+                      ?
                     )
-                ");
+                ", [$product_id, $anItem['id'], $anItem['type'], $product_next]);
             }
         }
     }
@@ -967,7 +967,7 @@ class admin extends db
             FROM `ppSD_content`
             WHERE `type`='section'
             ORDER BY `name` ASC
-        ");
+        ", []);
 
         while ($row = $STH->fetch()) {
             if ($type == 'list') {
@@ -1106,7 +1106,7 @@ class admin extends db
             FROM `ppSD_widgets`
             WHERE `type`='menu'
             ORDER BY `name` ASC
-        ");
+        ", []);
         while ($row = $STH->fetch()) {
             $data .= '<input type="checkbox" name="menus[]" value="' . $row['id'] . '" ';
             if (in_array($row['id'], $existing)) {
@@ -1124,7 +1124,7 @@ class admin extends db
             FROM `ppSD_fieldsets`
             WHERE `static`!='0'
             ORDER BY `name` ASC
-        ");
+        ", []);
         while ($row = $STH->fetch()) {
             $data .= '<input type="checkbox" name="fieldsets[]" value="' . $row['id'] . '" ';
             if (in_array($row['id'], $existing)) {
@@ -1154,8 +1154,8 @@ class admin extends db
         $STH  = $this->run_query("
             SELECT `location`
             FROM `ppSD_fieldsets_locations`
-            WHERE `fieldset_id`='" . $this->mysql_clean($fieldset_id) . "'
-        ");
+            WHERE `fieldset_id`=?
+        ", [$fieldset_id]);
         while ($row = $STH->fetch()) {
             $locations[$row['location']] = '1';
         }
@@ -1731,7 +1731,7 @@ class admin extends db
         }
 
         // Totals
-        $totals    = $this->get_array($query_totals);
+        $totals    = $this->get_array($query_totals,[]);
         if ($display > 0) {
             $pages     = ceil($totals['0'] / $display);
         } else {
@@ -1744,7 +1744,7 @@ class admin extends db
         $cur_row   = 0;
         $all_cells = '';
 
-        $STH       = $this->run_query($query);
+        $STH       = $this->run_query($query, []);
         while ($rowF = $STH->fetch()) {
             if (!empty($math_field)) {
                 if ($math_field == "English_Date_of_Death")
@@ -1875,7 +1875,7 @@ class admin extends db
     {
         $go = ($type == 'array') ? array() : '';
 
-        $STH = $this->run_query("SELECT `id`,`name` FROM `ppSD_cart_categories` ORDER BY `name` ASC");
+        $STH = $this->run_query("SELECT `id`,`name` FROM `ppSD_cart_categories` ORDER BY `name` ASC",[]);
 
         while ($row = $STH->fetch()) {
             if ($type == 'array') {
@@ -1906,9 +1906,9 @@ class admin extends db
         $STH = $this->run_query("
             SELECT `id`,`name`
             FROM `ppSD_criteria_cache`
-            WHERE `type`='" . $this->mysql_clean($type) . "' AND `save`='1' AND (`owner`='" . $this->mysql_clean($employee['id']) . "' OR `public`='1')
+            WHERE `type`=? AND `save`='1' AND (`owner`=? OR `public`='1')
             ORDER BY `name` ASC
-        ");
+        ",[$type, $employee['id']]);
         if (! $array) {
             $go = '';
             if (empty($selected)) {
@@ -1937,9 +1937,9 @@ class admin extends db
         $q1  = $this->run_query("
             SELECT `id`,`name`
             FROM `ppSD_forms`
-            WHERE `type`='" . $this->mysql_clean($type) . "'
+            WHERE `type`=?
             ORDER BY `name` ASC
-        ");
+        ", [$type]);
         $lit = '';
         while ($row = $q1->fetch()) {
             if ($row['id'] == $selected) {
@@ -2126,10 +2126,10 @@ class admin extends db
         }
         $q = $this->update("
 			UPDATE `ppSD_staff_in`
-			SET `expires`='" . date('Y-m-d H:i:s', $expires) . "'
-			WHERE `id`='" . $this->mysql_clean($_COOKIE['zen_admin_ses']) . "'
+			SET `expires`=?
+			WHERE `id`=?
 			LIMIT 1
-		");
+		",[date('Y-m-d H:i:s', $expires), $_COOKIE['zen_admin_ses']]);
     }
     /**
      * Get employee email from ID
@@ -2140,9 +2140,9 @@ class admin extends db
         $q = $this->get_array("
 			SELECT `email`
 			FROM `ppSD_staff`
-			WHERE `id`='" . $this->mysql_clean($employee_id) . "'
+			WHERE `id`=?
 			LIMIT 1
-		");
+		", [$employee_id]);
         return $q['email'];
     }
     /**
@@ -2154,9 +2154,9 @@ class admin extends db
         $q = $this->get_array("
 			SELECT `id`
 			FROM `ppSD_staff`
-			WHERE `username`='" . $this->mysql_clean($username) . "'
+			WHERE `username`=?
 			LIMIT 1
-		");
+		", [$username]);
         return $q['id'];
     }
     function find_employee($id)
@@ -2164,9 +2164,9 @@ class admin extends db
         $q = $this->get_array("
 			SELECT `id`
 			FROM `ppSD_staff`
-			WHERE `id`='" . $this->mysql_clean($id) . "'
+			WHERE `id`=?
 			LIMIT 1
-		");
+		", [$id]);
         if (! empty($q['id'])) {
             return true;
         } else {
@@ -2240,15 +2240,15 @@ class admin extends db
                 `remember`
 			)
 			VALUES (
-                '" . $id_rand . "',
-                '" . $this->mysql_clean($username) . "',
-                '" . $this->mysql_clean($session_salt) . "',
-                '" . current_date() . "',
-                '" . date('Y-m-d H:i:s', $expires) . "',
-                '" . $this->mysql_clean(get_ip()) . "',
-                " . $remember . "
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
 			)
-		");
+		", [$id_rand, $username, $session_salt, current_date(), date('Y-m-d H:i:s', $expires), get_ip(), $remember]);
 
         $remove_lock = $this->remove_lock($username, 'staff');
 
@@ -2266,9 +2266,9 @@ class admin extends db
             }
             $session = $this->get_array("
 				SELECT * FROM `ppSD_staff_in`
-				WHERE `id`='" . $this->mysql_clean($id) . "'
+				WHERE `id`=?
 				LIMIT 1
-			");
+			", [$id]);
             return $session;
         } else {
             return '0';
@@ -2283,7 +2283,7 @@ class admin extends db
             SELECT `id`,`name`
             FROM `ppSD_cart_terms`
             ORDER BY `name`
-        ");
+        ",[]);
         $list = '';
         while ($row = $STH->fetch()) {
             if (! empty($selected)) {
@@ -2310,7 +2310,7 @@ class admin extends db
             FROM `ppSD_forms`
             WHERE $add_where AND `disabled`!='1'
             ORDER BY `name`
-        ");
+        ",[]);
         $list = '';
         while ($row = $STH->fetch()) {
             $list .= "<option value=\"" . $row['id'] . "\">" . $row['name'] . "</option>";
@@ -2330,15 +2330,21 @@ class admin extends db
                 $session_comps = explode('-', $_COOKIE['zen_admin_ses']);
                 $id            = $session_comps['0'];
                 if (!empty($username)) {
-                    $add_where = " OR `username`='" . $this->mysql_clean($username) . "'";
-                } else {
-                    $add_where = '';
-                }
-                $session = $this->update("
+                    $add_where = " OR `username`=?";
+                    $session = $this->update("
                     UPDATE `ppSD_staff_in`
-                    SET `complete`='" . current_date() . "'
-                    WHERE `id`='" . $this->mysql_clean($id) . "' $add_where
-			    ");
+                    SET `complete`=?
+                    WHERE `id`=? $add_where
+			        ", [current_date(), $id, $username]);
+                } else {
+                    $add_where = ''; 
+                    $session = $this->update("
+                    UPDATE `ppSD_staff_in`
+                    SET `complete`=?
+                    WHERE `id`=?
+			        ", [current_date(), $id]);
+                }
+                    
             }
         }
         $this->delete_cookie('zen_admin_ses');
@@ -2354,9 +2360,9 @@ class admin extends db
         $staff = $this->get_array("
 			SELECT *
 			FROM `ppSD_staff`
-			WHERE `email`='" . $this->mysql_clean($email) . "'
+			WHERE `email`=?
 			LIMIT 1
-		");
+		",[$email]);
 
         return $staff;
     }
@@ -2381,15 +2387,15 @@ class admin extends db
             }
         }
         if (!empty($id)) {
-            $where = "`id`='" . $this->mysql_clean($id) . "'";
+            $where = "`id`=?";
         } else {
-            $where = "`username`='" . $this->mysql_clean($username) . "'";
+            $where = "`username`=?";
         }
         $staff = $this->get_array("
 			SELECT * FROM `ppSD_staff`
 			WHERE $where
 			LIMIT 1
-		");
+		",[(!empty($id)) ? $id : $username]);
         if (empty($staff['username'])) {
             $array = array(
                 'error'         => '1',
@@ -2415,17 +2421,17 @@ class admin extends db
         // Session
         $session = $this->get_session();
         // Unseralize options
-        if (!empty($employee['options'])) {
-            $eoptions = unserialize($employee['options']);
+        if (!empty($staff['options'])) {
+            $eoptions = unserialize($staff['options']);
         } else {
             $eoptions = array();
         }
         // Profile Picture
         $q8 = $this->get_array("
 			SELECT * FROM `ppSD_uploads`
-			WHERE `item_id`='" . $this->mysql_clean($staff['id']) . "' AND `type`='employee'
+			WHERE `item_id`=? AND `type`='employee'
 			LIMIT 1
-		");
+		", [$staff['id']]);
         if (!empty($q8['filename'])) {
             $staff['profile_picture'] = $q8['filename'];
         } else {
@@ -2455,7 +2461,7 @@ class admin extends db
                 `status`='1' AND
                 `next_action` LIKE '" . $check_date . "%'
                 $add_where
-		");
+		",[]);
         return $q['0'];
     }
     function overdue_contacts($id)
@@ -2471,9 +2477,9 @@ class admin extends db
             FROM `ppSD_contacts`
             WHERE
                 `status`='1' AND
-                `next_action`<='" . current_date() . "'
+                `next_action`<=?
                 $add_where
-		");
+		", [current_date()]);
         return $q['0'];
     }
     function opportunity_contacts($id)
@@ -2491,7 +2497,7 @@ class admin extends db
                 `status`='1' AND
                 `type`='Opportunity'
                 $add_where
-		");
+		",[]);
         return $q['0'];
     }
     function get_employees($type = 'array')
@@ -2501,7 +2507,7 @@ class admin extends db
             FROM `ppSD_staff`
             WHERE `id`!='2'
             ORDER BY `id` ASC
-		");
+		",[]);
         $list = '';
         $emps = array();
         while ($row = $STH->fetch()) {
@@ -2526,9 +2532,9 @@ class admin extends db
         $q1     = $this->get_array("
 			SELECT *
 			FROM `ppSD_permission_groups`
-			WHERE `id`='$id'
+			WHERE `id`=?
 			LIMIT 1
-		");
+		", [$id]);
         if ($q1['admin'] == '1') {
             $return['admin']  = '1';
             $return['name']   = $q1['name'];
@@ -2539,8 +2545,8 @@ class admin extends db
             $STH         = $this->run_query("
 				SELECT `scope`,`action`,`allowed`
 				FROM `ppSD_permission_group_settings`
-				WHERE `group_id`='$id'
-			");
+				WHERE `group_id`=?
+			", [$id]);
             $scope_list  = array();
             while ($row = $STH->fetch()) {
                 $scopes[$row['scope']]       = $row['allowed'];
@@ -2734,10 +2740,10 @@ class admin extends db
     {
         $q1 = $this->update("
 			UPDATE `ppSD_staff`
-			SET `locked`='" . current_date() . "',`locked_ip`='" . $this->mysql_clean(get_ip()) . "'
-			WHERE `username`='" . $this->mysql_clean($username) . "'
+			SET `locked`=?,`locked_ip`=?
+			WHERE `username`=?
 			LIMIT 1
-		");
+		", [current_date(), get_ip(), $username]);
         return '1';
     }
     /**
@@ -2748,9 +2754,9 @@ class admin extends db
         $q1 = $this->update("
 			UPDATE `ppSD_staff`
 			SET `locked`='1920-01-01 00:01:01',`locked_ip`='',`login_attempts`='0'
-			WHERE `username`='" . $this->mysql_clean($username) . "'
+			WHERE `username`=?
 			LIMIT 1
-		");
+		", [$username]);
         return '1';
     }
     /**
@@ -2867,9 +2873,9 @@ class admin extends db
             $q2 = $this->get_array("
 				SELECT `content`
 				FROM `ppSD_templates_email`
-				WHERE `default_for`='$type'
+				WHERE `default_for`=?
 				LIMIT 1
-			");
+			", [$type]);
             if (!empty($q2['content'])) {
                 $final_content = $q2['content'];
             }
@@ -2887,11 +2893,11 @@ class admin extends db
             SELECT `template`,`title`
             FROM `ppSD_templates_email`
             WHERE
-                `type`='" . $this->mysql_clean($type) . "' AND
-                `custom`='" . $this->mysql_clean($custom) . "' AND
-                (`owner`='" . $employee['id'] . "' OR `public`='1')
+                `type`=? AND
+                `custom`=? AND
+                (`owner`=? OR `public`='1')
             ORDER BY `title` ASC
-        ");
+        ",[$type, $custom, $employee['id']]);
 
         $list = ($return == 'array') ? array() : '';
 

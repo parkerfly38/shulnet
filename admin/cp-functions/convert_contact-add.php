@@ -79,49 +79,49 @@ else if ($_POST['member_type'] == 'existing') {
 
 $q1 = $db->update("
     UPDATE `ppSD_notes`
-    SET `user_id`='" . $db->mysql_clean($final_id) . "',`item_scope`='member'
-    WHERE `user_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `user_id` = ?, `item_scope` = 'member'
+    WHERE `user_id` = ?
+", array($final_id, $_POST['id']));
 $q2 = $db->update("
     UPDATE `ppSD_uploads`
-    SET `item_id`='" . $db->mysql_clean($final_id) . "',`type`='member'
-    WHERE `item_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `item_id` = ?, `type` = 'member'
+    WHERE `item_id` = ?
+", array($final_id, $_POST['id']));
 $q3 = $db->update("
     UPDATE `ppSD_invoices`
-    SET `member_id`='" . $db->mysql_clean($final_id) . "',`type`='member'
-    WHERE `member_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `member_id` = ?, `type` = 'member'
+    WHERE `member_id` = ?
+", array($final_id, $_POST['id']));
 $q4 = $db->update("
     UPDATE `ppSD_subscriptions`
-    SET `member_id`='" . $db->mysql_clean($final_id) . "',`type`='member'
-    WHERE `member_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `member_id` = ?, `type` = 'member'
+    WHERE `member_id` = ?
+", array($final_id, $_POST['id']));
 $q5 = $db->update("
     UPDATE `ppSD_cart_billing`
-    SET `member_id`='" . $db->mysql_clean($final_id) . "'
-    WHERE `member_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `member_id` = ?
+    WHERE `member_id` = ?
+", array($final_id, $_POST['id']));
 $q6 = $db->update("
     UPDATE `ppSD_cart_sessions`
-    SET `member_id`='" . $db->mysql_clean($final_id) . "',`type`='member'
-    WHERE `member_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `member_id` = ?, `type` = 'member'
+    WHERE `member_id` = ?
+", array($final_id, $_POST['id']));
 $q7 = $db->update("
     UPDATE `ppSD_notes`
-    SET `user_id`='" . $db->mysql_clean($final_id) . "',`scope`='member'
-    WHERE `user_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `user_id` = ?, `scope` = 'member'
+    WHERE `user_id` = ?
+", array($final_id, $_POST['id']));
 $q8 = $db->update("
     UPDATE `ppSD_saved_emails`
-    SET `user_id`='" . $db->mysql_clean($final_id) . "',`user_type`='member'
-    WHERE `user_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `user_id` = ?, `user_type` = 'member'
+    WHERE `user_id` = ?
+", array($final_id, $_POST['id']));
 $q9 = $db->update("
     UPDATE `ppSD_saved_sms`
-    SET `user_id`='" . $db->mysql_clean($final_id) . "',`user_type`='member'
-    WHERE `user_id`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    SET `user_id` = ?, `user_type` = 'member'
+    WHERE `user_id` = ?
+", array($final_id, $_POST['id']));
 
 
 // ------

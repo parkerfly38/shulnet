@@ -93,6 +93,7 @@ class user extends db
             $returned = $cache['data'];
         } else {
             if (empty($id)) {
+                $this->clear_binding();
                 $result = $this->get_array("
 					SELECT * FROM `ppSD_members`
 					JOIN `ppSD_member_data`
@@ -100,6 +101,7 @@ class user extends db
 					WHERE ppSD_members.username='" . $this->mysql_clean($username) . "'
 				");
             } else {
+                $this->clear_binding();
                 $result = $this->get_array("
 					SELECT * FROM `ppSD_members`
 					JOIN `ppSD_member_data`
@@ -135,6 +137,7 @@ class user extends db
                 }
                 if (! $simple) {
                     $act_array = array();
+                    $this->clear_binding();
                     $act_data = $this->run_query("
 					SELECT *
 					FROM `ppSD_member_activations`
@@ -184,56 +187,6 @@ class user extends db
                         $returned['conversion'] = '';
                     }
                 }
-                /*
-   				// Events
-   				$events = array();
-   				$q1 = "SELECT * FROM `ppSD_event_rsvps` WHERE `user_id`='" . $this->mysql_clean($returned['data']['id']) . "'";
-   				$STH = $this->run_query($q1);
-   				while ($row =  $STH->fetch()) {
-   					$events[] = $row;
-   				}
-   				$returned['events'] = $events;
-                */
-                /*
-                // Logins
-                $logins = array();
-                $q1 = "SELECT * FROM `ppSD_logins` WHERE `member_id`='" . $this->mysql_clean($returned['data']['id']) . "'";
-                $STH = $this->run_query($q1);
-                while ($row =  $STH->fetch()) {
-                    $logins[] = $row;
-                }
-                $returned['logins'] = $logins;
-             */
-                //require_once "../admin/cp-classes/cart.class.php";
-                //$cart = new cart;
-                /*
-   				// Billing Logs
-   				$sales = array();
-   				$q1 = "SELECT * FROM `ppSD_cart_sessions` WHERE `member_id`='" . $this->mysql_clean($returned['data']['id']) . "'";
-   				$STH = $this->run_query($q1);
-   				while ($row =  $STH->fetch()) {
-   					$sales[] = $row;
-   				}
-   				$returned['sales'] = $sales;
-   				
-   				// Subscriptionstion f
-   				$charge = array();
-   				$q1 = "SELECT * FROM `ppSD_subscriptions` WHERE `member_id`='" . $this->mysql_clean($returned['data']['id']) . "'";
-   				$STH = $this->run_query($q1);
-   				while ($row =  $STH->fetch()) {
-   					$charge[] = $row;
-   				}
-   				$returned['subscriptions'] = $charge;
-   				
-   				// Invoices
-   				$invoices = array();
-   				$q1 = "SELECT * FROM `ppSD_invoices` WHERE `member_id`='" . $this->mysql_clean($returned['data']['id']) . "'";
-   				$STH = $this->run_query($q1);
-   				while ($row =  $STH->fetch()) {
-   					$invoices[] = $row;
-   				}
-   				$returned['invoices'] = $invoices;
-                */
                 $returned['error'] = '0';
                 $returned['error_details'] = '';
                 // Secure Areas
@@ -241,15 +194,6 @@ class user extends db
                     $areas = $this->get_content_access($returned['data']['id']);
                     $returned['areas'] = $areas;
                 }
-                /*
-                // Conversion
-                $conversion = array();
-                if (! empty($returned['data']['converted']) && $returned['data']['converted'] == '1') {
-                    $contact = new contact;
-                    $conversion = $contact->get_conversion($returned['data']['converted_id']);
-                }
-                $returned['conversion'] = $conversion;
-                */
                 // Profile Picture
                 if (!empty($returned['data']['facebook'])) {
                     $fb = $returned['data']['facebook'];
@@ -415,10 +359,10 @@ class user extends db
 
         $q2 = $this->update("
             UPDATE `ppSD_members`
-            SET `bounce_notice`='" . current_date() . "'
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            SET `bounce_notice`=?
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [current_date(), $id]);
         $this->get_user($id, '1');
     }
 
@@ -437,24 +381,18 @@ class user extends db
         $q1 = $this->update("
             UPDATE `ppSD_members`
             SET
-                `status`='" . $this->mysql_clean($status) . "',
-                `status_msg`='" . $this->mysql_clean($reason) . "',
+                `status`=?,
+                `status_msg`=?,
                 `concurrent_login_notices`='0'
             WHERE
-                `id`='" . $this->mysql_clean($id) . "'
+                `id`=?
             LIMIT 1
-        ");
+        ", [$status, $reason, $id]);
 
         $q2 = $this->insert("
             INSERT INTO `ppSD_member_activations` (`member_id`,`date`,`owner`,`status`,`reason`)
-            VALUES (
-            '" . $this->mysql_clean($id) . "',
-            '" . current_date() . "',
-            '" . $this->mysql_clean($employee['id']) . "',
-            '" . $this->mysql_clean($status) . "',
-            '" . $this->mysql_clean($reason) . "'
-            )
-        ");
+            VALUES (?,?,?,?,?)
+        ", [$id, current_date(), $employee['id'], $status, $reason]);
 
         // Re-cache
         $user = new user;
@@ -754,12 +692,12 @@ class user extends db
 			UPDATE
 			    `ppSD_members`
 			SET
-                `locked`='" . current_date() . "',
-                `locked_ip`='" . $this->mysql_clean(get_ip()) . "'
+                `locked`=?,
+                `locked_ip`=?
 			WHERE
-			    `id`='" . $this->mysql_clean($id) . "'
+			    `id`=?
 			LIMIT 1
-		");
+		", [current_date(), get_ip(), $id]);
     }
 
 
@@ -777,14 +715,14 @@ class user extends db
                 `login_attempts`='0',
                 `status`='A'
 			WHERE
-			    `id`='" . $this->mysql_clean($id) . "'
+			    `id`=?
 			LIMIT 1
-		");
+		", [$id]);
         if (! empty($ip)) {
             $q1 = $this->delete("
                 DELETE FROM `ppSD_login_temp`
-                WHERE `ip`='" . $this->mysql_clean($ip) . "'
-            ");
+                WHERE `ip`=?
+            ", [$ip]);
         }
     }
 
@@ -828,31 +766,19 @@ class user extends db
                 `type`,
                 `notes`
 			)
-			VALUES (
-                '" . current_date() . "',
-                '" . $this->mysql_clean($id) . "',
-                '" . $this->mysql_clean(get_ip()) . "',
-                '$status',
-                '" . $this->mysql_clean($host) . "',
-                '" . $this->mysql_clean($browser['1']) . "',
-                '" . $this->mysql_clean($browser['0']) . "',
-                '$attempt',
-                '" . $this->mysql_clean($session_id) . "',
-                '" . $this->mysql_clean($type) . "',
-                '" . $this->mysql_clean($notes) . "'
-			)
-		");
+			VALUES (?,?,?,?,?,?,?,?,?,?,?)
+		", [current_date(), $id, get_ip(), $status, $host, $browser['1'], $browser['0'], $attempt, $session_id, $type, $notes]);
 
         $q2 = $this->update("
             UPDATE
                 `ppSD_members`
             SET
-                `last_date_check`='" . current_date() . "',
-                `last_login`='" . current_date() . "'
+                `last_date_check`=?,
+                `last_login`=?
             WHERE
-                `id`='" . $this->mysql_clean($id) . "'
+                `id`=?
             LIMIT 1
-        ");
+        ", [current_date(), current_date(), $id]);
 
         $put = 'logins';
         $this->put_stats($put);
@@ -930,10 +856,10 @@ class user extends db
             // Update user
             $q1 = $this->update("
                 UPDATE `ppSD_members`
-                SET `member_type`='" . $this->mysql_clean($new_type) . "'
-                WHERE `id`='" . $this->mysql_clean($member_id) . "'
+                SET `member_type`=?
+                WHERE `id`=?
                 LIMIT 1
-            ");
+            ", [$new_type, $member_id]);
 
             // History
             $type_name = $this->get_member_type_name($new_type);
@@ -1401,6 +1327,7 @@ class user extends db
      */
     function create_member($data, $skip_email = '0', $custom_template = '', $email_data = array(), $form_id = '')
     {
+        $this->clear_binding();
         $q1A = '';
         $q1B = '';
         $q2A = '';
@@ -1518,6 +1445,9 @@ class user extends db
         if (empty($data['member']['last_login'])) {
             $data['member']['last_login'] = current_date();
         }
+        if (empty($data['member']['email_pref'])) {
+            $data['member']['email_pref'] = 'html';
+        }
 
         // Salt
         $salt = $this->generate_salt();
@@ -1558,7 +1488,8 @@ class user extends db
                     $template = 'email_await_activation';
                 }
                 // Pending admin confirmation
-                else if ($data['member']['status'] == 'S') {
+                // this makes no sense to us right now
+                /*else if ($data['member']['status'] == 'S') {
                     $last_invoice = $this->get_array("
                         SELECT `id` FROM `ppSD_invoices`
                         WHERE `member_id`='" . $this->mysql_clean($id) . "'
@@ -1570,7 +1501,7 @@ class user extends db
                     $invoice = $invoice->get_invoice($last_invoice['id']);
                     $changes['invoice'] = $invoice;
                     $template = 'email_pending_invoice';
-                }
+                }*/
                 // Active
                 else {
                     $template = 'email_reg_complete';
@@ -1603,26 +1534,6 @@ class user extends db
         } else {
             $hold_member_type = '';
         }
-
-        /*
-        $primary = array(
-            'email',
-            'salt',
-            'account',
-            'source',
-            'owner',
-            'username',
-            'status',
-            'joined',
-            'expires',
-            'lead',
-            'last_login',
-            'last_update',
-            'start_page',
-            'email_pref',
-            'created',
-        );
-        */
 
         // pa($data['member']);
         // Loop through data fields
@@ -1668,6 +1579,7 @@ class user extends db
         // Must repeat this because of MySQL binding...
         $eav = array();
         $clean = '';
+        $newdb = new db;
         foreach ($data['member'] as $name => $value) {
             if ($name == 'member_id') continue;
 
@@ -1678,7 +1590,7 @@ class user extends db
                             $value = encode($value);
                         }
                         $q2A .= "`" . $name . "`,";
-                        $q2B .= "'" . $this->mysql_clean($value) . "',";
+                        $q2B .= "'" . $newdb->mysql_clean($value) . "',";
                         $clean .= ",'" . $value . "'";
                     } else {
                         $eav[$name] = $value;
@@ -1688,7 +1600,7 @@ class user extends db
             }
         }
 
-        $q2 = $this->insert("
+        $q2 = $newdb->insert("
             INSERT INTO `ppSD_member_data` ($q2A`member_id`)
             VALUES ($q2B'" . $id . "')
 		");
@@ -1697,7 +1609,8 @@ class user extends db
         $this->update_member_type($id, $hold_member_type);
 
         // Assign
-        $this->assign_member_to_employee($id, $hold_owner);
+        $pdo1 = new user;
+        $pdo1->assign_member_to_employee($id, $hold_owner);
 
         // Tracking milestone?
         $connect = new connect;
@@ -1731,7 +1644,8 @@ class user extends db
 
         // Cache the user
         $changes['member_id'] = $id;
-        $changes['member'] = $this->get_user($id);
+        $pdo2 = new user;
+        $changes['member'] = $pdo2->get_user($id);
         $changes['tracking_id'] = $track_id;
 
         // E-mail the user
@@ -1739,7 +1653,7 @@ class user extends db
             $email = new email('', $id, 'member', $email_data, $changes, $template);
         }
 
-        $history = $this->add_history('member_created', '2', $id, '', $id, '');
+        $history = $this->add_history('member_created', '2', $id, 1, $id, '');
         $indata = array(
             'member_id' => $id,
             'tracking_id' => $track_id,
@@ -1820,8 +1734,8 @@ class user extends db
         $mid = md5(md5(time()) . md5($id) . rand(100, 99999999));
         $q1 = $this->insert("
 			INSERT INTO `ppSD_reset_passwords` (`id`,`member_id`,`email`,`date`)
-			VALUES ('" . $this->mysql_clean($mid) . "','" . $this->mysql_clean($id) . "','" . $this->mysql_clean($email) . "','" . current_date() . "')
-		");
+			VALUES (?,?,?,?)
+		", [$mid, $id, $email, current_date()]);
         // Email details on reset.
         $arrayA = array('s' => $mid);
         $resetlink = build_link('pp-functions/reset_password.php', $arrayA);
@@ -2003,8 +1917,8 @@ class user extends db
 
         $q1 = $this->delete("
             DELETE FROM `ppSD_newsletters_subscribers`
-            WHERE `user_id`='" . $this->mysql_cleans($member_id) . "' AND `newsletter_id`='" . $this->mysql_cleans($id) . "'
-        ");
+            WHERE `user_id`=? AND `newsletter_id`=?
+        ", [$member_id, $id]);
     }
 
 
@@ -2050,15 +1964,15 @@ class user extends db
         if (!empty($subed)) {
             $q = $this->update("
 				UPDATE `ppSD_content_access`
-				SET `expires`='$next_renew'
-				WHERE `member_id`='" . $this->mysql_clean($member_id) . "' AND `content_id`='" . $this->mysql_clean($id) . "'
+				SET `expires`=?
+				WHERE `member_id`=? AND `content_id`=?
 				LIMIT 1
-			");
+			", [$next_renew, $member_id, $id]);
         } else {
             $q = $this->insert("
 				INSERT INTO `ppSD_content_access` (`member_id`,`content_id`,`added`,`expires`)
-				VALUES ('" . $this->mysql_clean($member_id) . "','" . $this->mysql_clean($id) . "','" . current_date() . "','" . $next_renew . "')
-			");
+				VALUES (?,?,?,?)
+			", [$member_id, $id, current_date(), $next_renew]);
         }
         $indata = array(
             'member_id' => $member_id,
@@ -2091,15 +2005,15 @@ class user extends db
         if (!empty($subed)) {
             $q = $this->update("
 				UPDATE `ppSD_newsletters_subscribers`
-				SET `expires`='$next_renew'
-				WHERE `user_id`='" . $this->mysql_clean($member_id) . "' AND `newsletter_id`='" . $this->mysql_clean($id) . "'
+				SET `expires`=?
+				WHERE `user_id`=? AND `newsletter_id`=?
 				LIMIT 1
-			");
+			", [$next_renew, $member_id, $id]);
         } else {
             $q = $this->insert("
 				INSERT INTO `ppSD_newsletters_subscribers` (`user_id`,`user_type`,`newsletter_id`,`added`,`expires`)
-				VALUES ('" . $this->mysql_clean($member_id) . "','" . $this->mysql_clean($member_type) . "','" . $this->mysql_clean($id) . "','" . current_date() . "','" . $next_renew . "')
-			");
+				VALUES (?,?,?,?,?)
+			", [$member_id, $member_type, $id, current_date(), $next_renew]);
         }
         return $inid;
     }

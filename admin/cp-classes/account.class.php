@@ -11,6 +11,8 @@ class account extends db
     {
 
         $cache = $this->get_cache($id);
+        
+        $pdo1 = new db;
         if ($cache['error'] != '1' && $recache != '1') {
             $q1 = $cache['data'];
 
@@ -25,11 +27,10 @@ class account extends db
                 $add_where = "ppSD_accounts.default='3'";
 
             } else {
-                $add_where = " ppSD_accounts.id='" . $this->mysql_clean($id) . "'";
-
+                $add_where = " ppSD_accounts.id='{$id}'";
             }
             // Primary data
-            $q1 = $this->get_array("
+            $q1 = $pdo1->get_array("
 
 				SELECT *
 
@@ -39,7 +40,7 @@ class account extends db
 
 				ON ppSD_accounts.id=ppSD_account_data.account_id
 
-				WHERE " . $add_where);
+				WHERE " . $add_where,[]);
             if (empty($q1)) {
                 return array(
                     'error' => '1',
@@ -166,8 +167,8 @@ class account extends db
         $q1 = $this->run_query("
             SELECT `id`,`username`,`status`
             FROM `ppSD_members`
-            WHERE `account`='" . $this->mysql_clean($id) . "'
-        ");
+            WHERE `account`=?
+        ", [$id]);
         $members = array();
         while ($row = $q1->fetch()) {
             $members[] = $row;
@@ -180,8 +181,8 @@ class account extends db
         $q1 = $this->run_query("
             SELECT `id`
             FROM `ppSD_contacts`
-            WHERE `account`='" . $this->mysql_clean($id) . "'
-        ");
+            WHERE `account`=?
+        ", [$id]);
         $contacts = array();
         while ($row = $q1->fetch()) {
             $contacts[] = $row;
@@ -195,20 +196,20 @@ class account extends db
         if ($employee['permissions']['admin'] == '1') {
             $q1 = $this->update("
                 UPDATE `ppSD_accounts`
-                SET `owner`='" . $this->mysql_clean($new_owner) . "'
-                WHERE `id`='" . $this->mysql_clean($id) . "'
+                SET `owner`=?
+                WHERE `id`=?
                 LIMIT 1
-            ");
+            ", [$new_owner, $id]);
             $q1 = $this->update("
                 UPDATE `ppSD_contacts`
-                SET `owner`='" . $this->mysql_clean($new_owner) . "'
-                WHERE `account`='" . $this->mysql_clean($id) . "'
-            ");
+                SET `owner`=?
+                WHERE `account`=?
+            ", [$new_owner, $id]);
             $q1 = $this->update("
                 UPDATE `ppSD_members`
-                SET `owner`='" . $this->mysql_clean($new_owner) . "'
-                WHERE `account`='" . $this->mysql_clean($id) . "'
-            ");
+                SET `owner`=?
+                WHERE `account`=?
+            ", [$new_owner, $id]);
         }
     }
 
@@ -218,9 +219,9 @@ class account extends db
         $q1 = $this->get_array("
             SELECT `name`
             FROM `ppSD_accounts`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$id]);
         return $q1['name'];
     }
 
@@ -305,32 +306,32 @@ class account extends db
 
 			VALUES (
 
-			    '" . $this->mysql_clean($id) . "',
+			    ?,
 
-			    '" . $this->mysql_clean($frequency) . "',
+			    ?,
 
-			    '" . current_date() . "',
+			    ?,
 
-			    '" . current_date() . "',
+			    ?,
 
-			    '2',
+			    ?,
 
-			    '" . current_date() . "',
+			    ?,
 
-			    '1'
+			    ?
 
 			    $insert_values1
 
             )
 
-		");
+		", [$id, $frequency, current_date(), current_date(), '2', current_date(), '1']);
         $q1 = $this->insert("
 
 			INSERT INTO `ppSD_account_data` (`account_id`$insert_fields2)
 
-			VALUES ('" . $this->mysql_clean($id) . "'$insert_values2)
+			VALUES (?$insert_values2)
 
-		");
+		", [$id]);
         $put = 'accounts';
         $this->put_stats($put);
         
@@ -355,11 +356,11 @@ class account extends db
 
             FROM `ppSD_accounts`
 
-            WHERE `name`='" . $this->mysql_clean($name) . "'
+            WHERE `name`=?
 
             LIMIT 1
 
-		");
+		", [$name]);
         return $q;
 
     }
@@ -374,11 +375,11 @@ class account extends db
 
             FROM `ppSD_accounts`
 
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
 
             LIMIT 1
 
-		");
+		", [$id]);
         return $q['name'];
 
     }
@@ -393,11 +394,11 @@ class account extends db
 
             FROM `ppSD_accounts`
 
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
 
             LIMIT 1
 
-		");
+		", [$id]);
         return $q['0'];
 
     }
@@ -417,9 +418,9 @@ class account extends db
 			FROM ppSD_contacts
 			JOIN ppSD_accounts
 			ON ppSD_contacts.account=ppSD_accounts.id
-			WHERE ppSD_contacts.id='" . $this->mysql_clean($contact_id) . "'
+			WHERE ppSD_contacts.id=?
 			LIMIT 1
-		");
+		", [$contact_id]);
         return $q;
     }
 

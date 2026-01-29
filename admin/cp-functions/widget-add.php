@@ -62,13 +62,38 @@ if (!empty($_POST['options'])) {
 }
 if ($type == 'edit') {
 
-    $update_set2 = substr($query_form['u2'], 1);
-    $q           = $db->update("
+    // Extract field updates from query_form and convert to parameter binding
+    $set_clauses = array();
+    $params = array();
+    
+    // Process the update fields from query_form
+    if (!empty($query_form['u2'])) {
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            // Match field=value pattern, handling escaped quotes
+            if (preg_match('/`([^`]+)`=\'(.*)\'/', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+    
+    // Add options field
+    $set_clauses[] = "`options` = ?";
+    $params[] = $opts;
+    
+    // Add the WHERE parameter
+    $params[] = $_POST['id'];
+    
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
         UPDATE `ppSD_widgets`
-        SET $update_set2
-        WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
+        SET {$set_clause}
+        WHERE `id` = ?
         LIMIT 1
-    ");
+    ", $params);
     // Update options
     foreach ((array)$_POST['options'] as $name => $value) {
         $db->update_option($name, $value);
@@ -84,19 +109,45 @@ if ($type == 'edit') {
     $count = $db->get_array("
         SELECT COUNT(*)
         FROM `ppSD_widgets`
-        WHERE `id`='" . $db->mysql_clean($id) . "'
-    ");
+        WHERE `id` = ?
+    ", array($id));
     if ($count['0'] > 0) {
         echo "0+++Duplicate widget ID. Please rename this widget and try again.";
         exit;
 
     } else {
-        $if2 = substr($query_form['if2'], 1);
-        $iv2 = substr($query_form['iv2'], 1);
-        $q   = $db->insert("
-            INSERT INTO `ppSD_widgets` (`active`,`id`,$if2)
-            VALUES ('1','" . $id . "',$iv2)
-        ");
+        // Extract fields and values from query_form and convert to parameter binding
+        $fields = array('`active`', '`id`');
+        $params = array('1', $id);
+        
+        // Process the insert fields from query_form
+        if (!empty($query_form['if2'])) {
+            $insert_fields = explode(',', substr($query_form['if2'], 1));
+            $insert_values = explode(',', substr($query_form['iv2'], 1));
+            
+            foreach ($insert_fields as $i => $field) {
+                $fields[] = trim($field);
+                // Extract value from quoted string
+                $value = trim($insert_values[$i]);
+                if (preg_match('/\'([^\']*)\'/', $value, $matches)) {
+                    $params[] = $matches[1];
+                } else {
+                    $params[] = $value;
+                }
+            }
+        }
+        
+        // Add options field
+        $fields[] = '`options`';
+        $params[] = $opts;
+        
+        $fields_str = implode(',', $fields);
+        $placeholders = str_repeat('?,', count($params) - 1) . '?';
+        
+        $q = $db->insert("
+            INSERT INTO `ppSD_widgets` ({$fields_str})
+            VALUES ({$placeholders})
+        ", $params);
 
     }
 

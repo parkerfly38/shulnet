@@ -43,8 +43,8 @@ $user = new user;
 
 $q1 = $db->delete("
     DELETE FROM `ppSD_member_types_content`
-    WHERE `member_type`='" . $db->mysql_clean($_POST['id']) . "'
-");
+    WHERE `member_type` = ?
+", array($_POST['id']));
 
 foreach ($_POST['content'] as $aContent) {
 
@@ -56,12 +56,8 @@ foreach ($_POST['content'] as $aContent) {
                 `act_id`,
                 `act_type`
             )
-            VALUES (
-                '" . $db->mysql_clean($_POST['id']) . "',
-                '" . $db->mysql_clean($aContent['id']) . "',
-                'content'
-            )
-        ");
+            VALUES (?, ?, 'content')
+        ", array($_POST['id'], $aContent['id']));
     }
 
     if ($_POST['alter_existing'] == '1') {

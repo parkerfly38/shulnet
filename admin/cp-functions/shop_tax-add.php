@@ -49,18 +49,33 @@ $primary    = array();
 $ignore     = array('id', 'edit');
 $query_form = $admin->query_from_fields($_POST, $type, $ignore, $primary);
 if ($type == 'edit') {
-    $update_set2 = substr($query_form['u2'], 1);
-    $q           = $db->update("
+    // Convert to parameter binding
+    $set_clauses = array();
+    $params = array();
 
-		UPDATE `ppSD_tax_classes`
+    // Process the update fields from query_form
+    if (!empty($query_form['u2'])) {
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            if (preg_match('/`([^`]+)`=\'(.*)\'/', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
 
-		SET $update_set2
+    // Add WHERE parameter
+    $params[] = $_POST['id'];
 
-		WHERE `id`='" . $db->mysql_clean($_POST['id']) . "'
-
-		LIMIT 1
-
-	");
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
+        UPDATE `ppSD_tax_classes`
+        SET {$set_clause}
+        WHERE `id` = ?
+        LIMIT 1
+    ", $params);
     $qin         = $_POST['id'];
 
 } else {

@@ -53,14 +53,20 @@ if ($type == 'edit') {
         UPDATE
             `ppSD_content`
         SET
-            `name`='" . $db->mysql_clean($_POST['display_name']) . "',
-            `secure`='" . $db->mysql_clean($_POST['secure']) . "',
-            `permalink`='" . $db->mysql_clean($perma) . "',
-            `permalink_clean`='" . $db->mysql_clean($perma) . "'
+            `name` = ?,
+            `secure` = ?,
+            `permalink` = ?,
+            `permalink_clean` = ?
         WHERE
-            `id`='" . $db->mysql_clean($_POST['id']) . "'
+            `id` = ?
         LIMIT 1
-	");
+    ", array(
+        $_POST['display_name'],
+        $_POST['secure'],
+        $perma,
+        $perma,
+        $_POST['id']
+    ));
     $id      = $_POST['name'];
 
 } else {
@@ -94,21 +100,20 @@ if ($type == 'edit') {
     */
     $perma = $content->format_permalink($_POST['name']);
     $go    = $db->insert("
-		INSERT INTO `ppSD_content` (
+        INSERT INTO `ppSD_content` (
             `name`,
             `permalink`,
             `permalink_clean`,
             `type`,
             `secure`
-		)
-		VALUES (
-            '" . $db->mysql_clean($_POST['display_name']) . "',
-            '" . $db->mysql_clean($perma) . "',
-            '" . $db->mysql_clean($perma) . "',
-            'section',
-            '" . $db->mysql_clean($_POST['secure']) . "'
-		)
-	");
+        )
+        VALUES (?, ?, ?, 'section', ?)
+    ", array(
+        $_POST['display_name'],
+        $perma,
+        $perma,
+        $_POST['secure']
+    ));
     $id    = $_POST['name'];
 
 }

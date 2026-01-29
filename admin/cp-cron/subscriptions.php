@@ -81,10 +81,10 @@ if ($expiringCreditCards == '1') {
             // Update the database.
             $up = $db->update("
                 UPDATE ppSD_cart_billing
-                SET `notice_sent`='1'
-                WHERE `id`='" . $db->mysql_clean($row['id']) . "'
+                SET `notice_sent` = '1'
+                WHERE `id` = ?
                 LIMIT 1
-            ");
+            ", array($row['id']));
         }
 
     }

@@ -78,55 +78,31 @@ if ($issue_in_gateway == '1') {
 }
 // Issue the refund in the database.
 $q1 = $db->insert("
-
     INSERT INTO `ppSD_cart_refunds` (
-
         `date`,
-
         `total`,
-
         `reason`,
-
         `order_id`,
-
         `type`,
-
         `chargeback_fee`
-
     )
-
-    VALUES (
-
-      '" . current_date() . "',
-
-      '" . $db->mysql_cleans($_POST['total']) . "',
-
-      '" . $db->mysql_cleans($_POST['remarks']) . "',
-
-      '" . $db->mysql_cleans($_POST['id']) . "',
-
-      '" . $db->mysql_cleans($_POST['type']) . "',
-
-      '" . $db->mysql_cleans($_POST['chargeback_fee']) . "'
-
-    )
-
-");
+    VALUES (?, ?, ?, ?, ?, ?)
+", array(
+    current_date(),
+    $_POST['total'],
+    $_POST['remarks'],
+    $_POST['id'],
+    $_POST['type'],
+    $_POST['chargeback_fee']
+));
 $q2 = $db->update("
-
     UPDATE `ppSD_cart_session_totals`
-
     SET
-
-        `refunds`=(`refunds`+" . $db->mysql_cleans($_POST['total']) . "),
-
-        `total`=(`total`-" . $db->mysql_cleans($_POST['total']) . ")
-
-    WHERE `id`='" . $db->mysql_cleans($_POST['id']) . "'
-
+        `refunds` = (`refunds` + ?),
+        `total` = (`total` - ?)
+    WHERE `id` = ?
     LIMIT 1
-
-");
+", array($_POST['total'], $_POST['total'], $_POST['id']));
 // Refunds
 if ($_POST['type'] == '1') {
     $db->put_stats('refunds');

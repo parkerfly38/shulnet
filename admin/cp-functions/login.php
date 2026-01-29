@@ -64,11 +64,11 @@ if (!empty($staff['username'])) {
         }
 
         $query4 = $db->update("
-   			UPDATE `ppSD_staff`
-   			SET `login_attempts`='$this_attempt'
-   			WHERE `username`='" . $db->mysql_clean($staff['username']) . "'
-   			LIMIT 1
-   		");
+            UPDATE `ppSD_staff`
+            SET `login_attempts`=?
+            WHERE `username`=?
+            LIMIT 1
+        ", [$this_attempt, $staff['username']]);
 
         $task   = $db->end_task($task_id, '0', $error);
 

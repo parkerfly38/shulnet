@@ -22,18 +22,8 @@ class uploads extends db
                 `date`,
                 `label`,
                 `cp_only`
-            ) VALUES (
-                '" . $this->mysql_clean($saveName) . "',
-                '" . $this->mysql_clean($userId) . "',
-                '" . $this->mysql_clean($userType) . "',
-                '" . $this->mysql_clean($path) . "',
-                '" . $this->mysql_clean($realName) . "',
-                '" . $this->mysql_clean($desc) . "',
-                '" . current_date() . "',
-                '" . $this->mysql_clean($label) . "',
-                '" . $this->mysql_clean($cp_only) . "'
-            )
-        ");
+            ) VALUES (?,?,?,?,?,?,?,?,?)
+        ", [$saveName, $userId, $userType, $path, $realName, $desc, current_date(), $label, $cp_only]);
     }
 
     /**
@@ -47,12 +37,13 @@ class uploads extends db
         $profile_picture_id = '';
         $all_uploads        = array();
         $return             = array();
-        $STH                = $this->run_query("
+        $updb = new db;
+        $STH                = $updb->run_query("
 			SELECT *
 			FROM `ppSD_uploads`
-			WHERE `item_id`='" . $this->mysql_clean($id) . "'
-			ORDER BY `" . $this->mysql_clean($order) . "` " . $this->mysql_clean($dir) . "
-		");
+			WHERE `item_id`=?
+			ORDER BY $order $dir
+		", [$id]);
         while ($row = $STH->fetch()) {
             if ($row['label'] == 'profile-picture') {
                 $profile_picture    = $row['filename'];
@@ -72,9 +63,9 @@ class uploads extends db
         $q1 = $this->get_array("
 			SELECT `label`
 			FROM `ppSD_uploads`
-			WHERE `id`='" . $this->mysql_clean($id) . "'
+			WHERE `id`=?
 			LIMIT 1
-		");
+		", [$id]);
         return $q1['label'];
     }
 
@@ -86,9 +77,9 @@ class uploads extends db
     {
         $q1                   = $this->get_array("
 			SELECT * FROM `ppSD_uploads`
-			WHERE `id`='" . $this->mysql_clean($id) . "'
+			WHERE `id`=?
 			LIMIT 1
-		");
+		", [$id]);
         $path                 = PP_PATH . '/custom/uploads/' . $q1['filename'];
         $url                  = PP_URL . '/custom/uploads/' . $q1['filename'];
         $safe_url             = PP_URL . '/pp-functions/download.php?id=' . $q1['id'];
@@ -119,11 +110,11 @@ class uploads extends db
 
             FROM `ppSD_uploads`
 
-            WHERE `filename`='" . $this->mysql_clean($filename) . "'
+            WHERE `filename`=?
 
             LIMIT 1
 
-        ");
+        ", [$filename]);
 
         return $q1['id'];
 

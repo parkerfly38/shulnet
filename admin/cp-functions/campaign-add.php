@@ -21,19 +21,34 @@ $query_form = $admin->query_from_fields($_POST, $type, $ignore, $primary);
 // ----------------------------
 if ($type == 'edit') {
     // Update the contact
-    $update_set1          = substr($query_form['u1'], 1);
-    $update_set2          = substr($query_form['u2'], 1);
-    $q                    = $db->update("
-
-		UPDATE `$table`
-
-		SET $update_set2
-
-		WHERE `id`='" . $db->mysql_cleans($_POST['id']) . "'
-
-		LIMIT 1
-
-	");
+    // Extract field updates from query_form and convert to parameter binding
+    $set_clauses = array();
+    $params = array();
+    
+    // Process the update fields from query_form
+    if (!empty($query_form['u2'])) {
+        $update_pairs = explode(',', substr($query_form['u2'], 1));
+        foreach ($update_pairs as $pair) {
+            // Match field=value pattern, handling escaped quotes
+            if (preg_match('/`([^`]+)`=\'(.*)\'/i', trim($pair), $matches)) {
+                $field_name = $matches[1];
+                $field_value = $matches[2];
+                $set_clauses[] = "`{$field_name}` = ?";
+                $params[] = $field_value;
+            }
+        }
+    }
+    
+    // Add the WHERE parameter
+    $params[] = $_POST['id'];
+    
+    $set_clause = implode(', ', $set_clauses);
+    $q = $db->update("
+        UPDATE `{$table}`
+        SET {$set_clause}
+        WHERE `id` = ?
+        LIMIT 1
+    ", $params);
     $last_id              = $_POST['id'];
     $task                 = $db->end_task($task_id, '1');
     $return               = array(
@@ -49,15 +64,34 @@ if ($type == 'edit') {
 
 } else {
     // Create the contact
-    $insert_fields2 = substr($query_form['if2'], 1);
-    $insert_values2 = substr($query_form['iv2'], 1);
-    $last_id        = $db->insert("
-
-		INSERT INTO `$table` (`id`,`date`,`owner`,$insert_fields2)
-
-		VALUES ('" . $db->mysql_cleans($_POST['id']) . "','" . current_date() . "','" . $employee['id'] . "',$insert_values2)
-
-	");
+    // Extract fields and values from query_form and convert to parameter binding
+    $fields = array('`id`', '`date`', '`owner`');
+    $params = array($_POST['id'], current_date(), $employee['id']);
+    
+    // Process the insert fields from query_form
+    if (!empty($query_form['if2'])) {
+        $insert_fields = explode(',', substr($query_form['if2'], 1));
+        $insert_values = explode(',', substr($query_form['iv2'], 1));
+        
+        foreach ($insert_fields as $i => $field) {
+            $fields[] = trim($field);
+            // Extract value from quoted string
+            $value = trim($insert_values[$i]);
+            if (preg_match('/\'([^\']*)\'/', $value, $matches)) {
+                $params[] = $matches[1];
+            } else {
+                $params[] = $value;
+            }
+        }
+    }
+    
+    $fields_str = implode(',', $fields);
+    $placeholders = str_repeat('?,', count($params) - 1) . '?';
+    
+    $last_id = $db->insert("
+        INSERT INTO `{$table}` ({$fields_str})
+        VALUES ({$placeholders})
+    ", $params);
     // Generate a default form
     $form_builder = new form_builder();
     $form_data    = array(

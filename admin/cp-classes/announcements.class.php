@@ -30,7 +30,7 @@ class announcements extends db
 			FROM `ppSD_login_announcements`
 			WHERE `active`='1'
 			ORDER BY `starts` DESC
-		");
+		",[]);
         $formatted = '';
         // AND `ends`>'" . current_date() . "'
         while ($row = $STH->fetch()) {
@@ -59,11 +59,11 @@ class announcements extends db
 
    			SELECT * FROM `ppSD_login_announcements`
 
-   			WHERE `id`='" . $this->mysql_clean($id) . "'
+   			WHERE `id`=?
 
    			LIMIT 1
 
-   		");
+   		",[$id]);
 
         return $go;
 
@@ -119,9 +119,9 @@ class announcements extends db
 
 			SELECT COUNT(*) FROM `ppSD_login_announcement_logs`
 
-			WHERE `member_id`='" . $this->mysql_clean($this->viewing_member_id) . "' AND `announcement_id`='" . $this->mysql_clean($id) . "'
+			WHERE `member_id`=? AND `announcement_id`=?
 
-		");
+		", [$this->viewing_member_id, $id]);
 
         return $q1['0'];
 
@@ -137,9 +137,9 @@ class announcements extends db
 
 			INSERT INTO `ppSD_login_announcement_logs` (`announcement_id`,`date`,`member_id`)
 
-			VALUES ('" . $this->mysql_clean($id) . "','" . current_date() . "','" . $this->mysql_clean($this->viewing_member_id) . "')
+			VALUES (?, ?, ?)
 
-		");
+		", [$id, current_date(), $this->viewing_member_id]);
 
     }
 

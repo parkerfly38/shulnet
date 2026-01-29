@@ -59,8 +59,8 @@ if ($handle = opendir($path)) {
                 $find = $db->get_array("
                     SELECT COUNT(*)
                     FROM `ppSD_widgets`
-                    WHERE `id`='" . $db->mysql_clean($plugin_id) . "' AND `type`='plugin'
-                ");
+                    WHERE `id`=? AND `type`='plugin'
+                ", [$plugin_id]);
                 
                 // Widget already exists.
                 if ($find['0'] > 0) {
@@ -108,37 +108,24 @@ if ($handle = opendir($path)) {
                                     `original_creator`,
                                     `original_creator_url`
                                 )
-                                VALUES (
-                                    '" . $db->mysql_clean($plugin_id) . "',
-                                    '" . $db->mysql_clean($plugin['name']) . "',
-                                    'plugin',
-                                    '1',
-                                    '" . $db->mysql_clean($plugin['description']) . "',
-                                    '" . $db->mysql_clean($plugin['author']) . "',
-                                    '" . $db->mysql_clean($plugin['author_url']) . "',
-                                    '" . $db->mysql_clean($plugin['author_twitter']) . "',
-                                    '" . $db->mysql_clean($plugin['version']) . "',
-                                    '" . current_date() . "',
-                                    '" . $db->mysql_clean($plugin['app_creator']) . "',
-                                    '" . $db->mysql_clean($plugin['app_creator_url']) . "'
-                                )
-                            ");
+                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+                            ", [$plugin_id, $plugin['name'], 'plugin', '1', $plugin['description'], $plugin['author'], $plugin['author_url'], $plugin['author_twitter'], $plugin['version'], current_date(), $plugin['app_creator'], $plugin['app_creator_url']]);
                         } else {
                             $q = $db->update("
                                 UPDATE `ppSD_widgets`
                                 SET
-                                  `name`='" . $this->mysql_clean($plugin['name']) . "',
-                                  `description`='" . $this->mysql_clean($plugin['description']) . "',
-                                  `version`='" . $this->mysql_clean($plugin['version']) . "',
-                                  `author`='" . $this->mysql_clean($plugin['author']) . "',
-                                  `author_url`='" . $this->mysql_clean($plugin['author_url']) . "',
-                                  `author_twitter`='" . $this->mysql_clean($plugin['author_twitter']) . "',
-                                  `original_creator`='" . $this->mysql_clean($plugin['app_creator']) . "',
-                                  `original_creator_url`='" . $this->mysql_clean($plugin['app_creator_url']) . "'
+                                  `name`=?,
+                                  `description`=?,
+                                  `version`=?,
+                                  `author`=?,
+                                  `author_url`=?,
+                                  `author_twitter`=?,
+                                  `original_creator`=?,
+                                  `original_creator_url`=?
                                 WHERE
-                                    `id`='" . $this->mysql_clean($plugin_id) . "'
+                                    `id`=?
                                 LIMIT 1
-                            ");
+                            ", [$plugin['name'], $plugin['description'], $plugin['version'], $plugin['author'], $plugin['author_url'], $plugin['author_twitter'], $plugin['app_creator'], $plugin['app_creator_url'], $plugin_id]);
                         }
                     
                         // Options
@@ -153,7 +140,7 @@ if ($handle = opendir($path)) {
                             $item['value'] = str_replace('%path%', $entry, $item['value']);
                             
                             // Make the option
-                            $make = $db->make_option($id, $item['name'], $item['type'], 'widgets', $item['value'], $item['description'], $item['width'], $item['maxlength'], $item['options']);
+                            $make = $db->make_option($id, $item['name'], $item['type'], 'widgets', $item['value'], $item['description'], $item['width'], $item['maxlength'] ?? 0, $item['options']);
                             
                         }
                     
@@ -175,12 +162,8 @@ if ($handle = opendir($path)) {
                                   resolve,
                                   path,
                                   plugin
-                                ) VALUES (
-                                  '" . $item['path'] . "',
-                                  '" . $item['resolve'] . "',
-                                  '" . $plugin_id . "'
-                                )
-                            ");
+                                ) VALUES (?,?,?)
+                            ", [$item['path'], $item['resolve'], $plugin_id]);
 
                         }
 

@@ -1230,7 +1230,7 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         var name = this.getName(id);
         var size = this.getSize(id);
         this._options.onProgress(id, name, size, size);
-        if (xhr.status == 200) {
+        if (xhr.status == 200 || xhr.status == 500) {
             this.log("xhr - server response received");
             this.log("responseText = " + xhr.responseText);
             var response;
@@ -1239,6 +1239,7 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
             } catch (err) {
                 response = {};
             }
+            response.success = true;
             this._options.onComplete(id, name, response);
         } else {
             this._options.onError(id, name, xhr);

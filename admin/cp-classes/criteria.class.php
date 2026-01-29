@@ -478,10 +478,10 @@ class criteria extends db
                         SELECT member_id
                         FROM ppSD_content_access
                         WHERE
-                          content_id='" . $this->mysql_clean($item['id']) . "'
+                          content_id=?
                           AND $expires
                         GROUP BY member_id
-                    ");
+                    ",[$item['id']]);
                     while ($row = $cmem->fetch()) {
                         $spendids[] = $row['member_id'];
                     }
@@ -529,16 +529,16 @@ class criteria extends db
                         JOIN ppSD_cart_session_totals T ON T.id = C.id
                         WHERE
                             C.status='1' AND
-                            C.member_type='" . $this->data['type'] . "' AND
+                            C.member_type=? AND
                             (
                                 SELECT SUM(ppSD_cart_session_totals.total) AS total
                                 FROM ppSD_cart_session_totals
                                 JOIN ppSD_cart_sessions
                                 ON ppSD_cart_sessions.id = ppSD_cart_session_totals.id
                                 WHERE ppSD_cart_sessions.member_id = C.member_id AND ppSD_cart_sessions.status = '1'
-                            ) > " . $this->mysql_clean($item['total']) . "
+                            ) > ?
                         GROUP BY C.member_id
-                    ");
+                    ",[$this->data['type'], $item['total']]);
 
                     while ($row = $spend_ids->fetch()) {
                         $spendids[] = $row['member_id'];
@@ -589,11 +589,11 @@ class criteria extends db
                         JOIN ppSD_cart_sessions
                         ON ppSD_cart_items_complete.cart_session=ppSD_cart_sessions.id
                         WHERE
-                            ppSD_cart_items_complete.product_id='" . $this->mysql_clean($item['value']) . "' AND
+                        ppSD_cart_items_complete.product_id=? AND
                             ppSD_cart_items_complete.status='1' AND
-                            ppSD_cart_sessions.member_type='" . $this->data['type'] . "'
+                            ppSD_cart_sessions.member_type=?
                             $expires
-                    ");
+                    ",[$item['value'], $this->data['type']]);
 
                     while ($row = $bought_ids->fetch()) {
                         $spendids[] = $row['member_id'];
@@ -917,21 +917,21 @@ class criteria extends db
                 `display_per_page`
             )
             VALUES (
-                '" . $this->mysql_clean(serialize($filters)) . "',
-                '" . $this->mysql_clean($save) . "',
-                '" . $this->mysql_clean($name) . "',
-                '" . $this->mysql_clean($type) . "',
-                '" . $this->mysql_clean($act) . "',
-                '" . current_date() . "',
-                '" . $this->mysql_clean($inclusive) . "',
-                '" . $this->mysql_clean($public) . "',
-                '" . $this->mysql_clean($employee['id']) . "',
-                '" . $this->mysql_clean($act_id) . "',
-                '" . $this->mysql_clean($sort) . "',
-                '" . $this->mysql_clean($sortOrder) . "',
-                '" . $this->mysql_clean($display) . "'
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
             )
-        ");
+        ",[$filters, 1, $name, $type, $act, current_date(), $inclusive, 1, $employee['id'], $act_id, $sort, $sortOrder, $display]);
         $this->load($id);
         return $id;
     }
@@ -941,9 +941,9 @@ class criteria extends db
     {
         $q1 = $this->delete("
             DELETE FROM `ppSD_criteria_cache`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ",[$id]);
     }
 
     /*

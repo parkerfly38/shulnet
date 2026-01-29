@@ -27,7 +27,7 @@ class send extends pluginLoader {
     public function __construct(plugin $plugin)
     {
         $this->plugin = $plugin;
-        $this->mg = Mailgun::create("<key>");
+        //$this->mg = Mailgun::create("<key>");
     }
 
 	/**
@@ -45,6 +45,8 @@ class send extends pluginLoader {
         $this->apiDomain = $keys['domain'];
 
 		$this->apiAuthToken = (! empty($keys['token'])) ? $keys['token'] : '';
+
+        $this->mg = Mailgun::create($this->apiSid);
 
         return $this;
 	}
@@ -253,7 +255,7 @@ class send extends pluginLoader {
             }
             $method = 3;
         }
-        $reply = $this->mg->messages()->send($this->domain, $sending);
+        $reply = $this->mg->messages()->send($this->apiDomain, $sending);
         /*$reply = $this->curl_call(
     		$this->apiUrl . '/' . $this->apiDomain . '/messages',
             $sending,

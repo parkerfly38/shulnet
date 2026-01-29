@@ -52,39 +52,56 @@ class db
 
 
     /**
-     * Inserts into MySQL
+     * Insert into MySQL with parameter binding
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional, defaults to current binding array)
+     * @return string Last insert ID or empty string
      */
-    function insert($query)
+    function insert($query, $params = null)
     {
         global $DBH;
-        //$query = str_replace("'?'", "?", $query);
-        /*
-        $query= $this->prePrepQuery($query);
-        $STH = $DBH->prepare($query);
-        $result = $STH->execute($this->binding);
-        if (! $result) {
-            $this->error_process($STH, $query);
-        }
-        $last_id = $DBH->lastInsertId();
-        */
         $last_id = '';
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
+        } else {
+            $bindings = $this->binding;
+        }
 
         try {
-            $query= $this->prePrepQuery($query);
+            $query = $this->prePrepQuery($query);
             $STH = $DBH->prepare($query);
-            $result = $STH->execute($this->binding);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count matches placeholder count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
             $last_id = $DBH->lastInsertId();
+            
         } catch (Exception $e) {
-            //$this->addError($e->getMessage());
+            $this->addError($e->getMessage() . " Query: " . $query);
         }
 
-        $this->binding = array();
-
-        if (! empty($last_id)) {
-            return $last_id;
-        } else {
-            return "";
+        // Only clear binding array if we used it (backward compatibility)
+        if ($params === null) {
+            $this->binding = array();
         }
+
+        return $last_id ?: "";
     }
 
     function addError($msg)
@@ -109,51 +126,103 @@ class db
 
 
     /**
-     * Delete a row from MySQL.
+     * Delete a row from MySQL with parameter binding
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional, defaults to current binding array)
+     * @return string Empty string
      */
-    function delete($query)
+    function delete($query, $params = null)
     {
         global $DBH;
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
+        } else {
+            $bindings = $this->binding;
+        }
 
         try {
             $query = $this->prePrepQuery($query);
             $STH = $DBH->prepare($query);
-            $STH->execute($this->binding);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare delete statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Delete parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Delete execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
         } catch (Exception $e) {
-            $this->addError($e->getMessage());
+            $this->addError($e->getMessage() . " Query: " . $query);
         }
 
-        $this->binding = array();
+        // Only clear binding array if we used it (backward compatibility)
+        if ($params === null) {
+            $this->binding = array();
+        }
 
         return "";
     }
 
 
     /**
-     * Update a MySQL row.
+     * Update a MySQL row with parameter binding
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional, defaults to current binding array)
+     * @return string Empty string
      */
-    function update($query)
+    function update($query, $params = null)
     {
         global $DBH;
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
+        } else {
+            $bindings = $this->binding;
+        }
 
         try {
             $query = $this->prePrepQuery($query);
             $STH = $DBH->prepare($query);
-            $result = $STH->execute($this->binding);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare update statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Update parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Update execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
         } catch (Exception $e) {
-            $this->addError($e->getMessage());
+            $this->addError($e->getMessage() . " Query: " . $query);
         }
 
-        /*
-        $query = $this->prePrepQuery($query);
-        $STH = $DBH->prepare($query);
-        $result = $STH->execute($this->binding);
-        if (! $result) {
-            $this->error_process($STH, $query);
+        // Only clear binding array if we used it (backward compatibility)
+        if ($params === null) {
+            $this->binding = array();
         }
-        */
-
-        $this->binding = array();
+        
         return "";
     }
 
@@ -194,19 +263,19 @@ class db
                 SELECT COUNT(*)
                 FROM `ppSD_data_eav`
                 WHERE
-                    `item_id`='" . $this->mysql_clean($id) . "' AND
-                    `key`='" . $this->mysql_clean($key) . "'
-            ");
+                    `item_id`=? AND
+                    `key`=?
+            ", [$id, $key]);
             if ($find['0'] > 0) {
                 $sql = $this->update("
                     UPDATE `ppSD_data_eav`
                     SET
-                        `value`='" . $this->mysql_clean($value) . "'
+                        `value`=?
                     WHERE
-                        `item_id`='" . $this->mysql_clean($id) . "' AND
-                        `key`='" . $this->mysql_clean($key) . "'
+                        `item_id`=? AND
+                        `key`=?
                     LIMIT 1
-                ");
+                ", [$value, $id, $key]);
             } else {
                 $sql = $this->run_query("
                     INSERT INTO `ppSD_data_eav` (
@@ -214,12 +283,8 @@ class db
                         `key`,
                         `value`
                     )
-                    VALUES (
-                        '" . $this->mysql_clean($id) . "',
-                        '" . $this->mysql_clean($key) . "',
-                        '" . $this->mysql_clean($value) . "'
-                    )
-			    ");
+                    VALUES (?,?,?)
+			    ", [$id, $key, $value]);
             }
         }
     }
@@ -273,37 +338,80 @@ class db
 
 
     /**
-     * Gets an array from MySQL.
+     * Gets an array from MySQL with parameter binding
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional, defaults to current binding array)
+     * @param string $skip_bind_clear Whether to skip clearing bindings (for backward compatibility)
+     * @param string $assoc Fetch mode: '0' = both, '1' = assoc, '2' = column
+     * @return array|false Query result or false on error
      */
-    function get_array($query, $skip_bind_clear = '0', $assoc = '0')
+    function get_array($query, $params = null, $skip_bind_clear = '0', $assoc = '0')
     {
         global $DBH;
-        //echo "<li>$query";
-        //$query = str_replace("'?'", "?", $query);
-        $query = $this->prePrepQuery($query);
-        $STH = $DBH->prepare($query);
-        $result = $STH->execute($this->binding);
-        if (! $result) {
-            $this->error_process($STH, $query);
+        
+        // Handle parameter variations for backward compatibility
+        if (is_string($params) && in_array($params, ['0', '1'])) {
+            // Old signature: get_array($query, $skip_bind_clear, $assoc)
+            $skip_bind_clear = $params;
+            $assoc = $skip_bind_clear;
+            $params = null;
         }
-        if ($assoc == '2') {
-            $table_cols = $STH->fetchAll(PDO::FETCH_COLUMN);
-            return $table_cols;
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
         } else {
-            if ($assoc == '1') {
-                $STH->setFetchMode(PDO::FETCH_ASSOC);
+            $bindings = $this->binding;
+        }
+        
+        $array = false;
+        
+        try {
+            $query = $this->prePrepQuery($query);
+            $STH = $DBH->prepare($query);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare select statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Select parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Select execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
+            if ($assoc == '2') {
+                $array = $STH->fetchAll(PDO::FETCH_COLUMN);
             } else {
-                if (defined('API_ACCESS')) {
+                if ($assoc == '1') {
                     $STH->setFetchMode(PDO::FETCH_ASSOC);
                 } else {
-                    $STH->setFetchMode(PDO::FETCH_BOTH);
+                    if (defined('API_ACCESS')) {
+                        $STH->setFetchMode(PDO::FETCH_ASSOC);
+                    } else {
+                        $STH->setFetchMode(PDO::FETCH_BOTH);
+                    }
                 }
+                $array = $STH->fetch();
             }
-            $array = $STH->fetch();
-            if ($skip_bind_clear != '1') {
-                $this->binding = array();
-            }
+            
+        } catch (Exception $e) {
+            $this->addError($e->getMessage() . " Query: " . $query);
+            $array = false;
         }
+        
+        // Only clear binding array if we used it and skip_bind_clear allows it
+        if ($params === null && $skip_bind_clear != '1') {
+            $this->binding = array();
+        }
+        
         return $array;
     }
 
@@ -321,28 +429,31 @@ class db
 
         $q1 = $this->get_array("
             SELECT *
-            FROM `" . $this->mysql_cleans($table) . "`
-            WHERE `" . $this->mysql_cleans($key) . "`='" . $this->mysql_clean($id) . "'
+            FROM `$table`
+            WHERE `$key`=?
             LIMIT 1
-        ", '0', '1');
+        ", [$id], '0', '1');
         $ins = '';
-        $vals = '';
+        $vals = [];
+        $placeholders = '';
         if (!empty($q1[$key])) {
             foreach ($q1 as $name => $value) {
                 if (array_key_exists($name, $special)) {
                     if (!empty($special[$name])) {
                         $ins .= ",`" . $this->mysql_cleans($name) . "`";
-                        $vals .= ",'" . $this->mysql_cleans($special[$name]) . "'";
+                        $vals[] = $special[$name];
+                        $placeholders .= ",?";
                     }
                 } else {
                     $ins .= ",`" . $this->mysql_cleans($name) . "`";
-                    $vals .= ",'" . $this->mysql_cleans($value) . "'";
+                    $vals[] = $value;
+                    $placeholders .= ",?";
                 }
             }
             $put = $this->insert("
-                INSERT INTO `" . $this->mysql_cleans($table) . "` (" . ltrim($ins, ',') . ")
-                VALUES (" . ltrim($vals, ',') . ")
-            ");
+                INSERT INTO `$table (" . ltrim($ins, ',') . ")
+                VALUES (" . ltrim($placeholders, ',') . ")
+            ", $vals);
         }
     }
 
@@ -366,8 +477,8 @@ class db
         $q2 = $this->run_query("
             SELECT *
             FROM `" . $this->mysql_cleans($table) . "`
-            WHERE `" . $this->mysql_cleans($key) . "`='" . $this->mysql_clean($id) . "'
-        ");
+            WHERE `" . $this->mysql_cleans($key) . "`=?
+        ", [$id]);
         while ($row = $q2->fetch()) {
             if ($gen_id == '1') {
                 $special[$secondary_key] = generate_id($gen_id_format, $gen_id_length);
@@ -381,26 +492,130 @@ class db
      * Runs a MySQL query.
      * $subdue -> deprecated with move to PDO.
      */
-    function run_query($query, $skip_bind_clear = '0')
+    /**
+     * Execute a query and return PDO statement with parameter binding
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional, defaults to current binding array)
+     * @param string $skip_bind_clear Whether to skip clearing bindings (for backward compatibility)
+     * @return PDOStatement|false Statement handle or false on error
+     */
+    function run_query($query, $params = null, $skip_bind_clear = '0')
     {
         global $DBH;
-        //$query = str_replace("'?'", "?", $query);
-        $query = $this->prePrepQuery($query);
-
-        $STH = $DBH->prepare($query);
-        $result = $STH->execute($this->binding);
-
-        /*
-        if (! $result) {
-            $this->error_process($STH, $query);
+        
+        // Handle parameter variations for backward compatibility
+        if (is_string($params) && in_array($params, ['0', '1'])) {
+            // Old signature: run_query($query, $skip_bind_clear)
+            $skip_bind_clear = $params;
+            $params = null;
         }
-        */
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
+        } else {
+            $bindings = $this->binding;
+        }
+        
+        $STH = false;
+        
+        try {
+            $query = $this->prePrepQuery($query);
+            $STH = $DBH->prepare($query);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
+        } catch (Exception $e) {
+            $this->addError($e->getMessage() . " Query: " . $query);
+        }
 
-        if ($skip_bind_clear != '1') {
+        // Only clear binding array if we used it and skip_bind_clear allows it
+        if ($params === null && $skip_bind_clear != '1') {
             $this->binding = array();
         }
 
         return $STH;
+    }
+
+    /**
+     * Gets an associative array from MySQL (convenience method)
+     * @param string $query SQL query with ? placeholders
+     * @param array $params Parameters to bind (optional)
+     * @return array|false Query result or false on error
+     */
+    function get_array_assoc($query, $params = null)
+    {
+        return $this->get_array($query, $params, '0', '1');
+    }
+
+    /**
+     * Gets all rows as associative arrays from MySQL
+     * @param string $query SQL query with ? placeholders  
+     * @param array $params Parameters to bind (optional)
+     * @return array Array of rows or empty array on error
+     */
+    function get_all_assoc($query, $params = null)
+    {
+        global $DBH;
+        
+        // Use provided params or fall back to binding array for backward compatibility
+        if ($params !== null) {
+            $bindings = is_array($params) ? $params : array($params);
+        } else {
+            $bindings = $this->binding;
+        }
+        
+        $results = array();
+        
+        try {
+            $query = $this->prePrepQuery($query);
+            $STH = $DBH->prepare($query);
+            
+            if ($STH === false) {
+                throw new Exception("Failed to prepare select statement: " . implode(' ', $DBH->errorInfo()));
+            }
+            
+            // Validate binding count
+            $placeholder_count = substr_count($query, '?');
+            if (count($bindings) !== $placeholder_count) {
+                throw new Exception("Select parameter count mismatch. Expected {$placeholder_count}, got " . count($bindings));
+            }
+            
+            $result = $STH->execute($bindings);
+            
+            if ($result === false) {
+                $this->error_process($STH, $query);
+                throw new Exception("Select execute failed: " . implode(' ', $STH->errorInfo()));
+            }
+            
+            $results = $STH->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (Exception $e) {
+            $this->addError($e->getMessage() . " Query: " . $query);
+            $results = array();
+        }
+        
+        // Only clear binding array if we used it
+        if ($params === null) {
+            $this->binding = array();
+        }
+        
+        return $results;
     }
 
 
@@ -548,31 +763,69 @@ class db
 
     /**
      * Clean a MySQL Input
+     * Improved version with better empty value handling
      */
     function mysql_clean($string, $non_english = "0")
     {
         // Strict mode considerations.
         $string = $this->prePrepString($string);
 
-        if (!empty($string) && !is_array($string)) {
-            $string = trim($string);
-            if (empty($string)) {
-                if ($string == '0') {
-                    return '0';
-                } else {
-                    return '';
-                }
-            } else {
-                if (!empty($string)) {
-                    $this->binding[] = $string;
-                    return '?';
-                } else {
-                    return '0';
-                }
-            }
-        } else {
+        if (is_array($string)) {
+            $this->addError("mysql_clean received array instead of string: " . print_r($string, true));
             return '';
         }
+        
+        if ($string === null) {
+            $this->binding[] = null;
+            return '?';
+        }
+        
+        if ($string === '' || $string === false) {
+            $this->binding[] = '';
+            return '?';
+        }
+        
+        if ($string === 0 || $string === '0') {
+            $this->binding[] = '0';
+            return '?';
+        }
+        
+        // Trim and handle regular string values
+        $string = trim((string)$string);
+        $this->binding[] = $string;
+        return '?';
+    }
+
+    /**
+     * Clean a value for SQL but don't add to binding array
+     * Use this when building parameter arrays manually
+     * @param mixed $value Value to clean
+     * @return mixed Cleaned value ready for binding
+     */
+    function clean_value($value)
+    {
+        // Strict mode considerations
+        $value = $this->prePrepString($value);
+
+        if (is_array($value)) {
+            $this->addError("clean_value received array instead of scalar: " . print_r($value, true));
+            return '';
+        }
+        
+        if ($value === null) {
+            return null;
+        }
+        
+        if ($value === '' || $value === false) {
+            return '';
+        }
+        
+        if ($value === 0 || $value === '0') {
+            return '0';
+        }
+        
+        // Trim and return regular string values
+        return trim((string)$value);
     }
 
 
@@ -614,17 +867,17 @@ class db
                     `notes`,
                     `plugin`
                 )
-                VALUES (
-                    '" . current_date('add_history') . "',
-                    '" . $this->mysql_cleans($method) . "',
-                    '" . $this->mysql_cleans($owner) . "',
-                    '" . $this->mysql_cleans($user_id) . "',
-                    '" . $this->mysql_cleans($act_id) . "',
-                    '" . $this->mysql_cleans($type) . "',
-                    '" . $this->mysql_cleans($notes) . "',
-                    '" . $this->mysql_cleans($plugin) . "'
-                )
-		    ");
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		    ", [
+                current_date('add_history'),
+                $method,
+                $owner,
+                $user_id,
+                $act_id,
+                $type,
+                $notes,
+                $plugin
+            ]);
         }
     }
 
@@ -709,16 +962,16 @@ class db
         $q = $this->get_array("
 			SELECT `id`,`attempt`
 			FROM `ppSD_login_temp`
-			WHERE `ip`='" . $this->mysql_clean(get_ip()) . "'
+			WHERE `ip`=?
 			LIMIT 1
-		");
+		",[get_ip()]);
         if (!empty($q['id'])) {
             $attempt = $q['attempt'];
         } else {
             $q1 = $this->insert("
 				INSERT INTO `ppSD_login_temp` (`ip`,`attempt`)
-				VALUES ('" . $this->mysql_clean(get_ip()) . "','1')
-			");
+				VALUES (?, '1')
+			",[get_ip()]);
             $attempt = 1;
         }
         return $attempt;
@@ -730,10 +983,10 @@ class db
 
         $q1 = $this->update("
    			UPDATE `ppSD_login_temp`
-   			SET `attempt`='" . $this->mysql_clean($attempt) . "'
-   			WHERE `ip`='" . $this->mysql_clean(get_ip()) . "'
+   			SET `attempt`= ?
+   			WHERE `ip`= ?
    			LIMIT 1
-   		");
+   		",[ $attempt, get_ip()]);
     }
 
 
@@ -742,9 +995,9 @@ class db
 
         $q1 = $this->delete("
    			DELETE FROM `ppSD_login_temp`
-   			WHERE `ip`='" . $this->mysql_clean(get_ip()) . "'
+   			WHERE `ip`= ?
 			LIMIT 1
-   		");
+   		",[get_ip()]);
     }
 
 
@@ -846,12 +1099,12 @@ class db
         $thiscapt = $captcha->generate_captcha('words');
         $q = $this->delete("
 			DELETE FROM `ppSD_captcha`
-			WHERE `username`='" . $this->mysql_clean($username) . "' AND `type`='" . $this->mysql_clean($type) . "'
-		");
+			WHERE `username`=? AND `type`=?
+		", [$username, $type]);
         $qin = $this->insert("
 			INSERT INTO `ppSD_captcha` (`username`,`captcha`,`type`,`form_session`)
-			VALUES ('" . $this->mysql_clean($username) . "','$thiscapt','" . $this->mysql_clean($type) . "','" . $this->mysql_clean($form_session) . "')
-		");
+			VALUES (?, ?, ?, ?)
+		", [$username, $thiscapt, $type, $form_session]);
         return $qin;
     }
 
@@ -872,11 +1125,11 @@ class db
                 FROM
                     `ppSD_abuse`
                 WHERE
-                    `ip`='" . $this->mysql_clean($ip) . "'
+                    `ip`=?
                 ORDER BY
                     `time` DESC
                 LIMIT 1
-            ");
+            ", [$ip]);
 
                 $time_now = microtime(true);
 
@@ -892,11 +1145,11 @@ class db
                         UPDATE
                             `ppSD_abuse`
                         SET
-                            `time`='" . $this->mysql_clean($time_now) . "'
+                            `time`=?
                         WHERE
-                            `ip`='" . $this->mysql_clean($ip) . "'
+                            `ip`=?
                         LIMIT 1
-                    ");
+                    ", [$time_now, $ip]);
                     }
 
                 } else {
@@ -905,10 +1158,10 @@ class db
                       `time`,
                       `ip`
                     ) VALUES (
-                      '" . $this->mysql_clean($time_now) . "',
-                      '" . $this->mysql_clean($ip) . "'
+                      ?,
+                      ?
                     )
-                ");
+                ", [$time_now, $ip]);
                 }
 
             }
@@ -925,9 +1178,9 @@ class db
 
         $find = $this->get_array("
 			SELECT `captcha` FROM `ppSD_captcha`
-			WHERE `username`='" . $this->mysql_clean($username) . "' AND `type`='" . $this->mysql_clean($type) . "'
+			WHERE `username`=? AND `type`=?
 			LIMIT 1
-		");
+		", [$username, $type]);
         if (!empty($find['captcha'])) {
             $find['captcha'] = str_replace('|', '', $find['captcha']);
             return $find['captcha'];
@@ -964,9 +1217,9 @@ class db
                 FROM
                     `ppSD_captcha`
                 WHERE
-                    `username`='" . $this->mysql_clean($username) . "' AND
-                    `type`='" . $this->mysql_clean($type) . "'
-            ");
+                    `username`=? AND
+                    `type`=?
+            ", [$username, $type]);
             if (! empty($find['captcha'])) {
                 $captcha = trim($captcha);
                 $captcha = str_replace(' ', '', $captcha);
@@ -976,8 +1229,8 @@ class db
                         DELETE FROM
                             `ppSD_captcha`
                         WHERE
-                            `username`='" . $this->mysql_clean($username) . "' AND
-                            `type`='" . $this->mysql_clean($type) . "'
+                            `username`=?AND
+                            `type`=?
                         LIMIT 1
                     ");
                     return '1';
@@ -1012,15 +1265,22 @@ class db
                     `session`
 				)
 				VALUES (
-				    '" . current_date() . "',
-				    '" . $this->mysql_clean($username) . "',
-				    '" . $this->mysql_clean($act_id) . "',
-				    '" . $this->mysql_clean($task) . "',
-				    '" . $this->mysql_clean($type) . "',
-				    '" . $this->mysql_clean(get_ip()) . "',
-				    '" . $this->mysql_clean($session) . "'
-                )
-			");
+				    ?,
+				    ?,
+				    ?,
+				    ?,
+				    ?,
+				    ?,
+				    ?
+			)", [
+                current_date('start_task'),
+                $username,
+                $act_id,
+                $task,
+                $type,
+                get_ip(),
+                $session
+            ]);
         }
         // Custom action
         if (! empty($task)) {
@@ -1049,13 +1309,13 @@ class db
 				UPDATE
 				    `ppSD_usage_logs`
 				SET
-				    `end_date`='" . current_date() . "',
-				    `success`='" . $this->mysql_cleans($success) . "',
-				    `msg`='" . $this->mysql_clean($msg) . "'
+				    `end_date`=?,
+				    `success`=?,
+				    `msg`=?
 				WHERE
-				    `id`='" . $this->mysql_clean($id) . "'
+				    `id`=?
 				LIMIT 1
-			");
+			", [current_date(), $success, $msg, $id]);
         }
 
         if (!empty($type)) {
@@ -1074,9 +1334,9 @@ class db
         $array = $this->get_array("
             SELECT *
             FROM `ppSD_custom_actions`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$id]);
         return $array;
     }
     
@@ -1339,8 +1599,8 @@ class db
             }
             $q2 = $this->insert("
                 REPLACE INTO `ppSD_cache` (`act_id`,`data`,`date`)
-                VALUES ('" . $this->mysql_clean($id) . "','" . $this->mysql_clean($data) . "','" . current_date() . "')
-            ");
+                VALUES (?,?,?)
+            ", [$id, $data, current_date()]);
         }
     }
 
@@ -1352,9 +1612,9 @@ class db
         if ($opt == '1') {
             $q2 = $this->delete("
                 DELETE FROM `ppSD_cache`
-                WHERE `item_id`='" . $this->mysql_clean($id) . "'
+                WHERE `item_id`=?
                 LIMIT 1
-            ");
+            ", [$id]);
         }
     }
 
@@ -1366,9 +1626,9 @@ class db
         if ($opt == '1') {
             $get = $this->get_array("
 				SELECT `data` FROM `ppSD_cache`
-				WHERE `act_id`='" . $this->mysql_clean($id) . "'
+				WHERE `act_id`=?
 				LIMIT 1
-			");
+			", [$id]);
             if (!empty($get['data'])) {
                 $data = array();
                 $fdata = @unserialize($get['data']);
@@ -1395,22 +1655,22 @@ class db
 
         $q = $this->delete("
 			DELETE FROM `ppSD_captcha`
-			WHERE `username`='" . $this->mysql_clean($username) . "' AND `type`='" . $this->mysql_clean($type) . "'
-		");
+			WHERE `username`=? AND `type`=?
+		", [$username, $type]);
         if ($type == 'staff') {
             $q2 = $this->update("
 				UPDATE `ppSD_staff`
 				SET `login_attempts`='0',`locked`='1920-01-01 00:01:01',`locked_ip`=''
-				WHERE `username`='" . $this->mysql_clean($username) . "'
+				WHERE `username`=?
 				LIMIT 1
-			");
+			", [$username]);
         } else {
             $q2 = $this->update("
 				UPDATE `ppSD_members`
 				SET `login_attempts`='0',`locked`='1920-01-01 00:01:01',`locked_ip`=''
-				WHERE `id`='" . $this->mysql_clean($username) . "'
+				WHERE `id`=?
 				LIMIT 1
-			");
+			", [$username]);
         }
     }
 
@@ -1666,9 +1926,9 @@ class db
             $q1 = $this->get_array("
                 SELECT `id`,`filename`
                 FROM `ppSD_uploads`
-                WHERE `item_id`='" . $this->mysql_clean($id) . "' AND `label`='profile-picture'
+                WHERE `item_id`=? AND `label`='profile-picture'
                 LIMIT 1
-            ");
+            ", [$id]);
             if (! empty($q1['filename'])) {
                 $img = "<a href=\"returnnull.php\" onclick=\"return popup('crop_image','id=" . $id . "&type=profile-picture&filename=" . $q1['filename'] . "','1');\"><img src=\"" . PP_URL . "/custom/uploads/" . $q1['filename'] . "\" width=$width height=$height border=0 class=\"profile_pic border\" /></a>";
                 $img_plain = "<img src=\"" . PP_URL . "/custom/uploads/" . $q1['filename'] . "\" width=$width height=$height border=0 class=\"profile_pic border\" />";
@@ -1929,7 +2189,7 @@ class db
 
         $q1 = $this->run_query("
             ALTER TABLE  `$table`
-            ADD  `" . $this->mysql_cleans($field) . "` " . $type . "
+            ADD  `$field` " . $type . "
         ");
 
         return true;
@@ -1942,13 +2202,13 @@ class db
     {
 
         if ($scope == 'member') {
-            $desc_cols = $this->get_array("DESCRIBE `ppSD_member_data`", "0", "2");
+            $desc_cols = $this->get_array("DESCRIBE `ppSD_member_data`", [], "2");
         } else if ($scope == 'contact') {
-            $desc_cols = $this->get_array("DESCRIBE `ppSD_contact_data`", "0", "2");
+            $desc_cols = $this->get_array("DESCRIBE `ppSD_contact_data`", [], "2");
         } else if ($scope == 'rsvp') {
-            $desc_cols = $this->get_array("DESCRIBE `ppSD_event_rsvp_data`", "0", "2");
+            $desc_cols = $this->get_array("DESCRIBE `ppSD_event_rsvp_data`", [], "2");
         } else {
-            $desc_cols = $this->get_array("DESCRIBE `ppSD_account_data`", "0", "2");
+            $desc_cols = $this->get_array("DESCRIBE `ppSD_account_data`", [], "2");
         }
         return $desc_cols;
     }
@@ -1983,9 +2243,9 @@ class db
             FROM
               `ppSD_data_eav`
             WHERE
-              `item_id`='" . $this->mysql_clean($item) . "' AND `key`='" . $this->mysql_clean($key) . "'
+              `item_id`=? AND `key`=?
             LIMIT 1
-        ");
+        ", [$item, $key]);
         return $q1['value'];
     }
 
@@ -2002,9 +2262,9 @@ class db
         $email = $this->get_array("
             SELECT `user_id`,`user_type`
             FROM `ppSD_saved_emails`
-            WHERE `id`='" . $this->mysql_clean($act_id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$act_id]);
         if ($email['user_type'] == 'member') {
             $user      = new user;
             $final_use = $user->get_username($email['user_id']);
@@ -2026,7 +2286,7 @@ class db
      */
     function get_option($id)
     {
-        $q = $this->get_array("SELECT `value` FROM `ppSD_options` WHERE `id`='" . $this->mysql_clean($id) . "' LIMIT 1");
+        $q = $this->get_array("SELECT `value` FROM `ppSD_options` WHERE `id`=?" , [$id]);
         if ($q == false) {
             return '';
         }
@@ -2054,7 +2314,7 @@ class db
 
     function option_type($id)
     {
-        $q = $this->get_array("SELECT `type` FROM `ppSD_options` WHERE `id`='" . $this->mysql_clean($id) . "' LIMIT 1");
+        $q = $this->get_array("SELECT `type` FROM `ppSD_options` WHERE `id`=?" , [$id]);
         return $q['type'];
     }
 
@@ -2070,10 +2330,10 @@ class db
 
         $q = $this->update("
             UPDATE `ppSD_options`
-            SET `value`='" . $this->mysql_cleans($value) . "'
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            SET `value`=?
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$value, $id]);
     }
 
 
@@ -2087,9 +2347,9 @@ class db
         $q = $this->get_array("
             SELECT `msg`
             FROM `ppSD_error_codes`
-            WHERE `code`='" . $this->mysql_clean($id) . "' AND `lang`='" . $this->mysql_clean($lang) . "'
+            WHERE `code`=? AND `lang`=?
             LIMIT 1
-		");
+		", [$id, $lang]);
         $q['msg'] = str_replace('%pp_url%', PP_URL, $q['msg']);
         return $q['msg'];
     }
@@ -2144,9 +2404,9 @@ class db
         $q = $this->get_array("
             SELECT `id`
             FROM `ppSD_error_codes`
-            WHERE `code`='" . $this->mysql_clean($code) . "'
+            WHERE `code`=?
             LIMIT 1
-        ");
+        ", [$code]);
         return $q['id'];
     }
 
@@ -2180,18 +2440,8 @@ class db
                 `section`,
                 `maxlength`
             )
-            VALUES (
-                '" . $this->mysql_clean($id) . "',
-                '" . $this->mysql_clean($name) . "',
-                '" . $this->mysql_clean($value) . "',
-                '" . $this->mysql_clean($description) . "',
-                '" . $this->mysql_clean($type) . "',
-                '" . $this->mysql_clean($width) . "',
-                '" . $this->mysql_clean($opt_list) . "',
-                '" . $this->mysql_clean($section) . "',
-                '" . $this->mysql_clean($maxlength) . "'
-            )
-        ");
+            VALUES (?,?,?,?,?,?,?,?,?)
+        ", [$id, $name, $value, $description, $type, $width, $opt_list, $section, $maxlength]);
     }
 
 
@@ -2232,20 +2482,8 @@ class db
                 `plugin`,
                 `order`
             )
-            VALUES (
-                '" . $this->mysql_clean($trigger) . "',
-                '" . $this->mysql_clean($specific_trigger) . "',
-                '" . $this->mysql_clean($name) . "',
-                '" . $this->mysql_clean($when) . "',
-                '" . $this->mysql_clean($type) . "',
-                '" . $this->mysql_clean($data) . "',
-                '1',
-                '" . $this->mysql_clean($owner) . "',
-                '" . current_date() . "',
-                '" . $this->mysql_clean($plugin) . "',
-                '" . $this->mysql_clean($order) . "'
-            )
-        ");
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        ", [$trigger, $specific_trigger, $name, $when, $type, $data, '1', $owner, current_date(), $plugin, $order]);
     }
 
 
@@ -2297,8 +2535,8 @@ class db
         $q1 = $this->get_array("
             SELECT *
             FROM `ppSD_form_submit`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
-        ");
+            WHERE `id`=?
+        ", [$id]);
 
         return $q1;
     }
@@ -2311,9 +2549,9 @@ class db
         $getform   = $this->get_array("
             SELECT *
             FROM `ppSD_forms`
-            WHERE `id`='" . $this->mysql_cleans($id) . "' OR `id`='" . $this->mysql_cleans($check_id1) . "' or `act_id` = '" . $this->mysql_cleans($id) . "'
+            WHERE `id`=? OR `id`=? or `act_id` = ?
             LIMIT 1
-        ");
+        ", [$id, $check_id1, $id]);
 
         return $getform;
     }
@@ -2324,8 +2562,8 @@ class db
         $q1 = $this->run_query("
             SELECT `key`,`value`
             FROM `ppSD_data_eav`
-            WHERE `item_id`='" . $this->mysql_clean($id) . "'
-        ");
+            WHERE `item_id`=?
+        ", [$id]);
         $data = array();
         while ($row = $q1->fetch()) {
             if ($this->field_encryption($row['key'])) {
@@ -2369,9 +2607,9 @@ class db
         $q1 = $this->get_array("
             SELECT `encrypted`
             FROM `ppSD_fields`
-            WHERE `id`='" . $this->mysql_cleans($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ", '1');
+        ", [$id]);
         if ($q1['encrypted'] == '1') {
             return true;
         } else {
@@ -2386,9 +2624,9 @@ class db
         $q1 = $this->get_array("
             SELECT `special_type`
             FROM `ppSD_fields`
-            WHERE `id`='" . $this->mysql_cleans($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ", '1');
+        ", [$id]);
         if (!empty($q1['special_type'])) {
             return $q1['special_type'];
         } else {
@@ -2430,9 +2668,9 @@ class db
                 $qup = $this->update("
 					UPDATE `$table`
 					SET $up
-					WHERE `$up_where`='" . $this->mysql_clean($up_where_value) . "'
+					WHERE `$up_where`=?
 					LIMIT 1
-				");
+				", [$up_where_value]);
             }
         }
     }
@@ -2565,9 +2803,9 @@ class db
         $q = $this->get_array("
 			SELECT *
 			FROM `ppSD_templates_email`
-			WHERE `template`='$template'
+			WHERE `template`=?
 			LIMIT 1
-		");
+		", [$template]);
         return $q;
     }
 
@@ -2685,15 +2923,15 @@ class db
                 $val = $this->get_eav_value($row[$get_id], $id);
                 $up = $this->update("
                     UPDATE `" . $table . "`
-                    SET `" . $id . "`='" . $this->mysql_clean($val) . "'
-                    WHERE `" . $get_id . "`='" . $row[$get_id] . "'
+                    SET `" . $id . "`=?
+                    WHERE `" . $get_id . "`=?
                     LIMIT 1
-                ");
+                ", [$val, $row[$get_id]]);
                 $delete = $this->delete("
                     DELETE FROM `ppSD_data_eav`
-                    WHERE `key`='" . $id . "' AND `item_id`='" . $row[$get_id] . "'
+                    WHERE `key`=? AND `item_id`=?
                     LIMIT 1
-                ");
+                ", [$id, $row[$get_id]]);
             }
         }
     }
@@ -2750,9 +2988,9 @@ class db
         $array = $this->get_array("
             SELECT *
             FROM `ppSD_templates`
-            WHERE `id`='" . $this->mysql_clean($id) . "'
+            WHERE `id`=?
             LIMIT 1
-        ");
+        ", [$id]);
         return $array;
     }
 
@@ -2768,9 +3006,9 @@ class db
                 $q1 = $this->get_array("
                     SELECT `permalink_clean`
                     FROM `ppSD_content`
-                    WHERE `id`='" . $this->mysql_clean($section) . "'
+                    WHERE `id`=?
                     LIMIT 1
-                ");
+                ", [$section]);
                 $section = $q1['permalink_clean'];
                 $link .= '/' . $section;
             } else {
@@ -2790,9 +3028,9 @@ class db
 
         $widget = $this->get_array("
 	 		SELECT * FROM `ppSD_widgets`
-	 		WHERE `id`='" . $this->mysql_clean($id) . "'
+	 		WHERE `id`=?
 	 		LIMIT 1
-	 	");
+	 	", [$id]);
         // $widget['options'] = unserialize($widget['options']);
         $widget['options'] = $this->widget_options($id, $format_options, 'options');
         return $widget;
@@ -2807,9 +3045,9 @@ class db
         $widget = $this->get_array("
 	 		SELECT *
 	 		FROM `ppSD_widgets_menus`
-	 		WHERE `id`='" . $this->mysql_clean($id) . "'
+	 		WHERE `id`=?
 	 		LIMIT 1
-	 	");
+	 	", [$id]);
         return $widget;
     }
 
@@ -2825,7 +3063,7 @@ class db
             SELECT *
             FROM `ppSD_options`
             WHERE `id` LIKE '" . $widid . "%' AND `section`='widgets'
-        ");
+        ", []);
         $formatted = '';
         $options = array();
         while ($row = $query->fetch()) {
@@ -2852,8 +3090,8 @@ class db
             $row = $this->get_array("
                 SELECT *
                 FROM `ppSD_options`
-                WHERE `id`='" . $this->mysql_clean($row) . "'
-            ");
+                WHERE `id`=?
+            ", [$row]);
             $optid = $row;
         } else {
             $optid = $row['id'];
@@ -3275,13 +3513,13 @@ class db
 			UPDATE
 			    `$table`
 			SET
-			    `last_action`='" . current_date() . "',
-			    `next_action`='" . $next_date . "',
-			    `last_updated_by`='" . $employee['id'] . "'
+			    `last_action`=?,
+			    `next_action`=?,
+			    `last_updated_by`=?
 			WHERE
-			    `id`='" . $this->mysql_clean($id) . "'
+			    `id`=?
 			LIMIT 1
-		");
+		", [current_date(), $next_date, $employee['id'], $id]);
 
         $add = $this->add_history('extended_next_action', $employee['id'], $id, $typec, $id);
         return $next_date;
@@ -3293,17 +3531,17 @@ class db
     {
         $q1 = $this->run_query("
             TRUNCATE TABLE `ppSD_abuse`
-        ");
+        ", []);
         $q2 = $this->run_query("
             TRUNCATE TABLE `ppSD_temp`
-        ");
+        ", []);
         $q3 = $this->run_query("
             TRUNCATE TABLE `ppSD_login_temp`
-        ");
+        ", []);
         $q4 = $this->run_query("
             DELETE FROM `ppSD_criteria_cache`
             WHERE `save`!='1'
-        ");
+        ", []);
     }
 
 
@@ -3312,7 +3550,7 @@ class db
 
         $q1 = $this->run_query("
             TRUNCATE TABLE `ppSD_cache`
-        ");
+        ", []);
     }
 
 
@@ -3321,7 +3559,7 @@ class db
 
         $q1 = $this->run_query("
             TRUNCATE TABLE `ppSD_stats`
-        ");
+        ", []);
     }
 
 
@@ -3338,7 +3576,7 @@ class db
             SELECT `id`
             FROM `ppSD_content`
             WHERE `type`='folder'
-        ");
+        ", []);
         while ($row = $q2->fetch()) {
             $folders[] = $row['id'];
         }
@@ -3347,14 +3585,14 @@ class db
             SELECT `id`
             FROM `ppSD_sessions`
             WHERE `last_activity`<='" . $dif . "'
-        ");
+        ", []);
         while ($row = $q1F->fetch()) {
             // Log the session out.
             $q1 = $this->update("
                 UPDATE `ppSD_sessions`
-                SET `ended`='" . current_date() . "',`ended_by`='2'
-                WHERE `id`='" . $this->mysql_clean($row['id']) . "'
-            ");
+                SET `ended`=?,`ended_by`='2'
+                WHERE `id`=?
+            ", [current_date(), $row['id']]);
             // Delete possible session files.
             foreach ($folders as $id) {
                 $file = PP_PATH . '/custom/sessions/' . $row['id'] . ',' . $id;

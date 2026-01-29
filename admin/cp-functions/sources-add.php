@@ -71,27 +71,20 @@ if ($_POST['id'] == 'new') {
 
     $last_id = $db->insert("
         INSERT INTO `ppSD_sources` (`source`,`type`,`trigger`,`redirect`, `redirect_b`)
-        VALUES (
-          '" . $db->mysql_clean($_POST['source']) . "',
-          'custom',
-          '" . $db->mysql_clean($trigger) . "',
-          '" . $db->mysql_clean($_POST['redirect']) . "',
-          '" . $db->mysql_clean($_POST['redirect_b']) . "'
-        )
-    ");
+        VALUES (?, 'custom', ?, ?, ?)
+    ", array($_POST['source'], $trigger, $_POST['redirect'], $_POST['redirect_b']));
 
 } else {
     $q1 = $db->update("
         UPDATE `ppSD_sources`
         SET
-          `source`='" . $db->mysql_clean($_POST['source']) . "',
-          `redirect`='" . $db->mysql_clean($_POST['redirect']) . "',
-          `redirect_b`='" . $db->mysql_clean($_POST['redirect_b']) . "'
+          `source` = ?,
+          `redirect` = ?,
+          `redirect_b` = ?
         WHERE
-            `id`='" . $db->mysql_clean($_POST['id']) . "'
+            `id` = ?
         LIMIT 1
-
-    ");
+    ", array($_POST['source'], $_POST['redirect'], $_POST['redirect_b'], $_POST['id']));
     $last_id = $_POST['id'];
 }
 

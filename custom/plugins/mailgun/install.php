@@ -40,7 +40,7 @@ $options[] = array(
     'description'   => '',
     'type'          => 'text',
     'width'         => '300',
-    'maxlength'     => '',
+    'maxlength'     => 0,
     'options'       => '',
 );
 $options[] = array(
@@ -50,7 +50,7 @@ $options[] = array(
     'description'   => 'This is the domain you set up within Mailgun from which you want to send emails.',
     'type'          => 'text',
     'width'         => '300',
-    'maxlength'     => '',
+    'maxlength'     => 0,
     'options'       => '',
 );
 $options[] = array(
@@ -60,7 +60,7 @@ $options[] = array(
     'description'   => 'Optional, if you would like to tag emails.',
     'type'          => 'text',
     'width'         => '300',
-    'maxlength'     => '',
+    'maxlength'     => 0,
     'options'       => '',
 );
 $options[] = array(
@@ -70,7 +70,7 @@ $options[] = array(
     'description'   => 'Optional, if you would like emails to be under a Mailgun campaign, input the campaign ID here.',
     'type'          => 'text',
     'width'         => '300',
-    'maxlength'     => '',
+    'maxlength'     => 0,
     'options'       => '',
 );
 
