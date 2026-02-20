@@ -1,6 +1,8 @@
 ShulNET Synagogue Membership Software
 ==============================
 
+NOTICE: PLEASE DISCONTINUE USE OF THIS AND MOVE TO SHULNET 2.0 at [https://github.com/parkerfly38/shulnet-php(https://github.com/parkerfly38/shulnet-php)]
+
 ShulNET is open source membership software written in PHP that combines event planning, CRM, a CMS, invoicing, subscription management, marketing tools (like e-mail campaigns), a shopping cart, and secure content delivery, forked from v115 of Castlamp's Zenbership.
 
 Author: Cove Brook Coders (https://www.covebrookcode.com/)  
